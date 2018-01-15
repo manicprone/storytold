@@ -51,12 +51,12 @@ export default {
     color: #252525;
   }
 
-  a {
+  a, .application a {
     color: #676767;
     cursor: pointer;
     text-decoration: none;
   }
-  a:hover {
+  a:hover, .application a:hover {
     color: #111111;
   }
 

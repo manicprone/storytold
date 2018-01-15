@@ -1,5 +1,5 @@
 <template>
-  <main class="admin-users-page">
+  <div class="admin-users-page">
 
     <template v-if="!hasUsers">
       <div class="loading-users">Loading users...</div>
@@ -39,7 +39,7 @@
       </v-data-table>
     </template>
 
-  </main>
+  </div>
 </template>
 
 <script>

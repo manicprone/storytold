@@ -1,5 +1,5 @@
 <template>
-  <v-container class="user-profile-editor">
+  <div class="user-profile-editor">
     <v-layout row wrap>
 
       <v-flex xs12>
@@ -63,7 +63,7 @@
       </v-flex>
 
     </v-layout>
-  </v-container>
+  </div>
 </template>
 
 <script>

@@ -25,7 +25,6 @@ module.exports = {
         fields: [
           { name: 'user_id', type: 'Number', required: true, lookup: true },
           { name: 'tagline', type: 'String' },
-          { name: 'tagline', type: 'String' },
           { name: 'description', type: 'String' },
         ],
       },

@@ -124,7 +124,7 @@
             </v-layout>
 
             <v-card-actions class="info-controls transparent">
-              <editor-feedback v-bind:resource="'user-expertise'" v-bind:autoCloseAfterMillis="5000" />
+              <editor-feedback v-bind:resource="'user-profile'" v-bind:autoCloseAfterMillis="5000" />
               <v-spacer />
               <v-btn light v-on:click="saveExpertiseInfo">Save</v-btn>
             </v-card-actions>

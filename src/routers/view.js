@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import HomePage from '../pages/HomePage.vue';
+import ManageChaptersPage from '../pages/ManageChaptersPage.vue';
 import ManageMyProfilePage from '../pages/ManageMyProfilePage.vue';
 import AdminRootPage from '../pages/AdminRootPage.vue';
 import AdminDashboardPage from '../pages/AdminDashboardPage.vue';
@@ -20,6 +21,13 @@ export function createRouter() {
         path: '/',
         name: 'home',
         component: HomePage,
+      },
+
+      // -------------------------------------------------- Manage Chapters Page
+      {
+        path: '/manage/chapters',
+        name: 'manage-chapters',
+        component: ManageChaptersPage,
       },
 
       // ------------------------------------------------ Manage My Profile Page

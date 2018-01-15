@@ -1,7 +1,7 @@
 {
   "name": "storytold",
   "version": "0.0.0",
-  "description": "The chapters of our life, the personas we assume, the stories we tell",
+  "description": "The chapters of our life, the stories we tell",
   "author": "|M| <manicprone@gmail.com>",
   "main": "server.js",
   "repository": {

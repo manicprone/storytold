@@ -25,7 +25,7 @@
 <script>
 import EditorFeedback from './EditorFeedback.vue';
 import FormOffice from './FormOffice.vue';
-import FormTag from './FormTag.vue';
+import FormChapter from './FormChapter.vue';
 
 export default {
   name: 'AdminContentEditor',
@@ -33,7 +33,7 @@ export default {
   components: {
     EditorFeedback,
     FormOffice,
-    FormTag,
+    FormChapter,
   },
 
   data() {
@@ -50,14 +50,15 @@ export default {
       type: Object,
       default: null,
     },
+    resourceType: {
+      type: String,
+      default: 'system-data',
+    },
   },
 
   computed: {
     isNew() {
       return (this.item.id === null);
-    },
-    resourceType() {
-      return 'system';
     },
   },
 

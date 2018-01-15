@@ -1,13 +1,11 @@
 <template>
-  <main class="admin-dashboard-page">
-    <v-container fluid>
+  <div class="admin-dashboard-page">
 
       <div class="dashboard">
         (Dashboard)
       </div>
 
-    </v-container>
-  </main>
+  </div>
 </template>
 
 <script>

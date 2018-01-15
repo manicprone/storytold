@@ -25,7 +25,7 @@ export default {
   props: {
     resource: {
       type: String,
-      default: 'system', // 'system' | 'project' | 'user-profile' | 'user-expertise'
+      default: 'system-data', // 'system-data' | 'user-data' | 'user-profile'
     },
     autoCloseAfterMillis: {
       type: Number,
@@ -38,10 +38,9 @@ export default {
       let message = null;
 
       switch (this.resource) {
-        case 'system': message = this.$store.getters.itemToEditFeedback; break;
-        case 'project': message = this.$store.getters.projectToEditFeedback; break;
+        case 'system-data': message = this.$store.getters.systemItemToEditFeedback; break;
+        case 'user-data': message = this.$store.getters.itemToEditFeedback; break;
         case 'user-profile': message = this.$store.getters.userProfileEditingFeedback; break;
-        case 'user-expertise': message = this.$store.getters.userExpertiseEditingFeedback; break;
       }
 
       if (message && this.autoCloseDelay) {
@@ -73,10 +72,9 @@ export default {
     closeNotification() {
       if (this.activeMessage) {
         switch (this.resource) {
-          case 'system': return this.$store.dispatch('RESOLVE_MESSAGE_FOR_ITEM_TO_EDIT');
-          case 'project': return this.$store.dispatch('RESOLVE_MESSAGE_FOR_PROJECT_TO_EDIT');
+          case 'system-data': return this.$store.dispatch('RESOLVE_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT');
+          case 'user-data': return this.$store.dispatch('RESOLVE_MESSAGE_FOR_ITEM_TO_EDIT');
           case 'user-profile': return this.$store.dispatch('RESOLVE_MESSAGE_FOR_USER_PROFILE_EDITING');
-          case 'user-expertise': return this.$store.dispatch('RESOLVE_MESSAGE_FOR_USER_EXPERTISE_EDITING');
         }
       }
     },

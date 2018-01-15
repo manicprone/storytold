@@ -2,8 +2,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import appStore from './app';
 import authStore from './auth';
+import userDataStore from './userData';
 import systemDataStore from './systemData';
-import userDataStore from './users';
+import systemUserStore from './users';
 
 Vue.use(Vuex);
 
@@ -16,11 +17,14 @@ export function createStore() {
       // The account info and settings of the active authorized user
       auth: authStore,
 
+      // The data managed by the active authorized user
+      userData: userDataStore,
+
       // The system data managed by administrators
       systemData: systemDataStore,
 
-      // User data and actions
-      userData: userDataStore,
+      // The system users managed by administrators
+      systemUsers: systemUserStore,
     },
   });
 }
