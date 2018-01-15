@@ -187,7 +187,7 @@ export default {
 
       const resourceURI = stringUtils.toKebabCase(item.model);
       const uri = `/api/user/${activeUserID}/${resourceURI}`;
-      const body = Object.assign({}, item);
+      const body = Object.assign({}, item.serialize());
 
       return Ajax.post(uri, { body })
         .then((payload) => {
@@ -224,7 +224,7 @@ export default {
 
       const resourceURI = stringUtils.toKebabCase(item.model);
       const uri = `/api/user/${activeUserID}/${resourceURI}/${item.id}`;
-      const body = Object.assign({}, item);
+      const body = Object.assign({}, item.serialize());
 
       return Ajax.post(uri, { body })
         .then((payload) => {

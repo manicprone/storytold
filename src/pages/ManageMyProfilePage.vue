@@ -1,9 +1,9 @@
 <template>
-  <div class="manage-my-profile-page">
+  <main class="manage-my-profile-page">
 
     <local-user-profile-editor v-bind:user="activeUserToEdit" />
 
-  </div>
+  </main>
 </template>
 
 <script>

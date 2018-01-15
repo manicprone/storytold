@@ -1,19 +1,19 @@
 <template>
   <v-app light>
 
-    <template v-if="activeUser.is_logged_in">
-      <transition name="fade" appear>
-        <app-header v-bind:logoTargetURI="logoTargetURI" />
-      </transition>
-    </template>
-
-    <v-content>
+    <main>
       <v-container fluid>
+        <template v-if="activeUser.is_logged_in">
+          <transition name="fade" appear>
+            <app-header v-bind:logoTargetURI="logoTargetURI" />
+          </transition>
+        </template>
+
         <transition name="fade-fast" mode="out-in">
           <router-view class="page"></router-view>
         </transition>
       </v-container>
-    </v-content>
+    </main>
 
   </v-app>
 </template>

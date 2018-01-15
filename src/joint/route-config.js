@@ -23,7 +23,7 @@ module.exports = {
     },
     {
       uri: '/user/:id/profile',
-      post: { method: 'UserInfo.updateUserProfile', body: true },
+      post: { method: 'UserProfile.updateUserProfile', body: true },
     },
     {
       uri: '/user/:user_id/settings',

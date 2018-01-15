@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <main class="home-page">
 
     <template v-if="!activeUser.is_logged_in">
       <div class="splash-screen">
@@ -54,7 +54,7 @@
       </div>
     </template>
 
-  </div>
+  </main>
 </template>
 
 <script>

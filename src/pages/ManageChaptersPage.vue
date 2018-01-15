@@ -137,7 +137,7 @@ export default {
   /* ---------- */
 
   .list-panel {
-    margin-top: 98px;
+    margin-top: 49px;
   }
   .list-panel-controls {
     background-color: #ebebeb;
@@ -153,12 +153,12 @@ export default {
   /* ---------- */
 
   .edit-panel {
-    margin: 90px 0 0 0;
+    margin: 140px 0 0 0;
   }
   .close-active-edit {
     position: fixed;
     right: 20px;
-    top: 116px;
+    top: 65px;
     z-index: 200;
   }
 
