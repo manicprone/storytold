@@ -3,16 +3,18 @@ exports.up = function up(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('stories', (table) => {
       table.increments();
+      table.integer('user_id').notNullable().unsigned().references('users.id');
       table.string('name').notNullable();
       table.string('alias').nullable().unique();
       table.text('description').nullable();
       table.string('image_url').nullable();
       table.boolean('is_public').notNullable().defaultTo(false);
-      table.integer('persona_id').notNullable().unsigned().references('personas.id');
+      table.integer('persona_id').nullable().unsigned().references('personas.id');
       table.timestamps();
     }),
     knex.schema.createTableIfNotExists('chapters', (table) => {
       table.increments();
+      table.integer('user_id').notNullable().unsigned().references('users.id');
       table.string('name').notNullable();
       table.string('label').nullable();
       table.text('description').nullable();
@@ -27,6 +29,7 @@ exports.up = function up(knex, Promise) {
     }),
     knex.schema.createTableIfNotExists('places', (table) => {
       table.increments();
+      table.integer('user_id').notNullable().unsigned().references('users.id');
       table.string('name').notNullable();
       table.text('description').nullable();
       table.string('image_url').nullable();
@@ -40,6 +43,7 @@ exports.up = function up(knex, Promise) {
     }),
     knex.schema.createTableIfNotExists('organizations', (table) => {
       table.increments();
+      table.integer('user_id').notNullable().unsigned().references('users.id');
       table.string('name').notNullable();
       table.text('description').nullable();
       table.string('image_url').nullable();
@@ -48,6 +52,7 @@ exports.up = function up(knex, Promise) {
     }),
     knex.schema.createTableIfNotExists('projects', (table) => {
       table.increments();
+      table.integer('user_id').notNullable().unsigned().references('users.id');
       table.string('name').notNullable();
       table.text('description').nullable();
       table.text('technical_details').nullable();
@@ -60,6 +65,7 @@ exports.up = function up(knex, Promise) {
     }),
     knex.schema.createTableIfNotExists('people', (table) => {
       table.increments();
+      table.integer('user_id').notNullable().unsigned().references('users.id');
       table.string('name').notNullable();
       table.text('description').nullable();
       table.string('image_url').nullable();

@@ -29,6 +29,12 @@
           <div class="separator">|</div>
         </div>
         <div class="link-item">
+          <router-link v-bind:to="{ name: 'manage-chapters' }">
+            <span>Manage Chapters</span>
+          </router-link>
+        </div>
+        <div class="separator"></div>
+        <div class="link-item">
           <router-link v-bind:to="{ name: 'manage-profile' }">
             <span>Manage My Profile</span>
           </router-link>

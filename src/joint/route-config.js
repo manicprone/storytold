@@ -34,6 +34,22 @@ module.exports = {
       uri: '/users',
       get: { method: 'User.getUsers' },
     },
+
+    // ----------------------------------------------------------- User Chapters
+    {
+      uri: '/user/:user_id/chapter',
+      post: { method: 'Chapter.createChapter', successStatus: 201, body: true },
+    },
+    {
+      uri: '/user/:user_id/chapter/:id',
+      get: { method: 'Chapter.getChapter' },
+      post: { method: 'Chapter.updateChapter', body: true },
+      delete: { method: 'Chapter.deleteChapter', successStatus: 204 },
+    },
+    {
+      uri: '/user/:user_id/chapters',
+      get: { method: 'Chapter.getChapters' },
+    },
   ], // END - routes
 
 };

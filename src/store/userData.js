@@ -1,8 +1,9 @@
 import AjaxService from '../services/Ajax';
-// import objectUtils from '../utils/object-utils';
+import objectUtils from '../utils/object-utils';
 import stringUtils from '../utils/string-utils';
 import AppMessage from '../models/AppMessage';
 import Model from '../models';
+import Collection from '../models/Collection';
 import toModel from './normalizers/toModel';
 
 // Instantiate Ajax service...
@@ -10,22 +11,20 @@ const baseURL = 'http://localhost:3005';
 const Ajax = new AjaxService({ baseURL });
 
 // TODO: Move to app settings (to be loaded in app store) !!!
-// const defaultPageSize = 10;
+const defaultPageSize = 10;
 
 // -----------------------------------------
-// The system data managed by administrators
+// The data being managed by the active user
 // -----------------------------------------
 export default {
   state: {
 
     // ------------------------------------------
-    // Office Data
+    // User Data
     // ------------------------------------------
-    offices: null,
-    officesLookup: {
-      byID: {},
-      byAlias: {},
-    },
+    chapters: null,
+    stories: null,
+    personas: null,
 
     // ------------------------------------------
     // Shared Editing Space
@@ -38,23 +37,27 @@ export default {
 
   getters: {
 
-    // ------------------------------------------------------------- Office data
+    // --------------------------------------------------------------- User data
 
-    offices(state) {
-      return state.offices;
+    myChapters(state) {
+      return state.chapters;
     },
 
-    officesLookup(state) {
-      return state.officesLookup;
+    myStories(state) {
+      return state.stories;
+    },
+
+    myPersonas(state) {
+      return state.personas;
     },
 
     // ----------------------------------------------- Shared editing data space
 
-    systemItemToEdit(state) {
+    itemToEdit(state) {
       return state.itemToEdit;
     },
 
-    systemItemToEditFeedback(state) {
+    itemToEditFeedback(state) {
       return state.itemToEdit_activeMessage;
     },
 
@@ -81,72 +84,110 @@ export default {
   // ---------------------------------------------------------------------------
   actions: {
 
-    BOOTSTRAP_SYSTEM_DATA(/* context */) {
-      // const { dispatch } = context;
+    // ---------------------------------------------------- Chapter data actions
 
-      return Promise.all([
-        // dispatch('LOAD_ALL_OFFICES'),
-      ]);
+    LOAD_MY_CHAPTERS(context, force = false) {
+      const { commit, dispatch, state } = context;
+      const chapters = state.chapters;
+
+      const opts = { skip: 0, limit: defaultPageSize };
+
+      if (!chapters || force) {
+        return dispatch('FETCH_MY_CHAPTERS', opts)
+          .then((collection) => {
+            commit('SET_MY_CHAPTERS', collection);
+            return collection;
+          });
+      }
+
+      return false;
     },
 
-    // ----------------------------------------------------- Office data actions
+    LOAD_MY_CHAPTERS_NEXT(context) {
+      const { commit, getters, dispatch } = context;
+      const chapters = getters.chapters;
+      const next = chapters.meta.next;
 
-    // LOAD_ALL_OFFICES(context, force = false) {
-    //   const { commit, state } = context;
-    //   const offices = state.offices;
-    //
-    //   const uri = '/api/offices';
-    //
-    //   if (!offices || force) {
-    //     return Ajax.get(uri)
-    //       .then((payload) => {
-    //         const collection = toModel(payload);
-    //         commit('SET_OFFICES', collection);
-    //         return collection;
-    //       })
-    //       .catch(() => {
-    //         return false;
-    //       });
-    //   }
-    //
-    //   return false;
-    // },
+      if (next) {
+        const opts = { skip: next.skip, limit: next.limit };
+
+        return dispatch('FETCH_MY_CHAPTERS', opts)
+          .then((collection) => {
+            // Append next page of results to collection, set new meta info...
+            const updatedCollection = new Collection();
+            updatedCollection.meta = collection.meta;
+            updatedCollection.items = (collection.items.length > 0)
+              ? chapters.items.concat(collection.items)
+              : chapters.items;
+
+            // Load updated data into store...
+            commit('SET_MY_CHAPTERS', updatedCollection);
+
+            return updatedCollection;
+          });
+      } // end-if (next)
+
+      return false;
+    },
+
+    FETCH_MY_CHAPTERS(context, options = {}) {
+      const { getters } = context;
+      const activeUserID = getters.activeUser.id;
+      const isPaginated = objectUtils.has(options, 'skip');
+
+      const uri = `/api/user/${activeUserID}/chapters`;
+      const query = {};
+
+      // Apply pagination...
+      if (isPaginated) {
+        query.skip = options.skip;
+        query.limit = objectUtils.get(options, 'limit', defaultPageSize);
+      }
+
+      return Ajax.get(uri, { query })
+        .then((payload) => {
+          return toModel(payload);
+        })
+        .catch(() => {
+          return false;
+        });
+    },
 
     // ---------------------------------------- Editing actions for shared space
 
-    LOAD_DRAFT_SYSTEM_ITEM_TO_EDIT(context, modelName) {
+    LOAD_DRAFT_ITEM_TO_EDIT(context, modelName) {
       const Item = Model(modelName);
       const draft = new Item();
-      context.commit('SET_SYSTEM_ITEM_TO_EDIT', draft);
+      context.commit('SET_ITEM_TO_EDIT', draft);
     },
 
-    SET_SYSTEM_ITEM_TO_EDIT(context, item) {
-      context.commit('SET_SYSTEM_ITEM_TO_EDIT', item);
+    SET_ITEM_TO_EDIT(context, item) {
+      context.commit('SET_ITEM_TO_EDIT', item);
     },
 
-    CLEAR_SYSTEM_ITEM_TO_EDIT(context) {
-      context.commit('CLEAR_SYSTEM_ITEM_TO_EDIT');
+    CLEAR_ITEM_TO_EDIT(context) {
+      context.commit('CLEAR_ITEM_TO_EDIT');
     },
 
-    REGISTER_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT(context, message) {
-      context.commit('REGISTER_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT', message);
-      context.commit('ADVANCE_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT');
+    REGISTER_MESSAGE_FOR_ITEM_TO_EDIT(context, message) {
+      context.commit('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+      context.commit('ADVANCE_MESSAGE_FOR_ITEM_TO_EDIT');
     },
 
-    RESOLVE_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT(context) {
-      context.commit('RESOLVE_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT');
-      context.commit('ADVANCE_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT');
+    RESOLVE_MESSAGE_FOR_ITEM_TO_EDIT(context) {
+      context.commit('RESOLVE_MESSAGE_FOR_ITEM_TO_EDIT');
+      context.commit('ADVANCE_MESSAGE_FOR_ITEM_TO_EDIT');
     },
 
-    CREATE_SYSTEM_ITEM(context, item = {}) {
+    CREATE_ITEM(context, item = {}) {
       const { getters } = context;
-      const activeUser = getters.activeUser;
+      const activeUserID = getters.activeUser.id;
 
       if (!item.model) return false;
 
       const resourceURI = stringUtils.toKebabCase(item.model);
-      const uri = `/api/${resourceURI}`;
-      const body = Object.assign({}, item, { created_by: activeUser.id });
+      const uri = `/api/user/${activeUserID}/${resourceURI}`;
+      const body = Object.assign({}, item);
 
       return Ajax.post(uri, { body })
         .then((payload) => {
@@ -158,7 +199,7 @@ export default {
             status_code: 201,
             severity: 'success',
           });
-          context.dispatch('REGISTER_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT', message);
+          context.dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
 
           return createdItem;
         })
@@ -169,17 +210,20 @@ export default {
             status_code: error.error.status,
             severity: 'error',
           });
-          context.dispatch('REGISTER_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT', message);
+          context.dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
 
           return Promise.reject(error.error);
         });
     },
 
-    UPDATE_SYSTEM_ITEM(context, item = {}) {
+    UPDATE_ITEM(context, item = {}) {
+      const { getters } = context;
+      const activeUserID = getters.activeUser.id;
+
       if (!item.model) return false;
 
       const resourceURI = stringUtils.toKebabCase(item.model);
-      const uri = `/api/${resourceURI}/${item.id}`;
+      const uri = `/api/user/${activeUserID}/${resourceURI}/${item.id}`;
       const body = Object.assign({}, item);
 
       return Ajax.post(uri, { body })
@@ -192,7 +236,7 @@ export default {
             status_code: 200,
             severity: 'success',
           });
-          context.dispatch('REGISTER_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT', message);
+          context.dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
 
           return updatedItem;
         })
@@ -203,17 +247,20 @@ export default {
             status_code: error.error.status,
             severity: 'error',
           });
-          context.dispatch('REGISTER_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT', message);
+          context.dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
 
           return Promise.reject(error.error);
         });
     },
 
-    DELETE_SYSTEM_ITEM(context, item = {}) {
+    DELETE_ITEM(context, item = {}) {
+      const { getters } = context;
+      const activeUserID = getters.activeUser.id;
+
       if (!item.model) return false;
 
       const resourceURI = stringUtils.toKebabCase(item.model);
-      const uri = `/api/${resourceURI}/${item.id}`;
+      const uri = `/api/user/${activeUserID}/${resourceURI}/${item.id}`;
 
       return Ajax.delete(uri)
         .then(() => {
@@ -223,7 +270,7 @@ export default {
             status_code: 204,
             severity: 'success',
           });
-          context.dispatch('REGISTER_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT', message);
+          context.dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
 
           return true;
         })
@@ -234,7 +281,7 @@ export default {
             status_code: error.error.status,
             severity: 'error',
           });
-          context.dispatch('REGISTER_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT', message);
+          context.dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
 
           return Promise.reject(error.error);
         });
@@ -244,27 +291,23 @@ export default {
 
   mutations: {
 
-    // ------------------------------------------------------------- Office data
+    // --------------------------------------------------------------- User data
 
-    // SET_OFFICES(state, collection) {
-    //   // Reset lookup map...
-    //   state.officesLookup.byID = {};
-    //   state.officesLookup.byAlias = {};
-    //
-    //   // Build lookup map...
-    //   if (collection.items.length > 0) {
-    //     collection.items.forEach((item, index) => {
-    //       state.officesLookup.byID[item.id] = index;
-    //       state.officesLookup.byAlias[item.alias] = index;
-    //     });
-    //   }
-    //
-    //   state.offices = collection;
-    // },
+    SET_MY_CHAPTERS(state, collection) {
+      state.chapters = collection;
+    },
+
+    SET_MY_STORIES(state, collection) {
+      state.stories = collection;
+    },
+
+    SET_MY_PERSONAS(state, collection) {
+      state.personas = collection;
+    },
 
     // ------------------------------------------------------------ Editing data
 
-    SET_SYSTEM_ITEM_TO_EDIT(state, item) {
+    SET_ITEM_TO_EDIT(state, item) {
       if (item.model) {
         // Build a copy of the item...
         const Item = Model(item.model);
@@ -273,22 +316,22 @@ export default {
       }
     },
 
-    CLEAR_SYSTEM_ITEM_TO_EDIT(state) {
+    CLEAR_ITEM_TO_EDIT(state) {
       state.itemToEdit = null;
       state.itemToEdit_messages = [];
       state.itemToEdit_activeMessage = null;
     },
 
-    REGISTER_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT(state, message) {
+    REGISTER_MESSAGE_FOR_ITEM_TO_EDIT(state, message) {
       state.itemToEdit_messages.unshift(message);
     },
 
-    ADVANCE_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT(state) {
+    ADVANCE_MESSAGE_FOR_ITEM_TO_EDIT(state) {
       // Advance next available message, if ready...
       if (!state.itemToEdit_activeMessage) state.itemToEdit_activeMessage = state.itemToEdit_messages.pop();
     },
 
-    RESOLVE_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT(state) {
+    RESOLVE_MESSAGE_FOR_ITEM_TO_EDIT(state) {
       state.itemToEdit_activeMessage = null;
     },
 

@@ -116,10 +116,6 @@ module.exports = {
       tableName: 'chapters',
       timestamps: { created: 'created_at', updated: 'updated_at' },
       associations: {
-        persona: {
-          type: 'toOne',
-          path: 'persona_id => Persona.id',
-        },
         places: {
           type: 'toMany',
           path: 'id => ChapterPlaceRef.chapter_id => ChapterPlaceRef.place_id => Place.id',
