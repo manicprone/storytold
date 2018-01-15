@@ -1,56 +1,54 @@
 <template>
-  <main class="home-page">
-    <v-container fluid>
+  <div class="home-page">
 
-      <template v-if="!activeUser.is_logged_in">
-        <div class="splash-screen">
-          <div class="title-container">
-            <div class="title-text-the">the</div>
-            <div class="title-text-storytold">
-              <span class="title-text-story">story</span><span class="title-text-told">told</span>
-            </div>
-            <div class="tagline-text">{{ appTaglineText }}</div>
+    <template v-if="!activeUser.is_logged_in">
+      <div class="splash-screen">
+        <div class="title-container">
+          <div class="title-text-the">the</div>
+          <div class="title-text-storytold">
+            <span class="title-text-story">story</span><span class="title-text-told">told</span>
           </div>
-          <local-account-login class="login-link" />
+          <div class="tagline-text">{{ appTaglineText }}</div>
         </div>
-      </template>
+        <local-account-login class="login-link" />
+      </div>
+    </template>
 
-      <template v-else>
-        <div class="welcome-message">
-          <div class="message-text">{{ welcomeMessageText }}</div>
+    <template v-else>
+      <div class="welcome-message">
+        <div class="message-text">{{ welcomeMessageText }}</div>
+      </div>
+
+      <div class="dashboard">
+        Your dashboard will appear here
+      </div>
+
+      <div class="temp-link-group">
+        <div class="group-heading">
+          <div class="heading-text">Everyone</div>
+          <div class="separator">|</div>
         </div>
-
-        <div class="dashboard">
-          Your dashboard will appear here
+        <div class="link-item">
+          <router-link v-bind:to="{ name: 'manage-profile' }">
+            <span>Manage My Profile</span>
+          </router-link>
         </div>
+      </div>
 
-        <div class="temp-link-group">
-          <div class="group-heading">
-            <div class="heading-text">Everyone</div>
-            <div class="separator">|</div>
-          </div>
-          <div class="link-item">
-            <router-link v-bind:to="{ name: 'manage-profile' }">
-              <span>Manage My Profile</span>
-            </router-link>
-          </div>
+      <div class="temp-link-group">
+        <div class="group-heading">
+          <div class="heading-text">By Role</div>
+          <div class="separator">|</div>
         </div>
-
-        <div class="temp-link-group">
-          <div class="group-heading">
-            <div class="heading-text">By Role</div>
-            <div class="separator">|</div>
-          </div>
-          <div class="link-item">
-            <router-link v-bind:to="{ name: 'admin-dashboard' }">
-              <span>Admin</span>
-            </router-link>
-          </div>
+        <div class="link-item">
+          <router-link v-bind:to="{ name: 'admin-dashboard' }">
+            <span>Admin</span>
+          </router-link>
         </div>
-      </template>
+      </div>
+    </template>
 
-    </v-container>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -70,7 +68,7 @@ export default {
       return this.$store.getters.activeUser;
     },
     appTaglineText() {
-      return 'The chapters of our life, the personas we assume, the stories we tell';
+      return 'The chapters of our life, the stories we tell';
     },
     loginText() {
       return 'Login with your account';

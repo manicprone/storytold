@@ -1,7 +1,7 @@
 {
   "name": "storytold",
   "version": "0.0.0",
-  "description": "The chapters of our life, the personas we assume, the stories we tell",
+  "description": "The chapters of our life, the stories we tell",
   "author": "|M| <manicprone@gmail.com>",
   "main": "server.js",
   "repository": {
@@ -53,7 +53,7 @@
     "vue": "^2.4.1",
     "vue-router": "^2.7.0",
     "vue-server-renderer": "^2.4.1",
-    "vuetify": "^0.15.7",
+    "vuetify": "^0.17.6",
     "vuex": "^2.3.1",
     "vuex-router-sync": "^4.1.2"
   },

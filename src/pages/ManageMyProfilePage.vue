@@ -1,11 +1,9 @@
 <template>
-  <main class="manage-my-profile-page">
-    <v-container fluid>
+  <div class="manage-my-profile-page">
 
-      <local-user-profile-editor v-bind:user="activeUserToEdit" />
+    <local-user-profile-editor v-bind:user="activeUserToEdit" />
 
-    </v-container>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -32,6 +30,7 @@ export default {
 
   .user-profile-editor {
     margin-top: 40px;
+    max-width: 720px;
   }
 
 </style>

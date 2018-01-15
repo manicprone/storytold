@@ -1,7 +1,8 @@
 # storytold
 
-> The chapters of our life, the personas we assume, the stories we tell
+> The chapters of our life, the stories we tell
 
+<br />
 
 ## Table of Contents
 
@@ -16,7 +17,9 @@
 ## The Software Stack
 
 Node Isomorphic: Persistence (relational DB) + API Server + CMS + Isomorphic UI (server & client)
-> Core build and SSR setup taken from [Evan You's][link-evan-you-github] [Hacker News Vue + SSR Example][link-vue-hackernews-site] (thanks!)
+> Core build and SSR setup taken from [Evan You's][link-evan-you-github] - [Hacker News Vue + SSR Example][link-vue-hackernews-site] (thanks!)
+
+<br />
 
 | Layer | Implementation |
 | ----- | -------------- |

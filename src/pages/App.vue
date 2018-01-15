@@ -1,19 +1,19 @@
 <template>
   <v-app light>
 
-    <main>
-      <v-container fluid>
-        <template v-if="activeUser.is_logged_in">
-          <transition name="fade" appear>
-            <app-header v-bind:logoTargetURI="logoTargetURI" />
-          </transition>
-        </template>
+    <template v-if="activeUser.is_logged_in">
+      <transition name="fade" appear>
+        <app-header v-bind:logoTargetURI="logoTargetURI" />
+      </transition>
+    </template>
 
+    <v-content>
+      <v-container fluid>
         <transition name="fade-fast" mode="out-in">
           <router-view class="page"></router-view>
         </transition>
       </v-container>
-    </main>
+    </v-content>
 
   </v-app>
 </template>
@@ -51,12 +51,12 @@ export default {
     color: #252525;
   }
 
-  a {
+  a, .application a {
     color: #676767;
     cursor: pointer;
     text-decoration: none;
   }
-  a:hover {
+  a:hover, .application a:hover {
     color: #111111;
   }
 
