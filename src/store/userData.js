@@ -26,9 +26,20 @@ export default {
     stories: null,
     personas: null,
 
+    // TODO: Direct the generic data actions to store management data
+    //       in separate spaces !!!
+
     // ------------------------------------------
-    // Shared Editing Space
+    // Story Management Space
     // ------------------------------------------
+    // storyToEdit: null,
+    // storyToEdit_messages: [], // the queue of messages for this item
+    // storyToEdit_activeMessage: null, // the active message to be handled
+
+    // ------------------------------------------
+    // Shared Management Space
+    // ------------------------------------------
+    itemToPreview: null,
     itemToEdit: null,
     itemToEdit_messages: [], // the queue of messages for this item
     itemToEdit_activeMessage: null, // the active message to be handled
@@ -51,7 +62,21 @@ export default {
       return state.personas;
     },
 
-    // ----------------------------------------------- Shared editing data space
+    // ------------------------------------------------------ Story editing data
+
+    // storyToEdit(state) {
+    //   return state.storyToEdit;
+    // },
+    //
+    // storyToEditFeedback(state) {
+    //   return state.storyToEdit_activeMessage;
+    // },
+
+    // -------------------------------------------------- Shared data management
+
+    itemToPreview(state) {
+      return state.itemToPreview;
+    },
 
     itemToEdit(state) {
       return state.itemToEdit;
@@ -222,7 +247,143 @@ export default {
         });
     },
 
-    // ---------------------------------------- Editing actions for shared space
+    LOAD_STORY_TO_EDIT(context, options = {}) {
+      const { commit, dispatch } = context;
+
+      return dispatch('FETCH_STORY', options)
+        .then((story) => {
+          commit('SET_ITEM_TO_EDIT', story);
+          return story;
+        })
+        .catch((error) => {
+          // Register feedback message...
+          const message = new AppMessage({
+            source: error.error,
+            status_code: error.error.status,
+            severity: 'error',
+          });
+          dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+
+          return Promise.reject(error.error);
+        });
+    },
+
+    FETCH_STORY(context, options = {}) {
+      const { getters } = context;
+      const activeUserID = getters.activeUser.id;
+      const storyID = objectUtils.get(options, 'story_id', null);
+      const includeChapters = objectUtils.get(options, 'include_chapters', true);
+      const includePersona = objectUtils.get(options, 'include_persona', true);
+
+      if (!storyID) return false;
+
+      const uri = `/api/user/${activeUserID}/story/${storyID}`;
+      const query = {};
+
+      // TODO: Stop the escaping of commas -or- joint-kit needs to decode !!!
+      if (includeChapters || includePersona) {
+        const assocs = new Array(2);
+        if (includeChapters) assocs.push('chapters');
+        if (includePersona) assocs.push('persona');
+        // query.with = assocs.toString();
+      }
+
+      return Ajax.get(uri, { query })
+        .then((payload) => {
+          return toModel(payload);
+        });
+    },
+
+    CREATE_DRAFT_STORY_TO_EDIT(context, options = {}) {
+      const { getters, dispatch, commit } = context;
+      const activeUserID = getters.activeUser.id;
+      const title = objectUtils.get(options, 'title', 'New Story');
+
+      // Create draft story...
+      const DraftStory = Model('Story');
+      const draft = new DraftStory({ title });
+
+      const uri = `/api/user/${activeUserID}/story`;
+      const body = Object.assign({}, draft.serialize());
+
+      return Ajax.post(uri, { body })
+        .then((payload) => {
+          const createdItem = toModel(payload);
+          commit('SET_ITEM_TO_EDIT', createdItem);
+
+          return createdItem;
+        })
+        .catch((error) => {
+          // Register feedback message...
+          const message = new AppMessage({
+            source: error.error,
+            status_code: error.error.status,
+            severity: 'error',
+          });
+          dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+
+          return Promise.reject(error.error);
+        });
+    },
+
+    // LOAD_STORY_TO_EDIT(context, options = {}) {
+    //   const { commit, dispatch } = context;
+    //
+    //   return dispatch('FETCH_STORY', options)
+    //     .then((story) => {
+    //       commit('SET_STORY_TO_EDIT', story);
+    //       return story;
+    //     })
+    //     .catch((error) => {
+    //       // Register feedback message...
+    //       const message = new AppMessage({
+    //         source: error.error,
+    //         status_code: error.error.status,
+    //         severity: 'error',
+    //       });
+    //       context.dispatch('REGISTER_MESSAGE_FOR_STORY_TO_EDIT', message);
+    //
+    //       return Promise.reject(error.error);
+    //     });
+    // },
+    //
+    // LOAD_DRAFT_STORY_TO_EDIT(context) {
+    //   // Create draft story...
+    //   const DraftStory = Model('Story');
+    //   const draft = new DraftStory();
+    //
+    //   context.commit('SET_STORY_TO_EDIT', draft);
+    // },
+    //
+    // SET_STORY_TO_EDIT(context, story) {
+    //   context.commit('SET_STORY_TO_EDIT', story);
+    // },
+    //
+    // CLEAR_STORY_TO_EDIT(context) {
+    //   context.commit('CLEAR_STORY_TO_EDIT');
+    // },
+    //
+    // REGISTER_MESSAGE_FOR_STORY_TO_EDIT(context, message) {
+    //   context.commit('REGISTER_MESSAGE_FOR_STORY_TO_EDIT', message);
+    //   context.commit('ADVANCE_MESSAGE_FOR_STORY_TO_EDIT');
+    // },
+    //
+    // RESOLVE_MESSAGE_FOR_STORY_TO_EDIT(context) {
+    //   context.commit('RESOLVE_MESSAGE_FOR_STORY_TO_EDIT');
+    //   context.commit('ADVANCE_MESSAGE_FOR_STORY_TO_EDIT');
+    // },
+
+    // ------------------------------------------- Shared (generic) data actions
+
+    SET_ITEM_TO_PREVIEW(context, item) {
+      context.commit('SET_ITEM_TO_PREVIEW', item);
+    },
+
+    // TODO: Try returning a Promise to resolve the timing issue !!!
+    //       i.e. return Promise.resolve(true);
+    CLEAR_ITEM_TO_PREVIEW(context) {
+      context.commit('CLEAR_ITEM_TO_PREVIEW');
+    },
 
     LOAD_DRAFT_ITEM_TO_EDIT(context, modelName) {
       const Item = Model(modelName);
@@ -234,6 +395,8 @@ export default {
       context.commit('SET_ITEM_TO_EDIT', item);
     },
 
+    // TODO: Try returning a Promise to resolve the timing issue !!!
+    //       i.e. return Promise.resolve(true);
     CLEAR_ITEM_TO_EDIT(context) {
       context.commit('CLEAR_ITEM_TO_EDIT');
     },
@@ -249,7 +412,7 @@ export default {
     },
 
     CREATE_ITEM(context, item = {}) {
-      const { getters } = context;
+      const { getters, dispatch } = context;
       const activeUserID = getters.activeUser.id;
 
       if (!item.model) return false;
@@ -268,7 +431,7 @@ export default {
             status_code: 201,
             severity: 'success',
           });
-          context.dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+          dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
 
           return createdItem;
         })
@@ -279,14 +442,14 @@ export default {
             status_code: error.error.status,
             severity: 'error',
           });
-          context.dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+          dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
 
           return Promise.reject(error.error);
         });
     },
 
     UPDATE_ITEM(context, item = {}) {
-      const { getters } = context;
+      const { getters, dispatch } = context;
       const activeUserID = getters.activeUser.id;
 
       if (!item.model) return false;
@@ -305,7 +468,7 @@ export default {
             status_code: 200,
             severity: 'success',
           });
-          context.dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+          dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
 
           return updatedItem;
         })
@@ -316,14 +479,14 @@ export default {
             status_code: error.error.status,
             severity: 'error',
           });
-          context.dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+          dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
 
           return Promise.reject(error.error);
         });
     },
 
     DELETE_ITEM(context, item = {}) {
-      const { getters } = context;
+      const { getters, dispatch } = context;
       const activeUserID = getters.activeUser.id;
 
       if (!item.model) return false;
@@ -339,7 +502,7 @@ export default {
             status_code: 204,
             severity: 'success',
           });
-          context.dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+          dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
 
           return true;
         })
@@ -350,7 +513,7 @@ export default {
             status_code: error.error.status,
             severity: 'error',
           });
-          context.dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+          dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
 
           return Promise.reject(error.error);
         });
@@ -374,7 +537,45 @@ export default {
       state.personas = collection;
     },
 
-    // ------------------------------------------------------------ Editing data
+    // --------------------------------------------------- Story data management
+
+    // SET_STORY_TO_EDIT(state, item) {
+    //   if (item.model) {
+    //     // Build a copy of the item...
+    //     const Item = Model(item.model);
+    //     const copy = new Item(item);
+    //     state.storyToEdit = copy;
+    //   }
+    // },
+    //
+    // CLEAR_STORY_TO_EDIT(state) {
+    //   state.storyToEdit = null;
+    //   state.storyToEdit_messages = [];
+    //   state.storyToEdit_activeMessage = null;
+    // },
+    //
+    // REGISTER_MESSAGE_FOR_STORY_TO_EDIT(state, message) {
+    //   state.storyToEdit_messages.unshift(message);
+    // },
+    //
+    // ADVANCE_MESSAGE_FOR_STORY_TO_EDIT(state) {
+    //   // Advance next available message, if ready...
+    //   if (!state.storyToEdit_activeMessage) state.storyToEdit_activeMessage = state.storyToEdit_messages.pop();
+    // },
+    //
+    // RESOLVE_MESSAGE_FOR_STORY_TO_EDIT(state) {
+    //   state.storyToEdit_activeMessage = null;
+    // },
+
+    // ---------------------------------------- Shared (generic) data management
+
+    SET_ITEM_TO_PREVIEW(state, item) {
+      if (item.model) state.itemToPreview = item;
+    },
+
+    CLEAR_ITEM_TO_PREVIEW(state) {
+      state.itemToPreview = null;
+    },
 
     SET_ITEM_TO_EDIT(state, item) {
       if (item.model) {

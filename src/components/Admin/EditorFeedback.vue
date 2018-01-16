@@ -25,7 +25,7 @@ export default {
   props: {
     resource: {
       type: String,
-      default: 'system-data', // 'system-data' | 'user-data' | 'user-profile'
+      default: 'system-data', // 'system-data' | 'user-data' | 'story' | 'user-profile'
     },
     autoCloseAfterMillis: {
       type: Number,
@@ -40,6 +40,7 @@ export default {
       switch (this.resource) {
         case 'system-data': message = this.$store.getters.systemItemToEditFeedback; break;
         case 'user-data': message = this.$store.getters.itemToEditFeedback; break;
+        // case 'story': message = this.$store.getters.storyToEditFeedback; break;
         case 'user-profile': message = this.$store.getters.userProfileEditingFeedback; break;
       }
 
@@ -74,6 +75,7 @@ export default {
         switch (this.resource) {
           case 'system-data': return this.$store.dispatch('RESOLVE_MESSAGE_FOR_SYSTEM_ITEM_TO_EDIT');
           case 'user-data': return this.$store.dispatch('RESOLVE_MESSAGE_FOR_ITEM_TO_EDIT');
+          // case 'story': return this.$store.dispatch('RESOLVE_MESSAGE_FOR_STORY_TO_EDIT');
           case 'user-profile': return this.$store.dispatch('RESOLVE_MESSAGE_FOR_USER_PROFILE_EDITING');
         }
       }

@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import HomePage from '../pages/HomePage.vue';
 import ManageChaptersPage from '../pages/ManageChaptersPage.vue';
 import ManageStoriesPage from '../pages/ManageStoriesPage.vue';
+import ManageStoryPage from '../pages/ManageStoryPage.vue';
 import ManageMyProfilePage from '../pages/ManageMyProfilePage.vue';
 import AdminRootPage from '../pages/AdminRootPage.vue';
 import AdminDashboardPage from '../pages/AdminDashboardPage.vue';
@@ -31,11 +32,17 @@ export function createRouter() {
         component: ManageChaptersPage,
       },
 
-      // --------------------------------------------------- Manage Stories Page
+      // ---------------------------------------------------- Manage Story Pages
       {
         path: '/manage/stories',
         name: 'manage-stories',
         component: ManageStoriesPage,
+      },
+      {
+        path: '/manage/story/:activeStoryID',
+        name: 'manage-story',
+        props: true,
+        component: ManageStoryPage,
       },
 
       // ------------------------------------------------ Manage My Profile Page
