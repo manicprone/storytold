@@ -24,16 +24,16 @@
 
 <script>
 import EditorFeedback from './EditorFeedback.vue';
-import FormOffice from './FormOffice.vue';
 import FormChapter from './FormChapter.vue';
+import FormStory from './FormStory.vue';
 
 export default {
   name: 'AdminContentEditor',
 
   components: {
     EditorFeedback,
-    FormOffice,
     FormChapter,
+    FormStory,
   },
 
   data() {

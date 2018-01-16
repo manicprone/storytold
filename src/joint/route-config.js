@@ -5,6 +5,12 @@
 module.exports = {
 
   routes: [
+    // ---------------------------------------------------------- Public Stories
+    {
+      uri: '/stories',
+      get: { method: 'Story.getPublicStories' },
+    },
+
     // -------------------------------------------------------------------- User
     {
       uri: '/user',
@@ -49,6 +55,22 @@ module.exports = {
     {
       uri: '/user/:user_id/chapters',
       get: { method: 'Chapter.getChapters' },
+    },
+
+    // ------------------------------------------------------------ User Stories
+    {
+      uri: '/user/:user_id/story',
+      post: { method: 'Story.createStory', successStatus: 201, body: true },
+    },
+    {
+      uri: '/user/:user_id/story/:id',
+      get: { method: 'Story.getStory' },
+      post: { method: 'Story.updateStory', body: true },
+      delete: { method: 'Story.deleteStory', successStatus: 204 },
+    },
+    {
+      uri: '/user/:user_id/stories',
+      get: { method: 'Story.getStories' },
     },
   ], // END - routes
 

@@ -1,12 +1,12 @@
 <template>
-  <div class="manage-chapters-page">
+  <div class="manage-stories-page">
 
     <v-navigation-drawer permanent clipped light class="list-panel">
       <div class="list-panel-controls">
         <div class="control-set">Filters, etc</div>
       </div>
       <admin-content-list
-          v-bind:items="chapterItems"
+          v-bind:items="storyItems"
           v-bind:displayField="'title'"
           v-bind:itemStyle="'card'"
           v-on:itemClick="loadItemToEdit" />
@@ -17,13 +17,13 @@
         <transition name="fade-flash" mode="out-in">
 
           <div v-if="!itemToEdit" class="message-view" key="editOff">
-            <template v-if="hasChapters">
-              <div class="message-select-to-edit">Select a Chapter to edit</div>
+            <template v-if="hasStories">
+              <div class="message-select-to-edit">Select a Story to edit</div>
               <div class="message-or">-or-</div>
             </template>
             <div>
               <a class="message-create-draft"
-                 v-on:click="createDraftItem">+ Create a new Chapter</a>
+                 v-on:click="createDraftItem">+ Start a new Story</a>
             </div>
           </div>
 
@@ -50,7 +50,7 @@ import AdminContentEditor from '../components/Admin/AdminContentEditor.vue';
 import AdminContentList from '../components/Admin/AdminContentList.vue';
 
 export default {
-  name: 'ManageChaptersPage',
+  name: 'ManageStoriesPage',
 
   components: {
     AdminContentEditor,
@@ -58,18 +58,18 @@ export default {
   },
 
   computed: {
-    hasChapters() {
-      return (this.totalChapters > 0);
+    hasStories() {
+      return (this.totalStories > 0);
     },
-    chapterData() {
-      return this.$store.getters.myChapters;
+    storyData() {
+      return this.$store.getters.myStories;
     },
-    chapterItems() {
-      return (this.chapterData) ? this.chapterData.items : null;
+    storyItems() {
+      return (this.storyData) ? this.storyData.items : null;
     },
-    totalChapters() {
-      return (this.$root.utils.has(this.chapterData, 'meta.total_items'))
-          ? this.chapterData.meta.total_items
+    totalStories() {
+      return (this.$root.utils.has(this.storyData, 'meta.total_items'))
+          ? this.storyData.meta.total_items
           : 0;
     },
     itemToEdit() {
@@ -79,7 +79,7 @@ export default {
 
   beforeMount() {
     this.clearItemToEdit(); // clear shared space
-    this.$store.dispatch('LOAD_MY_CHAPTERS');
+    this.$store.dispatch('LOAD_MY_STORIES');
   },
 
   methods: {
@@ -103,7 +103,7 @@ export default {
       return this.$store.dispatch('CLEAR_ITEM_TO_EDIT');
     },
     createDraftItem() {
-      return this.$store.dispatch('LOAD_DRAFT_ITEM_TO_EDIT', 'Chapter');
+      return this.$store.dispatch('LOAD_DRAFT_ITEM_TO_EDIT', 'Story');
     },
     saveItem(item = {}) {
       // Create a new item...
@@ -112,7 +112,7 @@ export default {
           .then(() => {
             // Clear active edit and refresh list...
             this.clearItemToEdit();
-            this.$store.dispatch('LOAD_MY_CHAPTERS', true);
+            this.$store.dispatch('LOAD_MY_STORIES', true);
           });
 
       // Update an existing item...
@@ -121,7 +121,7 @@ export default {
           .then(() => {
             // Clear active edit and refresh list...
             this.clearItemToEdit();
-            this.$store.dispatch('LOAD_MY_CHAPTERS', true);
+            this.$store.dispatch('LOAD_MY_STORIES', true);
           });
       } // end-if (!item.id)
     },
@@ -130,7 +130,7 @@ export default {
         .then(() => {
           // Clear active edit and refresh list...
           this.clearItemToEdit();
-          this.$store.dispatch('LOAD_MY_CHAPTERS', true);
+          this.$store.dispatch('LOAD_MY_STORIES', true);
         });
     },
   },

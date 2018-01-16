@@ -35,8 +35,14 @@
         </div>
         <div class="separator"></div>
         <div class="link-item">
+          <router-link v-bind:to="{ name: 'manage-stories' }">
+            <span>Manage Stories</span>
+          </router-link>
+        </div>
+        <div class="separator"></div>
+        <div class="link-item">
           <router-link v-bind:to="{ name: 'manage-profile' }">
-            <span>Manage My Profile</span>
+            <span>Manage My Account</span>
           </router-link>
         </div>
       </div>

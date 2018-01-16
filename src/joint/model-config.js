@@ -171,6 +171,7 @@ module.exports = {
         chapters: {
           type: 'toMany',
           path: 'id => StoryChapterRef.story_id => StoryChapterRef.chapter_id => Chapter.id',
+          orderBy: 'story_order,created_at',
         },
       },
     },
