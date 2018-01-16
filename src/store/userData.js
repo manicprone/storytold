@@ -105,7 +105,7 @@ export default {
 
     LOAD_MY_CHAPTERS_NEXT(context) {
       const { commit, getters, dispatch } = context;
-      const chapters = getters.chapters;
+      const chapters = getters.myChapters;
       const next = chapters.meta.next;
 
       if (next) {
@@ -136,6 +136,75 @@ export default {
       const isPaginated = objectUtils.has(options, 'skip');
 
       const uri = `/api/user/${activeUserID}/chapters`;
+      const query = {};
+
+      // Apply pagination...
+      if (isPaginated) {
+        query.skip = options.skip;
+        query.limit = objectUtils.get(options, 'limit', defaultPageSize);
+      }
+
+      return Ajax.get(uri, { query })
+        .then((payload) => {
+          return toModel(payload);
+        })
+        .catch(() => {
+          return false;
+        });
+    },
+
+    // ------------------------------------------------------ Story data actions
+
+    LOAD_MY_STORIES(context, force = false) {
+      const { commit, dispatch, state } = context;
+      const stories = state.stories;
+
+      const opts = { skip: 0, limit: defaultPageSize };
+
+      if (!stories || force) {
+        return dispatch('FETCH_MY_STORIES', opts)
+          .then((collection) => {
+            commit('SET_MY_STORIES', collection);
+            return collection;
+          });
+      }
+
+      return false;
+    },
+
+    LOAD_MY_STORIES_NEXT(context) {
+      const { commit, getters, dispatch } = context;
+      const stories = getters.myStories;
+      const next = stories.meta.next;
+
+      if (next) {
+        const opts = { skip: next.skip, limit: next.limit };
+
+        return dispatch('FETCH_MY_STORIES', opts)
+          .then((collection) => {
+            // Append next page of results to collection, set new meta info...
+            const updatedCollection = new Collection();
+            updatedCollection.meta = collection.meta;
+            updatedCollection.items = (collection.items.length > 0)
+              ? stories.items.concat(collection.items)
+              : stories.items;
+
+            // Load updated data into store...
+            commit('SET_MY_STORIES', updatedCollection);
+
+            return updatedCollection;
+          });
+      } // end-if (next)
+
+      return false;
+    },
+
+    FETCH_MY_STORIES(context, options = {}) {
+      const { getters } = context;
+      const activeUserID = getters.activeUser.id;
+      const isPaginated = objectUtils.has(options, 'skip');
+
+      const uri = `/api/user/${activeUserID}/stories`;
       const query = {};
 
       // Apply pagination...

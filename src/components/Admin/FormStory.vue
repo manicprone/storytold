@@ -9,13 +9,13 @@
 
     <v-layout row>
       <v-flex xs8>
-        <v-text-field label="Subtitle" v-model.trim="itemEditing.subtitle" />
+        <v-text-field label="Slug" v-model.trim="itemEditing.slug" />
       </v-flex>
     </v-layout>
 
     <v-layout row>
       <v-flex xs8>
-        <v-text-field label="Label" v-model.trim="itemEditing.label" />
+        <v-text-field label="Subtitle" v-model.trim="itemEditing.subtitle" />
       </v-flex>
     </v-layout>
 
@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: 'FormChapter',
+  name: 'FormStory',
 
   props: {
     itemEditing: {

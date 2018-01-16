@@ -4,27 +4,32 @@ exports.up = function up(knex, Promise) {
     knex.schema.createTableIfNotExists('stories', (table) => {
       table.increments();
       table.integer('user_id').notNullable().unsigned().references('users.id');
-      table.string('name').notNullable();
-      table.string('alias').nullable().unique();
+      table.string('title').notNullable();
+      table.string('subtitle').nullable();
+      table.string('slug').nullable();
       table.text('description').nullable();
       table.string('image_url').nullable();
-      table.boolean('is_public').notNullable().defaultTo(false);
       table.integer('persona_id').nullable().unsigned().references('personas.id');
+      table.boolean('is_public').notNullable().defaultTo(false);
       table.timestamps();
     }),
     knex.schema.createTableIfNotExists('chapters', (table) => {
       table.increments();
       table.integer('user_id').notNullable().unsigned().references('users.id');
-      table.string('name').notNullable();
+      table.string('title').notNullable();
+      table.string('subtitle').nullable();
       table.string('label').nullable();
       table.text('description').nullable();
       table.string('image_url').nullable();
+      table.dateTime('started_at').nullable();
+      table.dateTime('finished_at').nullable();
       table.timestamps();
     }),
     knex.schema.createTableIfNotExists('story_chapters_ref', (table) => {
       table.increments();
       table.integer('story_id').notNullable().unsigned().references('stories.id');
       table.integer('chapter_id').notNullable().unsigned().references('chapters.id');
+      table.integer('story_order').nullable();
       table.timestamps();
     }),
     knex.schema.createTableIfNotExists('places', (table) => {

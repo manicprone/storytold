@@ -2,6 +2,7 @@ import AnonUser from './AnonUser';
 import AppMessage from './AppMessage';
 import Chapter from './Chapter';
 import Collection from './Collection';
+import Story from './Story';
 import User from './User';
 import UserProfile from './UserProfile';
 import UserSettings from './UserSettings';
@@ -11,6 +12,7 @@ const models = {
   AppMessage,
   Chapter,
   Collection,
+  Story,
   User,
   UserProfile,
   UserSettings,
