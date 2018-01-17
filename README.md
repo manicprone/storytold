@@ -1,6 +1,6 @@
-# storytold
+# Storytold
 
-> The chapters of our life, the stories we tell
+> The chapters of our lives, the stories we can tell
 
 <br />
 

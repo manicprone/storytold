@@ -80,7 +80,7 @@ export default {
       return this.$store.getters.activeUser;
     },
     appTaglineText() {
-      return 'The chapters of our life, the stories we tell';
+      return 'The chapters of our lives, the stories we can tell';
     },
     loginText() {
       return 'Login with your account';
