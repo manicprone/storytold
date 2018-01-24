@@ -1,7 +1,7 @@
 {
   "name": "storytold",
   "version": "0.0.0",
-  "description": "The chapters of our life, the stories we tell",
+  "description": "Map the chapters of your life into stories to tell.",
   "author": "|M| <manicprone@gmail.com>",
   "main": "server.js",
   "repository": {
@@ -40,7 +40,7 @@
     "express": "^4.15.2",
     "express-session": "^1.15.4",
     "extract-text-webpack-plugin": "^2.1.0",
-    "joint-kit": "0.0.17",
+    "joint-kit": "0.0.18",
     "knex": "^0.13.0",
     "lodash": "^4.17.4",
     "lru-cache": "^4.0.2",

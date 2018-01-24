@@ -1,6 +1,6 @@
-# storytold
+# Storytold
 
-> The chapters of our life, the stories we tell
+> Map the chapters of your life into stories to tell.
 
 <br />
 

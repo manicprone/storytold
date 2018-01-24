@@ -3,7 +3,7 @@ export default {
   // ----------------
   // App name & alias
   // ----------------
-  name: 'storytold',
+  name: 'Storytold',
   alias: 'storytold',
 
   // -----------

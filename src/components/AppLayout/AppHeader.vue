@@ -2,7 +2,7 @@
   <v-toolbar fixed flat light dense class="app-header">
 
     <v-toolbar-title class="">
-      <router-link v-bind:to="logoTargetURI">{{ appName }}</router-link>
+      <router-link v-bind:to="logoTargetURI">{{ appAlias }}</router-link>
     </v-toolbar-title>
 
     <v-spacer />
@@ -31,8 +31,8 @@ export default {
   ],
 
   computed: {
-    appName() {
-      return this.$store.getters.appName;
+    appAlias() {
+      return this.$store.getters.appAlias;
     },
   },
 };

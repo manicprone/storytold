@@ -9,33 +9,35 @@
           v-bind:items="storyItems"
           v-bind:displayField="'title'"
           v-bind:itemStyle="'card'"
-          v-on:itemClick="loadItemToEdit" />
+          v-on:itemClick="loadStoryToQuickView" />
     </v-navigation-drawer>
 
     <main class="edit-panel">
       <v-container fluid>
         <transition name="fade-flash" mode="out-in">
 
-          <div v-if="!itemToEdit" class="message-view" key="editOff">
+          <div v-if="!storyToQuickView" class="message-view" key="quickViewOff">
             <template v-if="hasStories">
-              <div class="message-select-to-edit">Select a Story to edit</div>
+              <div class="message-select-to-edit">Select a Story to preview</div>
               <div class="message-or">-or-</div>
             </template>
             <div>
               <a class="message-create-draft"
-                 v-on:click="createDraftItem">+ Start a new Story</a>
+                 v-on:click="startNewStory">+ Start a new Story</a>
             </div>
           </div>
 
-          <div v-else class="active-edit-view" key="editOn">
-            <admin-content-editor
-                v-bind:item="itemToEdit"
-                v-bind:resourceType="'user-data'"
-                v-on:cancel="clearItemToEdit"
-                v-on:save="saveItem"
-                v-on:delete="deleteItem" />
+          <div v-else class="active-edit-view" key="quickViewOn">
 
-            <div class="close-active-edit"><a v-on:click="clearItemToEdit">(Close)</a></div>
+            <div>
+              <router-link v-bind:to="{ name: 'manage-story', params: { activeStoryID: storyToQuickView.id } }">
+                <span>Edit Story</span>
+              </router-link>
+            </div>
+            <br />
+            <div>Previewing: {{ storyToQuickView.title }}</div>
+
+            <div class="close-active-edit"><a v-on:click="clearStoryToQuickView">(Close)</a></div>
           </div>
 
         </transition>
@@ -46,14 +48,12 @@
 </template>
 
 <script>
-import AdminContentEditor from '../components/Admin/AdminContentEditor.vue';
 import AdminContentList from '../components/Admin/AdminContentList.vue';
 
 export default {
   name: 'ManageStoriesPage',
 
   components: {
-    AdminContentEditor,
     AdminContentList,
   },
 
@@ -72,65 +72,44 @@ export default {
           ? this.storyData.meta.total_items
           : 0;
     },
-    itemToEdit() {
-      return this.$store.getters.itemToEdit;
+    storyToQuickView() {
+      return this.$store.getters.itemToPreview;
     },
   },
 
   beforeMount() {
-    this.clearItemToEdit(); // clear shared space
+    this.clearStoryToQuickView(); // clear shared space
     this.$store.dispatch('LOAD_MY_STORIES');
   },
 
   methods: {
-    loadItemToEdit(item) {
-      if (!this.itemToEdit) return this.$store.dispatch('SET_ITEM_TO_EDIT', item);
+    loadStoryToQuickView(story) {
+      if (!this.storyToQuickView) return this.$store.dispatch('SET_ITEM_TO_PREVIEW', story);
 
-      const activeEditID = this.itemToEdit.id;
-      if (item && item.id !== activeEditID) {
+      const activeQuickViewID = this.storyToQuickView.id;
+      if (story && story.id !== activeQuickViewID) {
         // Clear first, for transition effect...
-        return this.clearItemToEdit()
+        return this.clearStoryToQuickView()
           .then(() => {
             setTimeout(() => {
-              return this.$store.dispatch('SET_ITEM_TO_EDIT', item);
+              return this.$store.dispatch('SET_ITEM_TO_PREVIEW', story);
             }, 200);
           });
       }
 
       return false;
     },
-    clearItemToEdit() {
-      return this.$store.dispatch('CLEAR_ITEM_TO_EDIT');
+    clearStoryToQuickView() {
+      return this.$store.dispatch('CLEAR_ITEM_TO_PREVIEW');
     },
-    createDraftItem() {
-      return this.$store.dispatch('LOAD_DRAFT_ITEM_TO_EDIT', 'Story');
-    },
-    saveItem(item = {}) {
-      // Create a new item...
-      if (!item.id) {
-        this.$store.dispatch('CREATE_ITEM', item)
-          .then(() => {
-            // Clear active edit and refresh list...
-            this.clearItemToEdit();
-            this.$store.dispatch('LOAD_MY_STORIES', true);
-          });
-
-      // Update an existing item...
-      } else {
-        this.$store.dispatch('UPDATE_ITEM', item)
-          .then(() => {
-            // Clear active edit and refresh list...
-            this.clearItemToEdit();
-            this.$store.dispatch('LOAD_MY_STORIES', true);
-          });
-      } // end-if (!item.id)
-    },
-    deleteItem(item = {}) {
-      this.$store.dispatch('DELETE_ITEM', item)
-        .then(() => {
-          // Clear active edit and refresh list...
-          this.clearItemToEdit();
-          this.$store.dispatch('LOAD_MY_STORIES', true);
+    startNewStory() {
+      this.$store.dispatch('CREATE_DRAFT_STORY_TO_EDIT')
+        .then((story) => {
+          // Navigate to edit page...
+          this.$router.push({ name: 'manage-story', params: { activeStoryID: story.id }});
+        })
+        .catch((error) => {
+          console.log('[ManageStoriesPage] error =>', error);
         });
     },
   },
