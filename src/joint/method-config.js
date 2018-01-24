@@ -7,12 +7,10 @@ import userSettings from './resources/user-settings';
 import chapter from './resources/chapter';
 import story from './resources/story';
 
-module.exports = {
-  resources: [
-    user,
-    userProfile,
-    userSettings,
-    chapter,
-    story,
-  ],
-};
+export default [
+  user,
+  userProfile,
+  userSettings,
+  chapter,
+  story,
+];

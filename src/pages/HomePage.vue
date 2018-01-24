@@ -80,7 +80,7 @@ export default {
       return this.$store.getters.activeUser;
     },
     appTaglineText() {
-      return 'The chapters of our lives, the stories we can tell';
+      return 'Map the chapters of your life into stories to tell.';
     },
     loginText() {
       return 'Login with your account';
@@ -104,6 +104,7 @@ export default {
 
   /* Title Styling */
   .title-text-the {
+    display: none;
   }
   .title-text-storytold {
     font-size: 350%;
@@ -123,7 +124,7 @@ export default {
 
   /* Login Link */
   .login-link {
-    margin-top: 75px;
+    margin-top: 50px;
   }
 
   /* ------------------------ */
