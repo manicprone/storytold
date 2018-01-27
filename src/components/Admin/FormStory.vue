@@ -24,10 +24,14 @@
         <v-menu v-bind:close-on-content-click="false">
           <v-btn primary dark slot="activator">Add Chapters</v-btn>
           <v-list>
-            <v-list-tile v-for="chapter in availableChaptersToAdd"
+            <v-list-tile ripple v-for="chapter in availableChaptersToAdd"
                 v-bind:key="chapter.title"
                 v-on:click="addChapterToStory(chapter)">
               <v-list-tile-title>{{ chapter.title }}</v-list-tile-title>
+            </v-list-tile>
+
+            <v-list-tile v-if="!hasChaptersToAdd">
+              <v-list-tile-title>No more chapters</v-list-tile-title>
             </v-list-tile>
           </v-list>
         </v-menu>
@@ -72,8 +76,13 @@ export default {
           ? this.chapterData.meta.total_items
           : 0;
     },
+    hasChaptersToAdd() {
+      return (this.availableChaptersToAdd && this.availableChaptersToAdd.length > 0);
+    },
     availableChaptersToAdd() {
-      return this.chapterItems;
+      return this.$root.utils.filter(this.chapterItems, (item) => {
+        return !this.$root.utils.includesObject(this.itemEditing.chapters, 'id', item.id);
+      });
     },
   },
 
@@ -82,8 +91,12 @@ export default {
   },
 
   methods: {
-    addChapterToStory(item) {
-      console.log('[FormStory] Add chapter =>', item);
+    addChapterToStory(chapter) {
+      const ref = { story_id: this.itemEditing.id, chapter_id: chapter.id };
+      this.$store.dispatch('ADD_CHAPTER_TO_STORY', ref)
+        .then(() => {
+          this.itemEditing.chapters.push(chapter);
+        });
     },
   },
 };

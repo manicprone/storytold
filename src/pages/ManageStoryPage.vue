@@ -9,8 +9,7 @@
         </transition>
       </v-toolbar-title>
 
-      <v-toolbar-items>
-      </v-toolbar-items>
+      <chapter-tree v-bind:chapters="chapterItems" />
     </v-toolbar>
 
     <v-navigation-drawer permanent clipped right light class="list-panel">
@@ -51,6 +50,7 @@
 <script>
 import AdminContentEditor from '../components/Admin/AdminContentEditor.vue';
 import AdminContentList from '../components/Admin/AdminContentList.vue';
+import ChapterTree from '../components/Chapters/ChapterTree.vue';
 
 export default {
   name: 'ManageStoryPage',
@@ -58,6 +58,7 @@ export default {
   components: {
     AdminContentEditor,
     AdminContentList,
+    ChapterTree,
   },
 
   data() {
@@ -166,6 +167,13 @@ export default {
 
 <style scoped>
 
+  /* -------- */
+  /* Page Nav */
+  /* -------- */
+  .page-nav .chapter-tree {
+    margin-left: 20px;
+  }
+
   /* ---------- */
   /* List Panel */
   /* ---------- */
@@ -187,7 +195,7 @@ export default {
   /* ---------- */
 
   .edit-panel {
-    margin: 140px 0 0 0;
+    padding-top: 140px;
   }
   .close-active-edit {
     position: fixed;

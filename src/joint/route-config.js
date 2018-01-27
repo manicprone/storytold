@@ -3,13 +3,13 @@
 // ------------
 
 export default [
-  // ---------------------------------------------------------- Public Stories
+  // ------------------------------------------------------------ Public Stories
   {
     uri: '/stories',
     get: { method: 'Story.getPublicStories' },
   },
 
-  // -------------------------------------------------------------------- User
+  // ---------------------------------------------------------------------- User
   {
     uri: '/user',
     get: { method: 'User.getUser' },
@@ -39,7 +39,7 @@ export default [
     get: { method: 'User.getUsers' },
   },
 
-  // ----------------------------------------------------------- User Chapters
+  // ------------------------------------------------------------- User Chapters
   {
     uri: '/user/:user_id/chapter',
     post: { method: 'Chapter.createChapter', successStatus: 201, body: true },
@@ -55,7 +55,7 @@ export default [
     get: { method: 'Chapter.getChapters' },
   },
 
-  // ------------------------------------------------------------ User Stories
+  // -------------------------------------------------------------- User Stories
   {
     uri: '/user/:user_id/story',
     post: { method: 'Story.createStory', successStatus: 201, body: true },
@@ -69,5 +69,21 @@ export default [
   {
     uri: '/user/:user_id/stories',
     get: { method: 'Story.getStories' },
+  },
+
+  // ------------------------------------------------------------ Story Chapters
+  {
+    uri: '/story-chapter',
+    post: { method: 'StoryChapter.createRef', successStatus: 201, body: true },
+  },
+  {
+    uri: '/story-chapter/:id',
+    get: { method: 'StoryChapter.getRef' },
+    post: { method: 'StoryChapter.updateRef', body: true },
+    delete: { method: 'StoryChapter.deleteRef', successStatus: 204 },
+  },
+  {
+    uri: '/story-chapters',
+    get: { method: 'StoryChapter.getRefs' },
   },
 ];

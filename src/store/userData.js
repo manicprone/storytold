@@ -279,13 +279,11 @@ export default {
 
       const uri = `/api/user/${activeUserID}/story/${storyID}`;
       const query = {};
-
-      // TODO: Stop the escaping of commas -or- joint-kit needs to decode !!!
       if (includeChapters || includePersona) {
-        const assocs = new Array(2);
+        const assocs = [];
         if (includeChapters) assocs.push('chapters');
         if (includePersona) assocs.push('persona');
-        // query.with = assocs.toString();
+        query.with = assocs.toString();
       }
 
       return Ajax.get(uri, { query })
@@ -312,6 +310,41 @@ export default {
           commit('SET_ITEM_TO_EDIT', createdItem);
 
           return createdItem;
+        })
+        .catch((error) => {
+          // Register feedback message...
+          const message = new AppMessage({
+            source: error.error,
+            status_code: error.error.status,
+            severity: 'error',
+          });
+          dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+
+          return Promise.reject(error.error);
+        });
+    },
+
+    ADD_CHAPTER_TO_STORY(context, ref = {}) {
+      const { dispatch } = context;
+
+      if (!ref.story_id || !ref.chapter_id) return false;
+
+      const uri = '/api/story-chapter';
+      const body = Object.assign({}, ref);
+
+      return Ajax.post(uri, { body })
+        .then((payload) => {
+          const chapterRef = toModel(payload);
+
+          // Register feedback message...
+          const message = new AppMessage({
+            source: chapterRef,
+            status_code: 201,
+            severity: 'success',
+          });
+          dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+
+          return chapterRef;
         })
         .catch((error) => {
           // Register feedback message...
