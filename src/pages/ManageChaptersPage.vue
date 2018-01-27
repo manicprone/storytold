@@ -1,48 +1,52 @@
 <template>
-  <div class="manage-chapters-page">
+  <v-layout row class="manage-chapters-page">
 
-    <v-navigation-drawer permanent clipped light class="list-panel">
-      <div class="list-panel-controls">
-        <div class="control-set">Filters, etc</div>
-      </div>
-      <admin-content-list
-          v-bind:items="chapterItems"
-          v-bind:displayField="'title'"
-          v-bind:itemStyle="'card'"
-          v-on:itemClick="loadItemToEdit" />
-    </v-navigation-drawer>
+    <v-flex xs3>
+      <v-navigation-drawer permanent light class="list-panel">
+        <div class="list-panel-controls">
+          <div class="control-set">Filters, etc</div>
+        </div>
+        <admin-content-list
+            v-bind:items="chapterItems"
+            v-bind:displayField="'title'"
+            v-bind:itemStyle="'card'"
+            v-on:itemClick="loadItemToEdit" />
+      </v-navigation-drawer>
+    </v-flex>
 
-    <main class="edit-panel">
-      <v-container fluid>
-        <transition name="fade-flash" mode="out-in">
+    <v-flex xs9>
+      <div class="edit-panel">
+        <v-container>
+          <transition name="fade-flash" mode="out-in">
 
-          <div v-if="!itemToEdit" class="message-view" key="editOff">
-            <template v-if="hasChapters">
-              <div class="message-select-to-edit">Select a Chapter to edit</div>
-              <div class="message-or">-or-</div>
-            </template>
-            <div>
-              <a class="message-create-draft"
-                 v-on:click="createDraftItem">+ Create a new Chapter</a>
+            <div v-if="!itemToEdit" class="message-view" key="editOff">
+              <template v-if="hasChapters">
+                <div class="message-select-to-edit">Select a Chapter to edit</div>
+                <div class="message-or">-or-</div>
+              </template>
+              <div>
+                <a class="message-create-draft"
+                   v-on:click="createDraftItem">+ Create a new Chapter</a>
+              </div>
             </div>
-          </div>
 
-          <div v-else class="active-edit-view" key="editOn">
-            <admin-content-editor
-                v-bind:item="itemToEdit"
-                v-bind:resourceType="'user-data'"
-                v-on:cancel="clearItemToEdit"
-                v-on:save="saveItem"
-                v-on:delete="deleteItem" />
+            <div v-else class="active-edit-view" key="editOn">
+              <admin-content-editor
+                  v-bind:item="itemToEdit"
+                  v-bind:resourceType="'user-data'"
+                  v-on:cancel="clearItemToEdit"
+                  v-on:save="saveItem"
+                  v-on:delete="deleteItem" />
 
-            <div class="close-active-edit"><a v-on:click="clearItemToEdit">(Close)</a></div>
-          </div>
+              <div class="close-active-edit"><a v-on:click="clearItemToEdit">(Close)</a></div>
+            </div>
 
-        </transition>
-      </v-container>
-    </main>
+          </transition>
+        </v-container>
+      </div>
+    </v-flex>
 
-  </div>
+  </v-layout>
 </template>
 
 <script>
@@ -144,7 +148,7 @@ export default {
   /* ---------- */
 
   .list-panel {
-    margin-top: 49px;
+    /*margin-top: 49px;*/
   }
   .list-panel-controls {
     background-color: #ebebeb;
@@ -160,7 +164,7 @@ export default {
   /* ---------- */
 
   .edit-panel {
-    margin: 140px 0 0 0;
+    /*margin: 140px 0 0 0;*/
   }
   .close-active-edit {
     position: fixed;

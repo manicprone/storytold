@@ -1,72 +1,74 @@
 <template>
-  <main class="home-page">
+  <v-layout row class="home-page">
+    <v-flex xs12>
 
-    <template v-if="!activeUser.is_logged_in">
-      <div class="splash-screen">
-        <div class="title-container">
-          <div class="title-text-the">the</div>
-          <div class="title-text-storytold">
-            <span class="title-text-story">story</span><span class="title-text-told">told</span>
+      <template v-if="!activeUser.is_logged_in">
+        <div class="splash-screen">
+          <div class="title-container">
+            <div class="title-text-the">the</div>
+            <div class="title-text-storytold">
+              <span class="title-text-story">story</span><span class="title-text-told">told</span>
+            </div>
+            <div class="tagline-text">{{ appTaglineText }}</div>
           </div>
-          <div class="tagline-text">{{ appTaglineText }}</div>
+          <local-account-login class="login-link" />
         </div>
-        <local-account-login class="login-link" />
-      </div>
-    </template>
+      </template>
 
-    <template v-else>
-      <div class="welcome-message">
-        <div class="message-text">{{ welcomeMessageText }}</div>
-      </div>
+      <template v-else>
+        <div class="welcome-message">
+          <div class="message-text">{{ welcomeMessageText }}</div>
+        </div>
 
-      <div class="dashboard">
-        Your dashboard will appear here
-      </div>
+        <div class="dashboard">
+          Your dashboard will appear here
+        </div>
 
-      <div class="temp-link-group">
-        <div class="group-heading">
-          <div class="heading-text">Everyone</div>
-          <div class="separator">|</div>
+        <div class="temp-link-group">
+          <div class="group-heading">
+            <div class="heading-text">Everyone</div>
+            <div class="separator">|</div>
+          </div>
+          <div class="link-item">
+            <router-link v-bind:to="{ name: 'manage-chapters' }">
+              <span>Manage Chapters</span>
+            </router-link>
+          </div>
+          <div class="separator"></div>
+          <div class="link-item">
+            <router-link v-bind:to="{ name: 'manage-stories' }">
+              <span>Manage Stories</span>
+            </router-link>
+          </div>
+          <div class="separator"></div>
+          <div class="link-item">
+            <router-link v-bind:to="{ name: 'manage-profile' }">
+              <span>Manage My Account</span>
+            </router-link>
+          </div>
         </div>
-        <div class="link-item">
-          <router-link v-bind:to="{ name: 'manage-chapters' }">
-            <span>Manage Chapters</span>
-          </router-link>
-        </div>
-        <div class="separator"></div>
-        <div class="link-item">
-          <router-link v-bind:to="{ name: 'manage-stories' }">
-            <span>Manage Stories</span>
-          </router-link>
-        </div>
-        <div class="separator"></div>
-        <div class="link-item">
-          <router-link v-bind:to="{ name: 'manage-profile' }">
-            <span>Manage My Account</span>
-          </router-link>
-        </div>
-      </div>
 
-      <div class="temp-link-group">
-        <div class="group-heading">
-          <div class="heading-text">By Role</div>
-          <div class="separator">|</div>
+        <div class="temp-link-group">
+          <div class="group-heading">
+            <div class="heading-text">By Role</div>
+            <div class="separator">|</div>
+          </div>
+          <div class="link-item">
+            <router-link v-bind:to="{ name: 'admin-dashboard' }">
+              <span>Admin</span>
+            </router-link>
+          </div>
+          <div class="separator"></div>
+          <div class="link-item">
+            <router-link v-bind:to="{ name: 'dev-test' }">
+              <span>Dev</span>
+            </router-link>
+          </div>
         </div>
-        <div class="link-item">
-          <router-link v-bind:to="{ name: 'admin-dashboard' }">
-            <span>Admin</span>
-          </router-link>
-        </div>
-        <div class="separator"></div>
-        <div class="link-item">
-          <router-link v-bind:to="{ name: 'dev-test' }">
-            <span>Dev</span>
-          </router-link>
-        </div>
-      </div>
-    </template>
+      </template>
 
-  </main>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

@@ -1,11 +1,11 @@
 <template>
-  <div class="admin-dashboard-page">
+  <v-layout class="admin-dashboard-page">
 
-      <div class="dashboard">
-        (Dashboard)
-      </div>
+    <div class="dashboard">
+      (Dashboard)
+    </div>
 
-  </div>
+  </v-layout>
 </template>
 
 <script>
@@ -25,9 +25,9 @@ export default {
     border-radius: 4px;
     padding: 4px;
     margin: 30px auto 30px auto;
-    min-height: 140px;
+    height: 200px;
     min-width: 320px;
-    max-width: 750px;
+    width: 650px;
   }
 
 </style>

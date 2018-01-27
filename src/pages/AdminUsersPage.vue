@@ -92,18 +92,13 @@ export default {
 
 <style scoped>
 
-  .admin-users-page {
-    margin-right: 30px;
-    margin-left: 30px;
-  }
-
   .loading-users {
     margin-top: 50px;
   }
 
   .main-controls {
     background-color: inherit;
-    margin: 20px auto 40px auto;
+    /*margin: 20px auto 40px auto;*/
   }
   .main-controls .search-input {
     max-width: 300px;

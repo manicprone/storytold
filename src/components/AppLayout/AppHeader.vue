@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar fixed flat light dense class="app-header">
+  <v-toolbar app fixed clipped-left flat light dense class="app-header">
 
     <v-toolbar-title class="">
       <router-link v-bind:to="logoTargetURI">{{ appAlias }}</router-link>
