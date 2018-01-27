@@ -57,6 +57,12 @@
             <span>Admin</span>
           </router-link>
         </div>
+        <div class="separator"></div>
+        <div class="link-item">
+          <router-link v-bind:to="{ name: 'dev-test' }">
+            <span>Dev</span>
+          </router-link>
+        </div>
       </div>
     </template>
 

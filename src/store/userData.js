@@ -326,53 +326,6 @@ export default {
         });
     },
 
-    // LOAD_STORY_TO_EDIT(context, options = {}) {
-    //   const { commit, dispatch } = context;
-    //
-    //   return dispatch('FETCH_STORY', options)
-    //     .then((story) => {
-    //       commit('SET_STORY_TO_EDIT', story);
-    //       return story;
-    //     })
-    //     .catch((error) => {
-    //       // Register feedback message...
-    //       const message = new AppMessage({
-    //         source: error.error,
-    //         status_code: error.error.status,
-    //         severity: 'error',
-    //       });
-    //       context.dispatch('REGISTER_MESSAGE_FOR_STORY_TO_EDIT', message);
-    //
-    //       return Promise.reject(error.error);
-    //     });
-    // },
-    //
-    // LOAD_DRAFT_STORY_TO_EDIT(context) {
-    //   // Create draft story...
-    //   const DraftStory = Model('Story');
-    //   const draft = new DraftStory();
-    //
-    //   context.commit('SET_STORY_TO_EDIT', draft);
-    // },
-    //
-    // SET_STORY_TO_EDIT(context, story) {
-    //   context.commit('SET_STORY_TO_EDIT', story);
-    // },
-    //
-    // CLEAR_STORY_TO_EDIT(context) {
-    //   context.commit('CLEAR_STORY_TO_EDIT');
-    // },
-    //
-    // REGISTER_MESSAGE_FOR_STORY_TO_EDIT(context, message) {
-    //   context.commit('REGISTER_MESSAGE_FOR_STORY_TO_EDIT', message);
-    //   context.commit('ADVANCE_MESSAGE_FOR_STORY_TO_EDIT');
-    // },
-    //
-    // RESOLVE_MESSAGE_FOR_STORY_TO_EDIT(context) {
-    //   context.commit('RESOLVE_MESSAGE_FOR_STORY_TO_EDIT');
-    //   context.commit('ADVANCE_MESSAGE_FOR_STORY_TO_EDIT');
-    // },
-
     // ------------------------------------------- Shared (generic) data actions
 
     SET_ITEM_TO_PREVIEW(context, item) {
@@ -536,36 +489,6 @@ export default {
     SET_MY_PERSONAS(state, collection) {
       state.personas = collection;
     },
-
-    // --------------------------------------------------- Story data management
-
-    // SET_STORY_TO_EDIT(state, item) {
-    //   if (item.model) {
-    //     // Build a copy of the item...
-    //     const Item = Model(item.model);
-    //     const copy = new Item(item);
-    //     state.storyToEdit = copy;
-    //   }
-    // },
-    //
-    // CLEAR_STORY_TO_EDIT(state) {
-    //   state.storyToEdit = null;
-    //   state.storyToEdit_messages = [];
-    //   state.storyToEdit_activeMessage = null;
-    // },
-    //
-    // REGISTER_MESSAGE_FOR_STORY_TO_EDIT(state, message) {
-    //   state.storyToEdit_messages.unshift(message);
-    // },
-    //
-    // ADVANCE_MESSAGE_FOR_STORY_TO_EDIT(state) {
-    //   // Advance next available message, if ready...
-    //   if (!state.storyToEdit_activeMessage) state.storyToEdit_activeMessage = state.storyToEdit_messages.pop();
-    // },
-    //
-    // RESOLVE_MESSAGE_FOR_STORY_TO_EDIT(state) {
-    //   state.storyToEdit_activeMessage = null;
-    // },
 
     // ---------------------------------------- Shared (generic) data management
 

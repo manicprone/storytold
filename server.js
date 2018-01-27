@@ -111,6 +111,9 @@ app.use('/service-worker.js', serve('./dist/service-worker.js'));
 const serverInfo = `express/${require('express/package.json').version} ` +
                    `vue-server-renderer/${require('vue-server-renderer/package.json').version}`;
 
+// ------------------
+// Handle requests...
+// ------------------
 function render(req, res) {
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('Server', serverInfo);
@@ -160,9 +163,6 @@ function render(req, res) {
   });
 }
 
-// -----------------
-// Serve requests...
-// -----------------
 app.get('*', isProd ? render : (req, res) => {
   readyPromise.then(() => render(req, res));
 });

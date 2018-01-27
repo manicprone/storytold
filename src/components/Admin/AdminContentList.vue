@@ -11,7 +11,7 @@
     </template>
 
     <template v-else>
-      <div class="empty-results">no items yet</div>
+      <div class="empty-results">{{ noItemsText }}</div>
     </template>
 
   </div>
@@ -39,6 +39,10 @@ export default {
     itemStyle: {
       type: String,
       default: 'anchor',
+    },
+    noItemsText: {
+      type: String,
+      default: 'no items yet',
     },
   },
 

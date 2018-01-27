@@ -93,7 +93,6 @@ export default {
 
   .editor-form {
     text-align: left;
-    margin: 15px 15px 15px 15px;
   }
 
   /* --------------- */

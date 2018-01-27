@@ -3,6 +3,8 @@
 
 ## Upcoming Features
 
+* Add functionality to add/remove/order Chapters within a Story.
+
 <br />
 
 ## Backlog
