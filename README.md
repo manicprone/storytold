@@ -1,6 +1,8 @@
 # Storytold
 
-> Map the chapters of your life into stories to tell.
+<br />
+
+Weave the chapters of your life, into stories to tell.
 
 <br />
 
@@ -16,8 +18,7 @@
 
 ## The Software Stack
 
-Node Isomorphic: Persistence (relational DB) + API Server + CMS + Isomorphic UI (server & client)
-> Core build and SSR setup taken from [Evan You's][link-evan-you-github] - [Hacker News Vue + SSR Example][link-vue-hackernews-site] (thanks!)
+NodeJS - Persistence + API Server + CMS + Isomorphic UI (server & client)
 
 <br />
 
@@ -43,7 +44,7 @@ Node Isomorphic: Persistence (relational DB) + API Server + CMS + Isomorphic UI 
 
 To develop the system locally, you need:
 
-* a [Postgres][link-postgres-site] database server running on localhost, port 5432
+* a [Postgres][link-postgres-site] database server
 * a Postgres user with superuser privileges (for creating a database)
 * npm
 * git
@@ -122,8 +123,6 @@ $ npm run test
 [section-dev-lint]: #dev-lint
 [section-dev-test]: #dev-test
 
-[link-evan-you-github]: https://github.com/yyx990803
-[link-vue-hackernews-site]: https://github.com/vuejs/vue-hackernews-2.0
 [link-postgres-site]: https://www.postgresql.org
 [link-eslint-site]: https://eslint.org
 [link-mocha-site]: https://mochajs.org

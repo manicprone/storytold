@@ -14,5 +14,6 @@ export default class Story extends Model {
     this.image_url = objectUtils.get(options, 'image_url', null);
     this.persona_id = objectUtils.get(options, 'persona_id', null);
     this.is_public = objectUtils.get(options, 'is_public', null);
+    this.chapters = objectUtils.get(options, 'chapters', []);
   }
 }

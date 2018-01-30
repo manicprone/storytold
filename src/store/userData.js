@@ -279,13 +279,11 @@ export default {
 
       const uri = `/api/user/${activeUserID}/story/${storyID}`;
       const query = {};
-
-      // TODO: Stop the escaping of commas -or- joint-kit needs to decode !!!
       if (includeChapters || includePersona) {
-        const assocs = new Array(2);
+        const assocs = [];
         if (includeChapters) assocs.push('chapters');
         if (includePersona) assocs.push('persona');
-        // query.with = assocs.toString();
+        query.with = assocs.toString();
       }
 
       return Ajax.get(uri, { query })
@@ -326,52 +324,40 @@ export default {
         });
     },
 
-    // LOAD_STORY_TO_EDIT(context, options = {}) {
-    //   const { commit, dispatch } = context;
-    //
-    //   return dispatch('FETCH_STORY', options)
-    //     .then((story) => {
-    //       commit('SET_STORY_TO_EDIT', story);
-    //       return story;
-    //     })
-    //     .catch((error) => {
-    //       // Register feedback message...
-    //       const message = new AppMessage({
-    //         source: error.error,
-    //         status_code: error.error.status,
-    //         severity: 'error',
-    //       });
-    //       context.dispatch('REGISTER_MESSAGE_FOR_STORY_TO_EDIT', message);
-    //
-    //       return Promise.reject(error.error);
-    //     });
-    // },
-    //
-    // LOAD_DRAFT_STORY_TO_EDIT(context) {
-    //   // Create draft story...
-    //   const DraftStory = Model('Story');
-    //   const draft = new DraftStory();
-    //
-    //   context.commit('SET_STORY_TO_EDIT', draft);
-    // },
-    //
-    // SET_STORY_TO_EDIT(context, story) {
-    //   context.commit('SET_STORY_TO_EDIT', story);
-    // },
-    //
-    // CLEAR_STORY_TO_EDIT(context) {
-    //   context.commit('CLEAR_STORY_TO_EDIT');
-    // },
-    //
-    // REGISTER_MESSAGE_FOR_STORY_TO_EDIT(context, message) {
-    //   context.commit('REGISTER_MESSAGE_FOR_STORY_TO_EDIT', message);
-    //   context.commit('ADVANCE_MESSAGE_FOR_STORY_TO_EDIT');
-    // },
-    //
-    // RESOLVE_MESSAGE_FOR_STORY_TO_EDIT(context) {
-    //   context.commit('RESOLVE_MESSAGE_FOR_STORY_TO_EDIT');
-    //   context.commit('ADVANCE_MESSAGE_FOR_STORY_TO_EDIT');
-    // },
+    ADD_CHAPTER_TO_STORY(context, ref = {}) {
+      const { dispatch } = context;
+
+      if (!ref.story_id || !ref.chapter_id) return false;
+
+      const uri = '/api/story-chapter';
+      const body = Object.assign({}, ref);
+
+      return Ajax.post(uri, { body })
+        .then((payload) => {
+          const chapterRef = toModel(payload);
+
+          // Register feedback message...
+          const message = new AppMessage({
+            source: chapterRef,
+            status_code: 201,
+            severity: 'success',
+          });
+          dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+
+          return chapterRef;
+        })
+        .catch((error) => {
+          // Register feedback message...
+          const message = new AppMessage({
+            source: error.error,
+            status_code: error.error.status,
+            severity: 'error',
+          });
+          dispatch('REGISTER_MESSAGE_FOR_ITEM_TO_EDIT', message);
+
+          return Promise.reject(error.error);
+        });
+    },
 
     // ------------------------------------------- Shared (generic) data actions
 
@@ -536,36 +522,6 @@ export default {
     SET_MY_PERSONAS(state, collection) {
       state.personas = collection;
     },
-
-    // --------------------------------------------------- Story data management
-
-    // SET_STORY_TO_EDIT(state, item) {
-    //   if (item.model) {
-    //     // Build a copy of the item...
-    //     const Item = Model(item.model);
-    //     const copy = new Item(item);
-    //     state.storyToEdit = copy;
-    //   }
-    // },
-    //
-    // CLEAR_STORY_TO_EDIT(state) {
-    //   state.storyToEdit = null;
-    //   state.storyToEdit_messages = [];
-    //   state.storyToEdit_activeMessage = null;
-    // },
-    //
-    // REGISTER_MESSAGE_FOR_STORY_TO_EDIT(state, message) {
-    //   state.storyToEdit_messages.unshift(message);
-    // },
-    //
-    // ADVANCE_MESSAGE_FOR_STORY_TO_EDIT(state) {
-    //   // Advance next available message, if ready...
-    //   if (!state.storyToEdit_activeMessage) state.storyToEdit_activeMessage = state.storyToEdit_messages.pop();
-    // },
-    //
-    // RESOLVE_MESSAGE_FOR_STORY_TO_EDIT(state) {
-    //   state.storyToEdit_activeMessage = null;
-    // },
 
     // ---------------------------------------- Shared (generic) data management
 

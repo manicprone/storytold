@@ -1,6 +1,28 @@
 <template>
   <div class="manage-story-page">
 
+    <v-toolbar fixed flat light dense class="page-nav">
+      <v-toolbar-title class="page-nav-heading">
+        <transition name="fade-flash" mode="out-in">
+          <span v-if="!storyToEdit" key="titleLoading">loading...</span>
+          <span v-else key="titleReady">{{ storyToEdit.title }}</span>
+        </transition>
+      </v-toolbar-title>
+
+      <chapter-tree v-bind:chapters="chapterItems" />
+    </v-toolbar>
+
+    <v-navigation-drawer permanent clipped right light class="list-panel">
+      <div class="list-panel-controls">
+        <div class="control-set">Chapters</div>
+      </div>
+      <admin-content-list
+          v-bind:items="chapterItems"
+          v-bind:displayField="'title'"
+          v-bind:itemStyle="'card'"
+          v-bind:noItemsText="'no chapters yet'" />
+    </v-navigation-drawer>
+
     <main class="edit-panel">
       <v-container fluid>
         <transition name="fade-flash" mode="out-in">
@@ -28,6 +50,7 @@
 <script>
 import AdminContentEditor from '../components/Admin/AdminContentEditor.vue';
 import AdminContentList from '../components/Admin/AdminContentList.vue';
+import ChapterTree from '../components/Chapters/ChapterTree.vue';
 
 export default {
   name: 'ManageStoryPage',
@@ -35,6 +58,7 @@ export default {
   components: {
     AdminContentEditor,
     AdminContentList,
+    ChapterTree,
   },
 
   data() {
@@ -46,6 +70,9 @@ export default {
   props: ['activeStoryID'],
 
   computed: {
+    storyToEdit() {
+      return this.$store.getters.itemToEdit;
+    },
     hasStories() {
       return (this.totalStories > 0);
     },
@@ -60,8 +87,8 @@ export default {
           ? this.storyData.meta.total_items
           : 0;
     },
-    storyToEdit() {
-      return this.$store.getters.itemToEdit;
+    chapterItems() {
+      return (this.storyToEdit && this.storyToEdit.chapters) ? this.storyToEdit.chapters : null;
     },
   },
 
@@ -75,7 +102,7 @@ export default {
 
   beforeMount() {
     this.$store.dispatch('CLEAR_ITEM_TO_EDIT'); // clear shared space
-    
+
     if (this.activeStoryID) {
       this.$store.dispatch('LOAD_STORY_TO_EDIT', { story_id: this.activeStoryID })
         .catch((error) => {
@@ -140,12 +167,19 @@ export default {
 
 <style scoped>
 
+  /* -------- */
+  /* Page Nav */
+  /* -------- */
+  .page-nav .chapter-tree {
+    margin-left: 20px;
+  }
+
   /* ---------- */
   /* List Panel */
   /* ---------- */
 
   .list-panel {
-    margin-top: 49px;
+    margin-top: 98px;
   }
   .list-panel-controls {
     background-color: #ebebeb;
@@ -161,7 +195,7 @@ export default {
   /* ---------- */
 
   .edit-panel {
-    margin: 140px 0 0 0;
+    padding-top: 140px;
   }
   .close-active-edit {
     position: fixed;

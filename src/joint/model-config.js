@@ -129,7 +129,7 @@ export default [
 
   // The reference that maps a chapter to a story
   {
-    name: 'StoryChapterRef',
+    name: 'StoryChapter',
     tableName: 'story_chapters_ref',
     timestamps: { created: 'created_at', updated: 'updated_at' },
   },
@@ -171,7 +171,7 @@ export default [
       },
       chapters: {
         type: 'toMany',
-        path: 'id => StoryChapterRef.story_id => StoryChapterRef.chapter_id => Chapter.id',
+        path: 'id => StoryChapter.story_id => StoryChapter.chapter_id => Chapter.id',
         orderBy: 'story_order,created_at',
       },
     },

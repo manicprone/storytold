@@ -3,6 +3,7 @@ import AppMessage from './AppMessage';
 import Chapter from './Chapter';
 import Collection from './Collection';
 import Story from './Story';
+import StoryChapter from './StoryChapter';
 import User from './User';
 import UserProfile from './UserProfile';
 import UserSettings from './UserSettings';
@@ -13,6 +14,7 @@ const models = {
   Chapter,
   Collection,
   Story,
+  StoryChapter,
   User,
   UserProfile,
   UserSettings,

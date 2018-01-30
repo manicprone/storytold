@@ -118,18 +118,12 @@ export default {
   }
 
   /* Page Layout */
-  .page {
-    margin: 0;
-  }
   .sub-page {
     margin: 100px 0 0 0;
   }
   .container {
     padding: 0;
     margin: 0;
-  }
-  .row {
-    margin: 20px 0 0 0;
   }
 
   /* Form Styles */
@@ -253,6 +247,7 @@ export default {
 
   /* Page Navigation (uses Vuetify v-toolbar) */
   .page-nav {
+    top: 49px;
     background-color: #ffffff !important;
     border-bottom: 1px solid #d9d9d9;
   }

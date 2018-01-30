@@ -40,10 +40,6 @@ export default {
 
 <style scoped>
 
-  .page-nav {
-    top: 49px;
-  }
-
   .sub-page {
     padding-top: 10px !important;
   }
