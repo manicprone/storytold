@@ -57,7 +57,8 @@ export default {
 
   .chapter-tree .divider {
     display: inline-block;
-    width: 40px;
+    margin-bottom: 3px;
+    width: 30px;
   }
 
 </style>

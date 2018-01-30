@@ -37,10 +37,13 @@ export default {
 <style scoped>
 
   .chapter-node-wrapper {
+    font-size: 12px;
+    line-height: 26px;
+    text-align: center;
     background-color: #d9d9d9;
     border: 1px solid #cccccc;
-    height: 35px;
-    width: 65px;
+    height: 28px;
+    width: 60px;
     cursor: pointer;
   }
 
