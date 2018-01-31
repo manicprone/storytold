@@ -2,25 +2,34 @@
   <div v-if="itemEditing">
 
     <v-layout row>
-      <v-flex xs8>
+      <v-flex xs12>
         <v-text-field label="Title" v-model.trim="itemEditing.title" />
       </v-flex>
     </v-layout>
 
     <v-layout row>
-      <v-flex xs8>
+      <v-flex xs12>
         <v-text-field label="Slug" v-model.trim="itemEditing.slug" />
       </v-flex>
     </v-layout>
 
     <v-layout row>
-      <v-flex xs8>
+      <v-flex xs12>
         <v-text-field label="Subtitle" v-model.trim="itemEditing.subtitle" />
       </v-flex>
     </v-layout>
 
     <v-layout row>
-      <v-flex xs8>
+      <v-flex xs12>
+        <v-text-field textarea
+            rows="3"
+            label="The Story"
+            v-model.trim="itemEditing.description" />
+      </v-flex>
+    </v-layout>
+
+    <v-layout row>
+      <v-flex xs12>
         <v-menu v-bind:close-on-content-click="false">
           <v-btn primary dark slot="activator">Add Chapters</v-btn>
           <v-list>
@@ -42,14 +51,6 @@
 </template>
 
 <script>
-/*
-<v-select return-object multiple class="button-add-chapters"
-    v-bind:itemValue="'id'"
-    v-bind:itemText="'title'"
-    v-bind:items="chapterItems"
-    v-model="itemEditing.chapters" />
-*/
-
 export default {
   name: 'FormStory',
 

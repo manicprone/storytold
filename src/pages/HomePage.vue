@@ -1,71 +1,75 @@
 <template>
   <main class="home-page">
+    <v-container>
 
-    <template v-if="!activeUser.is_logged_in">
-      <div class="splash-screen">
-        <div class="title-container">
-          <div class="title-text-the">the</div>
-          <div class="title-text-storytold">
-            <span class="title-text-story">story</span><span class="title-text-told">told</span>
+      <template v-if="!activeUser.is_logged_in">
+        <div class="splash-screen">
+          <div class="title-wrapper">
+            <div class="title-text-the">the</div>
+            <div class="title-text-storytold">
+              <span class="title-text-story">story</span><span class="title-text-told">told</span>
+            </div>
+            <div class="tagline-text">{{ appTaglineText }}</div>
           </div>
-          <div class="tagline-text">{{ appTaglineText }}</div>
+          <local-account-login class="login-link" />
         </div>
-        <local-account-login class="login-link" />
-      </div>
-    </template>
+      </template>
 
-    <template v-else>
-      <div class="welcome-message">
-        <div class="message-text">{{ welcomeMessageText }}</div>
-      </div>
+      <template v-else>
+        <div class="page-content-area">
+          <div class="welcome-message">
+            <div class="message-text">{{ welcomeMessageText }}</div>
+          </div>
 
-      <div class="dashboard">
-        Your dashboard will appear here
-      </div>
+          <div class="dashboard">
+            Your dashboard will appear here
+          </div>
 
-      <div class="temp-link-group">
-        <div class="group-heading">
-          <div class="heading-text">Everyone</div>
-          <div class="separator">|</div>
-        </div>
-        <div class="link-item">
-          <router-link v-bind:to="{ name: 'manage-chapters' }">
-            <span>Manage Chapters</span>
-          </router-link>
-        </div>
-        <div class="separator"></div>
-        <div class="link-item">
-          <router-link v-bind:to="{ name: 'manage-stories' }">
-            <span>Manage Stories</span>
-          </router-link>
-        </div>
-        <div class="separator"></div>
-        <div class="link-item">
-          <router-link v-bind:to="{ name: 'manage-profile' }">
-            <span>Manage My Account</span>
-          </router-link>
-        </div>
-      </div>
+          <div class="temp-link-group">
+            <div class="group-heading">
+              <div class="heading-text">Everyone</div>
+              <div class="separator">|</div>
+            </div>
+            <div class="link-item">
+              <router-link v-bind:to="{ name: 'manage-chapters' }">
+                <span>Manage Chapters</span>
+              </router-link>
+            </div>
+            <div class="separator"></div>
+            <div class="link-item">
+              <router-link v-bind:to="{ name: 'manage-stories' }">
+                <span>Manage Stories</span>
+              </router-link>
+            </div>
+            <div class="separator"></div>
+            <div class="link-item">
+              <router-link v-bind:to="{ name: 'manage-profile' }">
+                <span>Manage My Account</span>
+              </router-link>
+            </div>
+          </div>
 
-      <div class="temp-link-group">
-        <div class="group-heading">
-          <div class="heading-text">By Role</div>
-          <div class="separator">|</div>
+          <div class="temp-link-group">
+            <div class="group-heading">
+              <div class="heading-text">By Role</div>
+              <div class="separator">|</div>
+            </div>
+            <div class="link-item">
+              <router-link v-bind:to="{ name: 'admin-dashboard' }">
+                <span>Admin</span>
+              </router-link>
+            </div>
+            <div class="separator"></div>
+            <div class="link-item">
+              <router-link v-bind:to="{ name: 'dev-test' }">
+                <span>Dev</span>
+              </router-link>
+            </div>
+          </div>
         </div>
-        <div class="link-item">
-          <router-link v-bind:to="{ name: 'admin-dashboard' }">
-            <span>Admin</span>
-          </router-link>
-        </div>
-        <div class="separator"></div>
-        <div class="link-item">
-          <router-link v-bind:to="{ name: 'dev-test' }">
-            <span>Dev</span>
-          </router-link>
-        </div>
-      </div>
-    </template>
+      </template>
 
+    </v-container>
   </main>
 </template>
 
@@ -100,12 +104,12 @@ export default {
 
 <style scoped>
 
-  /* --------------------------------------- */
-  /* Frontdoor Splash Screen (not logged-in) */
-  /* --------------------------------------- */
+/* -----------------------------------------------------------------------------
+ * Frontdoor Splash Screen (not logged-in)
+ * -------------------------------------------------------------------------- */
 
   .splash-screen {
-    margin: 10% 30px;
+    /*margin: 10% 30px;*/
   }
 
   /* Title Styling */
@@ -133,18 +137,22 @@ export default {
     margin-top: 50px;
   }
 
-  /* ------------------------ */
-  /* Welcome Page (logged-in) */
-  /* ------------------------ */
+/* -----------------------------------------------------------------------------
+ * Welcome Page (logged-in)
+ * -------------------------------------------------------------------------- */
+
+  .page-content-area {
+    margin: 0 auto;
+    max-width: 750px;
+  }
 
   /* Welcome Message */
-  .welcome-message {}
+  .welcome-message {
+    margin-bottom: 30px;
+  }
   .welcome-message .message-text {
     text-align: left;
     font-size: 28px;
-    margin: 30px auto 30px auto;
-    width: 650px;
-    max-width: 650px;
   }
 
   /* Dashboard */
@@ -153,16 +161,14 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     padding: 4px;
-    margin: 30px auto 30px auto;
+    margin-bottom: 40px;
     min-height: 140px;
-    width: 650px;
-    max-width: 650px;
   }
 
+  /* Temp Links (will move to app-header menu) */
   .temp-link-group {
     text-align: left;
-    margin: 40px auto;
-    width: 650px;
+    margin: 30px 0;
   }
   .temp-link-group .separator {
     font-weight: 300;

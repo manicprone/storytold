@@ -1,31 +1,31 @@
 <template>
   <main class="developer-test-page">
+    <v-container>
 
-    <div style="margin:50px 50px;">
+      <div style="margin:50px 50px;">
+        <v-layout row>
+          <v-flex xs8>
+            <v-menu v-bind:close-on-content-click="false">
+              <v-btn primary dark slot="activator">Add Chapters</v-btn>
+              <v-list>
+                <v-list-tile v-for="chapter in availableChaptersToAdd"
+                    v-bind:key="chapter.title"
+                    v-on:click="addChapterToStory(chapter)">
+                  <v-list-tile-title>{{ chapter.title }}</v-list-tile-title>
+                </v-list-tile>
+              </v-list>
+            </v-menu>
+          </v-flex>
+        </v-layout>
+      </div>
 
-      <v-layout row>
-        <v-flex xs8>
-          <v-menu v-bind:close-on-content-click="false">
-            <v-btn primary dark slot="activator">Add Chapters</v-btn>
-            <v-list>
-              <v-list-tile v-for="chapter in availableChaptersToAdd"
-                  v-bind:key="chapter.title"
-                  v-on:click="addChapterToStory(chapter)">
-                <v-list-tile-title>{{ chapter.title }}</v-list-tile-title>
-              </v-list-tile>
-            </v-list>
-          </v-menu>
-        </v-flex>
-      </v-layout>
+      <div v-if="storyEditing" style="margin:50px 50px;">
+        <admin-content-editor
+            v-bind:item="storyEditing"
+            v-bind:resourceType="'user-data'" />
+      </div>
 
-    </div>
-
-    <div v-if="storyEditing" style="margin:50px 50px;">
-      <admin-content-editor
-          v-bind:item="storyEditing"
-          v-bind:resourceType="'user-data'" />
-    </div>
-
+    </v-container>
   </main>
 </template>
 

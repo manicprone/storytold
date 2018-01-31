@@ -2,16 +2,16 @@
   <div class="local-account-login">
 
     <form method="post" v-bind:action="loginURL">
-      <div>
+      <div class="input-creds-area">
         <div>
-          <span>u . </span> <input type="text" name="username" />
+          <label>u</label> <input type="text" name="username" />
         </div>
         <div>
-          <span>p . </span> <input type="password" name="password" />
+          <label>p</label> <input type="password" name="password" />
         </div>
       </div>
 
-      <div>
+      <div class="btn-login-area">
         <input type="submit" value="Login" />
       </div>
     </form>
@@ -32,4 +32,30 @@ export default {
 </script>
 
 <style scoped>
+
+  .input-creds-area label {
+    display: inline-block;
+    line-height: 0.7em;
+    border-right: 1px solid #d9d9d9;
+    width: 2.7em;
+  }
+  .input-creds-area input {
+    margin-bottom: 7px;
+    margin-left: 12px;
+  }
+
+  .btn-login-area input {
+    font-size: 1.1em;
+    border: 1px solid #fafafa;
+    border-radius: 4px;
+    margin-top: 8px;
+    padding: 8px 0;
+    width: 80px;
+    cursor: pointer;
+  }
+  .btn-login-area input:hover {
+    font-weight: 500;
+    border: 1px solid #dedede;
+  }
+
 </style>
