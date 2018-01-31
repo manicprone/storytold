@@ -1,5 +1,5 @@
 <template>
-  <div class="manage-story-page">
+  <div class="manage-story-page with-nav">
 
     <v-toolbar fixed flat light dense class="page-nav">
       <v-toolbar-title class="page-nav-heading">
@@ -12,7 +12,9 @@
       <chapter-tree v-bind:chapters="chapterItems" />
     </v-toolbar>
 
-    <v-navigation-drawer permanent clipped right light class="list-panel">
+    <v-navigation-drawer persistent clipped right light
+        class="list-panel hidden-xs-only"
+        v-model="isListPanelOpen">
       <div class="list-panel-controls">
         <div class="control-set">Chapters</div>
       </div>
@@ -24,7 +26,7 @@
     </v-navigation-drawer>
 
     <main class="edit-panel">
-      <v-container fluid>
+      <v-container>
         <transition name="fade-flash" mode="out-in">
 
           <div v-if="!storyToEdit" class="message-view" key="editOff">
@@ -63,6 +65,7 @@ export default {
 
   data() {
     return {
+      isListPanelOpen: true,
       errorMessage: null,
     };
   },
@@ -167,55 +170,8 @@ export default {
 
 <style scoped>
 
-  /* -------- */
-  /* Page Nav */
-  /* -------- */
   .page-nav .chapter-tree {
     margin-left: 20px;
   }
-
-  /* ---------- */
-  /* List Panel */
-  /* ---------- */
-
-  .list-panel {
-    margin-top: 98px;
-  }
-  .list-panel-controls {
-    background-color: #ebebeb;
-    border-bottom: 1px solid #d9d9d9;
-    height: 50px;
-  }
-  .list-panel-controls .control-set {
-    line-height: 50px;
-  }
-
-  /* ---------- */
-  /* Edit Panel */
-  /* ---------- */
-
-  .edit-panel {
-    padding-top: 140px;
-  }
-  .close-active-edit {
-    position: fixed;
-    right: 20px;
-    top: 65px;
-    z-index: 200;
-  }
-
-  /* Message View (no active edit) */
-  .message-view .message-select-to-edit {
-    margin-bottom: 10px;
-  }
-  .message-view .message-or {
-    margin-bottom: 10px;
-  }
-  .message-view .message-create-draft {
-    margin-bottom: 0;
-  }
-
-  /* Active Edit View (project is editing) */
-  .active-edit-view {}
 
 </style>

@@ -47,8 +47,9 @@ export default {
 
   .chapter-tree {
     overflow-x: scroll;
+    overflow-y: hidden;
     text-align: left;
-    width: 100%;
+    white-space: nowrap;
   }
 
   .chapter-tree .tree-node {

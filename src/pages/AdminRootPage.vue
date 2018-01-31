@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-root-page">
+  <main class="admin-root-page with-nav">
 
     <v-toolbar fixed flat light dense class="page-nav">
       <v-toolbar-title class="page-nav-heading">
@@ -21,7 +21,7 @@
       <router-view class="sub-page"></router-view>
     </transition>
 
-  </div>
+  </main>
 </template>
 
 <script>
@@ -39,9 +39,5 @@ export default {
 </script>
 
 <style scoped>
-
-  .sub-page {
-    padding-top: 10px !important;
-  }
 
 </style>

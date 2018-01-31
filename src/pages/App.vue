@@ -2,17 +2,15 @@
   <v-app light>
 
     <main>
-      <v-container fluid>
-        <template v-if="activeUser.is_logged_in">
-          <transition name="fade" appear>
-            <app-header v-bind:logoTargetURI="logoTargetURI" />
-          </transition>
-        </template>
-
-        <transition name="fade-fast" mode="out-in">
-          <router-view class="page"></router-view>
+      <template v-if="activeUser.is_logged_in">
+        <transition name="fade" appear>
+          <app-header v-bind:logoTargetURI="logoTargetURI" />
         </transition>
-      </v-container>
+      </template>
+
+      <transition name="fade-fast" mode="out-in">
+        <router-view class="page"></router-view>
+      </transition>
     </main>
 
   </v-app>
@@ -41,14 +39,23 @@ export default {
 
 <style>
 
-  /* ------------------- */
-  /* General HTML Styles */
-  /* ------------------- */
+/* -----------------------------------------------------------------------------
+ * Global App Styles
+ * -------------------------------------------------------------------------- */
 
   body {
+    font-size: 14px;
+    color: #252525;
     background-color: #f9f9f9;
     margin: 0;
-    color: #252525;
+  }
+
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    height: 100%;
   }
 
   a, .application a {
@@ -65,196 +72,73 @@ export default {
     padding: 5px;
   }
 
-  /* --------------------- */
-  /* Component Transitions */
-  /* --------------------- */
+/* -----------------------------------------------------------------------------
+ * Component Transitions
+ * -------------------------------------------------------------------------- */
 
-  /* fade-slow (2 sec) */
-  .fade-slow-enter-active, .fade-slow-leave-active {
+  /* ------------------------------  fade-slow (2 sec) */
+  .fade-slow-enter-active,
+  .fade-slow-leave-active {
     transition: opacity 2s;
   }
-  .fade-slow-enter, .fade-slow-leave-to {
+  .fade-slow-enter,
+  .fade-slow-leave-to {
     opacity: 0;
   }
-  /* fade (1 sec) */
-  .fade-enter-active, .fade-leave-active {
+
+  /* -----------------------------------  fade (1 sec) */
+  .fade-enter-active,
+  .fade-leave-active {
     transition: opacity 1s;
   }
-  .fade-enter, .fade-leave-to {
+  .fade-enter,
+  .fade-leave-to {
     opacity: 0;
   }
-  /* fade-fast (0.5 sec) */
-  .fade-fast-enter-active, .fade-fast-leave-active {
+
+  /* ----------------------------  fade-fast (0.5 sec) */
+  .fade-fast-enter-active,
+  .fade-fast-leave-active {
     transition: opacity 0.5s;
   }
-  .fade-fast-enter, .fade-fast-leave-to {
+  .fade-fast-enter,
+  .fade-fast-leave-to {
     opacity: 0;
   }
-  /* fade-flash (0.25 sec) */
-  .fade-flash-enter-active, .fade-flash-leave-active {
+
+  /* ---------------------------  fade-flash (0.25 sec) */
+  .fade-flash-enter-active,
+  .fade-flash-leave-active {
     transition: opacity 0.25s;
   }
-  .fade-flash-enter, .fade-flash-leave-to {
+  .fade-flash-enter,
+  .fade-flash-leave-to {
     opacity: 0;
   }
 
-  /* ----------------- */
-  /* App Global Styles */
-  /* ----------------- */
+/* -----------------------------------------------------------------------------
+ * Page Styles
+ * -------------------------------------------------------------------------- */
 
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-  }
-
-  /* Common Display Labels */
-  .empty-results {
-    color: #727272;
-    font-style: italic;
-    text-align: center;
-    margin: 20% auto;
-  }
-
-  /* Page Layout */
-  .sub-page {
-    margin: 100px 0 0 0;
-  }
   .container {
-    padding: 0;
-    margin: 0;
+    padding-top: 30px;
+    padding-bottom: 10px;
   }
 
-  /* Form Styles */
-  .editor-input-group-header {
-    font-size: 18px;
-  }
-  .editor-info-text {
-    color: #828282;
-    font-style: italic;
-  }
-  .section-content-textarea .input-group__input textarea {
-    padding-top: 12px !important;
-    padding-left: 6px !important;
-    padding-right: 6px !important;
-    border-top: 1px solid #e9e9e9;
-    border-radius: 1px;
-    border-left: 1px solid #e9e9e9;
-    border-right: 1px solid #e9e9e9;
-  }
-  .application--light .input-group.input-group--textarea .input-group__input {
-    border-width: 1px !important;
-  }
-
-  /* Checkboxes (override styles for Vuetify v-checkbox) */
-  .checkbox {
-    padding: 0;
-  }
-  .checkbox i {
-    font-size: 20px;
-  }
-  .checkbox label {
-    font-size: 14px;
-  }
-
-  /* Data Tables (override styles for Vuetify v-data-table) */
-  table.datatable thead tr {
-    border-top: 1px solid #e2e2e2;
-    height: 40px;
-  }
-  table.datatable tfoot td {
-    background-color: #f2f2f2;
-  }
-  table.datatable th {
-    background-color: #f2f2f2;
-    border-right: 1px solid #d9d9d9;
-  }
-  table.datatable td {
-    border-right: 1px solid #d9d9d9;
-  }
-
-  /* Exansion Panel (override styles for Vuetify v-expansion-panel) */
-  .expansion-panel {
-    box-shadow: none;
-  }
-  .expansion-panel li {
-    background-color: transparent !important;
-  }
-  .expansion-panel .input-group {
-    padding: 0;
-  }
-  .expansion-panel__header {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    color: #252525;
-    padding: 6px 24px 6px 12px;
-    border: 1px solid #d9d9d9;
-    border-radius: 2px;
-    background-color: #e5e5e5;
-    margin-bottom: 12px;
-  }
-  .section .expansion-panel__header {
-    font-size: 18px;
-    border: none;
-    border-radius: 3px;
-    background-color: transparent;
-    margin: 30px 0 8px 0;
-    padding: 12px 16px 12px 12px;
-  }
-  .section .expansion-panel__header:hover {
-    background-color: #f2f2f2;
-  }
-  .section .expansion-panel__body {
-    padding: 0 12px;
-  }
-  .controls .expansion-panel__header {
-    font-size: 14px;
-    border: none;
-    border-radius: 0;
-    background-color: transparent;
-    margin: 0;
-    padding: 0 16px 0 0;
-  }
-  .controls .expansion-panel__header:hover {
-    background-color: #f2f2f2;
-  }
-  .controls .expansion-panel__body {
-    padding: 8px 16px 12px 16px;
-    border-top: 1px solid #d9d9d9;
-  }
-  .controls .toolbar--dense .toolbar__content {
-    height: 35px;
-  }
-  .presentation-settings .expansion-panel__header {
-    background-color: #d1d1d1;
-    border: 1px solid #b9b9b9;
-    padding: 0 25px 0 0;
-    width: 171px;
-    float: right;
-  }
-  .presentation-settings .expansion-panel__header button {
-    margin: 0 4px 0 0;
-  }
-  .presentation-settings .expansion-panel__header .toolbar--dense .toolbar__content {
-    height: 40px;
-  }
-  .presentation-settings .expansion-panel__body {
-    border-left: 2px solid #9a9a9a;
-    margin-bottom: 30px;
-    padding: 10px 0 10px 10px;
-  }
-
-  /* Page Navigation (uses Vuetify v-toolbar) */
+  /* --------------------------------  Page Navigation */
   .page-nav {
     top: 49px;
     background-color: #ffffff !important;
     border-bottom: 1px solid #d9d9d9;
   }
   .page-nav-heading {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     border-right: 1px solid #d9d9d9;
-    padding-right: 28px;
+    padding-right: 24px;
     margin: 0 10px 0 20px;
+    max-width: 10em;
   }
   .page-nav-heading span {
     font-size: 16px;
@@ -270,6 +154,96 @@ export default {
   }
   .page-nav .selected-nav-item span {
     color: #111111;
+  }
+
+  /* -------------------------------------  List Panel */
+  .page .list-panel {
+    margin-top: 49px !important;
+  }
+  .page.with-nav .list-panel {
+    margin-top: 98px !important;
+  }
+  .list-panel-controls {
+    background-color: #ebebeb;
+    border-bottom: 1px solid #d9d9d9;
+    height: 50px;
+  }
+  .list-panel-controls .control-set {
+    line-height: 50px;
+  }
+
+  /* -------------------------------------  Edit Panel */
+  .page.with-nav .edit-panel {
+    padding-top: 98px !important;
+  }
+  .edit-panel .container {
+    padding: 40px 30px 10px 30px;
+  }
+  .page .edit-panel .close-active-edit {
+    position: fixed;
+    right: 20px;
+    top: 65px;
+    z-index: 200;
+  }
+  /* Active Edit View */
+  .edit-panel .active-edit-view {
+    margin: 0 auto;
+    max-width: 700px;
+  }
+  /* Message View (no active edit) */
+  .edit-panel .message-view {
+    margin-top: 30px;
+  }
+  .edit-panel .message-view .message-select-to-edit {
+    margin-bottom: 10px;
+  }
+  .edit-panel .message-view .message-or {
+    margin-bottom: 10px;
+  }
+  .edit-panel .message-view .message-create-draft {
+    margin-bottom: 0;
+  }
+
+/* -----------------------------------------------------------------------------
+ * Editor / Form Styles
+ * -------------------------------------------------------------------------- */
+
+  /* Text Areas (override styles for Vuetify v-text-field textarea) */
+  .input-group.input-group--textarea .input-group__input {
+    border-width: 1px !important;
+  }
+
+  /* Checkboxes (override styles for Vuetify v-checkbox) */
+  .checkbox {
+    padding: 0;
+  }
+  .checkbox i {
+    font-size: 1.6em;
+  }
+  .checkbox label {
+    font-size: 1em;
+  }
+
+  /* Data Tables (override styles for Vuetify v-data-table) */
+  table.datatable th {
+    background-color: #f2f2f2;
+    border-right: 1px solid #d9d9d9;
+  }
+  table.datatable td {
+    border-right: 1px solid #d9d9d9;
+  }
+  table.datatable thead tr {
+    border-top: 1px solid #e2e2e2;
+    height: 45px;
+  }
+  table.datatable thead th {
+    font-size: 14px;
+  }
+  table.datatable tfoot td {
+    background-color: #f2f2f2;
+  }
+  table.datatable tfoot .datatable__actions {
+    font-size: 14px;
   }
 
 </style>

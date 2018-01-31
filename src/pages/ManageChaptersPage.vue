@@ -1,7 +1,9 @@
 <template>
-  <div class="manage-chapters-page">
+  <main class="manage-chapters-page">
 
-    <v-navigation-drawer permanent clipped light class="list-panel">
+    <v-navigation-drawer persistent clipped light
+        class="list-panel hidden-xs-only"
+        v-model="isListPanelOpen">
       <div class="list-panel-controls">
         <div class="control-set">Filters, etc</div>
       </div>
@@ -13,7 +15,7 @@
     </v-navigation-drawer>
 
     <main class="edit-panel">
-      <v-container fluid>
+      <v-container>
         <transition name="fade-flash" mode="out-in">
 
           <div v-if="!itemToEdit" class="message-view" key="editOff">
@@ -42,7 +44,7 @@
       </v-container>
     </main>
 
-  </div>
+  </main>
 </template>
 
 <script>
@@ -55,6 +57,12 @@ export default {
   components: {
     AdminContentEditor,
     AdminContentList,
+  },
+
+  data() {
+    return {
+      isListPanelOpen: true,
+    };
   },
 
   computed: {
@@ -111,7 +119,7 @@ export default {
         this.$store.dispatch('CREATE_ITEM', item)
           .then(() => {
             // Clear active edit and refresh list...
-            this.clearItemToEdit();
+            // this.clearItemToEdit();
             this.$store.dispatch('LOAD_MY_CHAPTERS', true);
           });
 
@@ -120,7 +128,7 @@ export default {
         this.$store.dispatch('UPDATE_ITEM', item)
           .then(() => {
             // Clear active edit and refresh list...
-            this.clearItemToEdit();
+            // this.clearItemToEdit();
             this.$store.dispatch('LOAD_MY_CHAPTERS', true);
           });
       } // end-if (!item.id)
@@ -138,49 +146,5 @@ export default {
 </script>
 
 <style scoped>
-
-  /* ---------- */
-  /* List Panel */
-  /* ---------- */
-
-  .list-panel {
-    margin-top: 49px;
-  }
-  .list-panel-controls {
-    background-color: #ebebeb;
-    border-bottom: 1px solid #d9d9d9;
-    height: 50px;
-  }
-  .list-panel-controls .control-set {
-    line-height: 50px;
-  }
-
-  /* ---------- */
-  /* Edit Panel */
-  /* ---------- */
-
-  .edit-panel {
-    margin: 140px 0 0 0;
-  }
-  .close-active-edit {
-    position: fixed;
-    right: 20px;
-    top: 65px;
-    z-index: 200;
-  }
-
-  /* Message View (no active edit) */
-  .message-view .message-select-to-edit {
-    margin-bottom: 10px;
-  }
-  .message-view .message-or {
-    margin-bottom: 10px;
-  }
-  .message-view .message-create-draft {
-    margin-bottom: 0;
-  }
-
-  /* Active Edit View (project is editing) */
-  .active-edit-view {}
 
 </style>
