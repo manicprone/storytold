@@ -12,8 +12,9 @@
       <chapter-tree v-bind:chapters="chapterItems" />
     </v-toolbar>
 
-    <v-navigation-drawer persistent clipped right light
-        class="list-panel hidden-xs-only"
+    <v-navigation-drawer persistent right light enable-resize-watcher
+        class="list-panel"
+        v-bind:mobileBreakPoint="600"
         v-model="isListPanelOpen">
       <div class="list-panel-controls">
         <div class="control-set">Chapters</div>
