@@ -1,8 +1,9 @@
 <template>
   <main class="manage-chapters-page">
 
-    <v-navigation-drawer persistent clipped light
-        class="list-panel hidden-xs-only"
+    <v-navigation-drawer persistent light enable-resize-watcher
+        class="list-panel"
+        v-bind:mobileBreakPoint="600"
         v-model="isListPanelOpen">
       <div class="list-panel-controls">
         <div class="control-set">Filters, etc</div>
