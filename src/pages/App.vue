@@ -135,13 +135,26 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 16px;
     border-right: 1px solid #d9d9d9;
     padding-right: 24px;
-    margin: 0 10px 0 20px;
+    margin-left: 20px;
+    margin-right: 2px;
     max-width: 10em;
   }
-  .page-nav-heading span {
+  .page-nav-controls {
     font-size: 16px;
+  }
+  .page-nav-controls .btn {
+    text-transform: none;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .page-nav-divider {
+    border-right: 1px solid #d9d9d9;
+    margin-right: 2px;
+    height: 55%;
+    width: 4px;
   }
   .page-nav .nav-item {
     text-transform: none;
@@ -168,8 +181,17 @@ export default {
     border-bottom: 1px solid #d9d9d9;
     height: 50px;
   }
-  .list-panel-controls .control-set {
-    line-height: 50px;
+  .list-panel-controls .list-panel-title {
+    font-size: 15px;
+  }
+  /* Mini Mode (for Vuetify v-navigation-drawer) */
+  .list-panel.navigation-drawer--mini-variant {
+    width: 32px;
+  }
+  .list-panel.navigation-drawer--mini-variant .list-panel-controls button {
+    margin: 0;
+    min-width: 32px;
+    height: 50px;
   }
 
   /* -------------------------------------  Edit Panel */
@@ -244,6 +266,17 @@ export default {
   }
   table.datatable tfoot .datatable__actions {
     font-size: 14px;
+  }
+
+  /* ---------------------------------------  Sections */
+  .editor-form .section-title {
+    font-size: 1.73em;
+    font-weight: 400;
+    margin-bottom: 40px;
+  }
+  .editor-form .divider {
+    margin-top: 40px;
+    margin-bottom: 40px;
   }
 
 </style>

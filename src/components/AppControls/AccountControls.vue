@@ -9,11 +9,11 @@
 
     <div class="user-action-area">
       <template v-if="!activeUser.is_logged_in">
-          <span><router-link to="/login">{{ $root.translate('account-controls.login') }}</router-link></span>
+          <span><router-link to="/login">{{ $root.translate('action.login') }}</router-link></span>
       </template>
 
       <template v-else>
-        <a href="/auth/logout">{{ $root.translate('account-controls.logout') }}</a>
+        <a href="/auth/logout">{{ $root.translate('action.logout') }}</a>
       </template>
     </div>
 

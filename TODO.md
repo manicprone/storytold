@@ -9,6 +9,8 @@
 
 ## Backlog
 
+* Install Roboto font and Material icons locally.
+
 * Rename data schema to use singular table names throughout.
 
 * Also, rename:
@@ -18,3 +20,5 @@
 
 * Reconsider the name "persona". Perhaps => "identity" or just "profile" ???
   If "profile", then just refer to "user_ext_info" as "UserExtInfo" (as the model) ???
+
+* Migrate over existing Vue component functional tests / continue testing all components.

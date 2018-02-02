@@ -23,15 +23,15 @@
       <v-flex xs12>
         <v-text-field textarea
             rows="3"
-            label="The Story"
+            label="Description"
             v-model.trim="itemEditing.description" />
       </v-flex>
     </v-layout>
 
-    <v-layout row>
+    <v-layout row class="chapters-section">
       <v-flex xs12>
-        <v-menu v-bind:close-on-content-click="false">
-          <v-btn primary dark slot="activator">Add Chapters</v-btn>
+        <v-menu offset-y v-bind:close-on-content-click="false">
+          <v-btn flat light slot="activator">+ Add Chapters</v-btn>
           <v-list>
             <v-list-tile ripple v-for="chapter in availableChaptersToAdd"
                 v-bind:key="chapter.title"
@@ -47,12 +47,38 @@
       </v-flex>
     </v-layout>
 
+    <v-layout v-if="showImageOption" row wrap class="image-section">
+      <v-flex xs4>
+        <div class="image-wrapper">
+          <img v-if="itemEditing.image_url" v-bind:src="itemEditing.image_url" />
+        </div>
+      </v-flex>
+      <v-flex xs1></v-flex>
+      <v-flex xs7>
+        <v-text-field class="image-url" label="Image URL" v-model.trim="itemEditing.image_url" />
+      </v-flex>
+    </v-layout>
+
+    <v-divider />
+
+    <v-layout row>
+      <v-flex xs12>
+        <div class="section-title">{{ $root.translate('page.manage_story.section_display_settings_title') }}</div>
+      </v-flex>
+    </v-layout>
+
   </div>
 </template>
 
 <script>
 export default {
   name: 'FormStory',
+
+  data() {
+    return {
+      showImageOption: false,
+    };
+  },
 
   props: {
     itemEditing: {
@@ -104,4 +130,28 @@ export default {
 </script>
 
 <style scoped>
+
+  .chapters-section {
+    margin: 30px 0 0 0;
+  }
+
+  .image-section {
+  }
+  .image-section .image-wrapper {
+    text-align: center;
+    overflow: hidden;
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
+    height: 200px;
+    min-width: 60px;
+    max-width: 200px;
+  }
+  .image-section .image-wrapper img {
+    height: 100%;
+    min-width: 60px;
+  }
+  .image-section .image-url {
+    margin-top: 120px;
+  }
+
 </style>
