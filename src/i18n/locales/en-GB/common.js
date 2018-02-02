@@ -1,30 +1,55 @@
-/* eslint-disable quote-props */
-module.exports = {
+export default {
 
-  // ----------------
-  // HTML Meta Values
-  // ----------------
-  'meta': {
+  // -------------------
+  // HTML meta values...
+  // -------------------
+  meta: {
   }, // END - meta
 
   // -------------------------------------
-  // Page-specific labels...
+  // Page-specific values...
   // -------------------------------------
-  // All text/labels that are contextually
+  // All values that are contextually
   // specific to a Page component go here.
   // -------------------------------------
-  'page-labels': {
-    'home': {
+  page: {
+    home: {
     },
-  }, // END - page-labels
+    manage_chapters: {
+      section_timeline_title: 'Timeline',
+      section_monuments_title: 'Monuments',
+    },
+    manage_stories: {
+    },
+    manage_story: {
+      page_nav_heading: 'Story',
+      list_panel_title: 'Chapters',
+      section_display_settings_title: 'Display Settings',
+    },
+    manage_profile: {
+    },
+  }, // END - page_labels
 
-  // ----------------------------
-  // Component-specific values...
-  // ----------------------------
-  'account-controls': {
-    'login': 'Login',
-    'logout': 'Logout',
-  }, // END - account-controls
+  // ----------------
+  // Action labels...
+  // ----------------
+  action: {
+    login: 'Login',
+    logout: 'Logout',
+    preview: 'Preview',
+    publish: 'Publish',
+    unpublish: 'Unpublish',
+  }, // END - action
+
+  // ----------------
+  // Status labels...
+  // ----------------
+  status: {
+    published: 'Published',
+    unpublished: 'Unpublished',
+    public: 'Public',
+    private: 'Private',
+  }, // END - status
 
   // Do not remove !!!
   testing: {
@@ -34,4 +59,3 @@ module.exports = {
   },
   // Do not remove !!!
 };
-/* eslint-enable quote-props */

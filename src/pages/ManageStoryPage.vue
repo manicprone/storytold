@@ -2,23 +2,46 @@
   <div class="manage-story-page with-nav">
 
     <v-toolbar fixed flat light dense class="page-nav">
-      <v-toolbar-title class="page-nav-heading">
+      <div class="page-nav-heading">
         <transition name="fade-flash" mode="out-in">
-          <span v-if="!storyToEdit" key="titleLoading">loading...</span>
-          <span v-else key="titleReady">{{ storyToEdit.title }}</span>
+          <v-progress-circular indeterminate v-if="!storyToEdit" key="storyLoading"
+              style="margin-top:6px;"
+              v-bind:size="21" />
+          <span v-else key="storyReady">{{ storyToEdit.title }}</span>
         </transition>
-      </v-toolbar-title>
+      </div>
 
-      <chapter-tree v-bind:chapters="chapterItems" />
+      <template v-if="storyToEdit">
+        <div class="page-nav-controls">
+          <v-btn small flat light>
+            {{ $root.translate('action.preview') }}
+          </v-btn>
+        </div>
+        <div class="page-nav-divider"></div>
+        <chapter-tree v-bind:chapters="chapterItems" />
+      </template>
     </v-toolbar>
 
     <v-navigation-drawer persistent right light enable-resize-watcher
         class="list-panel"
         v-bind:mobileBreakPoint="600"
+        v-bind:mini-variant.sync="isListPanelMini"
         v-model="isListPanelOpen">
-      <div class="list-panel-controls">
-        <div class="control-set">Chapters</div>
-      </div>
+      <v-toolbar flat light dense class="list-panel-controls">
+        <template v-if="isListPanelMini">
+          <v-btn flat v-on:click.native.stop="isListPanelMini = !isListPanelMini">
+            <v-icon>chevron_left</v-icon>
+          </v-btn>
+        </template>
+        <template v-else>
+          <v-btn icon v-on:click.native.stop="isListPanelMini = !isListPanelMini">
+            <v-icon>chevron_right</v-icon>
+          </v-btn>
+          <v-toolbar-title class="list-panel-title">
+            {{ listPanelTitleText }}
+          </v-toolbar-title>
+        </template>
+      </v-toolbar>
       <admin-content-list
           v-bind:items="chapterItems"
           v-bind:displayField="'title'"
@@ -67,6 +90,7 @@ export default {
   data() {
     return {
       isListPanelOpen: true,
+      isListPanelMini: false,
       errorMessage: null,
     };
   },
@@ -93,6 +117,12 @@ export default {
     },
     chapterItems() {
       return (this.storyToEdit && this.storyToEdit.chapters) ? this.storyToEdit.chapters : null;
+    },
+    pageNavHeadingText() {
+      return this.$root.translate('status.unpublished');
+    },
+    listPanelTitleText() {
+      return this.$root.translate('page.manage_story.list_panel_title');
     },
   },
 

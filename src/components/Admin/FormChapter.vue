@@ -19,18 +19,26 @@
       </v-flex>
     </v-layout>
 
+    <v-divider />
+
     <v-layout row>
-      <v-flex xs4>
-        <label>Started:</label>
-      </v-flex>
-      <v-flex xs4></v-flex xs4>
-      <v-flex xs4>
-        <label>Finished:</label>
+      <v-flex xs12>
+        <div class="section-title">{{ $root.translate('page.manage_chapters.section_timeline_title') }}</div>
       </v-flex>
     </v-layout>
 
     <v-layout row>
-      <v-flex xs4>
+      <v-flex xs5>
+        <label>Began:</label>
+      </v-flex>
+      <v-flex xs2></v-flex xs4>
+      <v-flex xs5>
+        <label>Ended:</label>
+      </v-flex>
+    </v-layout>
+
+    <v-layout row>
+      <v-flex xs5>
         <v-menu lazy offset-y full-width
             transition="scale-transition"
             v-bind:close-on-content-click="true"
@@ -43,8 +51,8 @@
           <v-date-picker autosave v-model="itemEditing.started_at" />
         </v-menu>
       </v-flex>
-      <v-flex xs4></v-flex xs4>
-      <v-flex xs4>
+      <v-flex xs2></v-flex>
+      <v-flex xs5>
         <v-menu lazy offset-y full-width
             transition="scale-transition"
             v-bind:close-on-content-click="true"
@@ -56,6 +64,14 @@
               prepend-icon="event" />
           <v-date-picker autosave v-model="itemEditing.finished_at" />
         </v-menu>
+      </v-flex>
+    </v-layout>
+
+    <v-divider />
+
+    <v-layout row>
+      <v-flex xs12>
+        <div class="section-title">{{ $root.translate('page.manage_chapters.section_monuments_title') }}</div>
       </v-flex>
     </v-layout>
 
@@ -87,4 +103,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

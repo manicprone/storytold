@@ -6,6 +6,12 @@ Weave the chapters of your life, into stories to tell.
 
 <br />
 
+## WIP
+
+Not demonstration-ready.
+
+<br />
+
 ## Table of Contents
 
 * [The Software Stack][section-the-software-stack]
