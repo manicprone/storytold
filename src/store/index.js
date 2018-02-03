@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import appStore from './app';
 import authStore from './auth';
 import userDataStore from './userData';
+import publicDataStore from './publicData';
 import systemDataStore from './systemData';
 import systemUserStore from './users';
 
@@ -13,6 +14,9 @@ export function createStore() {
     modules: {
       // The settings for the running application
       app: appStore,
+
+      // The public data being viewed by the active user session
+      publicData: publicDataStore,
 
       // The account info and settings of the active authorized user
       auth: authStore,

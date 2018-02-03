@@ -13,12 +13,14 @@
 
       <template v-if="storyToEdit">
         <div class="page-nav-controls">
-          <v-btn small flat light>
-            {{ $root.translate('action.preview') }}
-          </v-btn>
+          <router-link v-bind:to="{ name: 'view-story', params: { activeStoryID: storyToEdit.id } }">
+            <v-btn small flat light>
+              {{ $root.translate('action.preview') }}
+            </v-btn>
+          </router-link>
         </div>
         <div class="page-nav-divider"></div>
-        <chapter-tree v-bind:chapters="chapterItems" />
+        <chapter-tree v-bind:chapters="chapterItems" v-bind:mini="true" />
       </template>
     </v-toolbar>
 

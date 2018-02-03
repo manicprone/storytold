@@ -10,9 +10,9 @@ const Ajax = new AjaxService({ baseURL });
 // TODO: Move to app settings (to be loaded in app store) !!!
 const defaultPageSize = 5;
 
-// -------------------------------
+// -----------------------------------------------------------------------------
 // Manages the users of the system
-// -------------------------------
+// -----------------------------------------------------------------------------
 export default {
   state: {
 

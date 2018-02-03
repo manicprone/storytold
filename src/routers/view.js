@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import HomePage from '../pages/HomePage.vue';
-import ManageChaptersPage from '../pages/ManageChaptersPage.vue';
+import ViewStoryPage from '../pages/ViewStoryPage.vue';
+import ManageProfilePage from '../pages/ManageProfilePage.vue';
 import ManageStoriesPage from '../pages/ManageStoriesPage.vue';
 import ManageStoryPage from '../pages/ManageStoryPage.vue';
-import ManageMyProfilePage from '../pages/ManageMyProfilePage.vue';
+import ManageChaptersPage from '../pages/ManageChaptersPage.vue';
 import AdminRootPage from '../pages/AdminRootPage.vue';
 import AdminDashboardPage from '../pages/AdminDashboardPage.vue';
 import AdminUsersPage from '../pages/AdminUsersPage.vue';
@@ -26,12 +27,23 @@ export function createRouter() {
         component: HomePage,
       },
 
-      // -------------------------------------------------- Manage Chapters Page
+      // ------------------------------------------------------- View Story Page
       {
-        path: '/manage/chapters',
-        name: 'manage-chapters',
-        component: ManageChaptersPage,
+        path: '/view/story/:activeStoryID',
+        name: 'view-story',
+        props: true,
+        component: ViewStoryPage,
       },
+      { path: '/view', redirect: '/' },
+      { path: '/view/story', redirect: '/' },
+
+      // --------------------------------------------------- Manage Profile Page
+      {
+        path: '/manage/profile',
+        name: 'manage-profile',
+        component: ManageProfilePage,
+      },
+      { path: '/manage', redirect: '/manage/profile' },
 
       // ---------------------------------------------------- Manage Story Pages
       {
@@ -47,13 +59,12 @@ export function createRouter() {
       },
       { path: '/manage/story', redirect: '/manage/stories' },
 
-      // ------------------------------------------------ Manage My Profile Page
+      // -------------------------------------------------- Manage Chapters Page
       {
-        path: '/manage/profile',
-        name: 'manage-profile',
-        component: ManageMyProfilePage,
+        path: '/manage/chapters',
+        name: 'manage-chapters',
+        component: ManageChaptersPage,
       },
-      { path: '/manage', redirect: '/manage/profile' },
 
       // ----------------------------------------------------------- Admin Pages
       {

@@ -9,9 +9,9 @@ import toModel from './normalizers/toModel';
 const baseURL = 'http://localhost:3005';
 const Ajax = new AjaxService({ baseURL });
 
-// -------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // The account info and settings of the active (authorized) user
-// -------------------------------------------------------------
+// -----------------------------------------------------------------------------
 export default {
   state: {
 
