@@ -1,17 +1,16 @@
 <template>
   <v-app light>
+    <template v-if="showAppHeader">
+      <transition name="fade" appear>
+        <app-header v-bind:logoTargetURI="logoTargetURI" />
+      </transition>
+    </template>
 
-    <main>
-      <template v-if="showAppHeader">
-        <transition name="fade" appear>
-          <app-header v-bind:logoTargetURI="logoTargetURI" />
-        </transition>
-      </template>
-
+    <v-content>
       <transition name="fade-fast" mode="out-in">
         <router-view class="page"></router-view>
       </transition>
-    </main>
+    </v-content>
 
   </v-app>
 </template>
@@ -58,7 +57,6 @@ export default {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    height: 100%;
   }
 
   a, .application a {
@@ -79,7 +77,7 @@ export default {
  * Component Transitions
  * -------------------------------------------------------------------------- */
 
-  /* ------------------------------  fade-slow (2 sec) */
+  /* -----------------------------------------------------  fade-slow (2 sec) */
   .fade-slow-enter-active,
   .fade-slow-leave-active {
     transition: opacity 2s;
@@ -89,7 +87,7 @@ export default {
     opacity: 0;
   }
 
-  /* -----------------------------------  fade (1 sec) */
+  /* ----------------------------------------------------------  fade (1 sec) */
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 1s;
@@ -99,7 +97,7 @@ export default {
     opacity: 0;
   }
 
-  /* ----------------------------  fade-fast (0.5 sec) */
+  /* ---------------------------------------------------  fade-fast (0.5 sec) */
   .fade-fast-enter-active,
   .fade-fast-leave-active {
     transition: opacity 0.5s;
@@ -109,7 +107,7 @@ export default {
     opacity: 0;
   }
 
-  /* ---------------------------  fade-flash (0.25 sec) */
+  /* -------------------------------------------------  fade-flash (0.25 sec) */
   .fade-flash-enter-active,
   .fade-flash-leave-active {
     transition: opacity 0.25s;
@@ -124,13 +122,57 @@ export default {
  * -------------------------------------------------------------------------- */
 
   .container {
-    padding-top: 30px;
+    padding-top: 0px;
     padding-right: 0px;
-    padding-bottom: 10px;
     padding-left: 0px;
+    padding-bottom: 10px;
   }
 
-  /* --------------------------------  Page Navigation */
+  /* ----------------------------------------------------------  Page Content */
+  .page-content {
+    padding-top: 30px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .page.with-nav .page-content {
+    padding-top: 79px;
+  }
+  .page.with-list-left .page-content {
+    padding-left: 300px;
+  }
+  .page.with-list-left-mini .page-content {
+    padding-left: 32px;
+  }
+  .page.with-list-right .page-content {
+    padding-right: 300px;
+  }
+  .page.with-list-right-mini .page-content {
+    padding-right: 32px;
+  }
+
+  /* Active Item View */
+  .page-content .close-active-item {
+    position: fixed;
+    right: 20px;
+    top: 65px;
+    z-index: 200;
+  }
+  .page.with-nav .close-active-item {
+    top: 115px;
+  }
+
+  /* Message View (no active item) */
+  .page-content .message-view {
+    margin-top: 30px;
+  }
+  .page-content .message-view .message-select-to-activate {
+    margin-bottom: 10px;
+  }
+  .page-content .message-view .message-or {
+    margin-bottom: 10px;
+  }
+
+  /* -------------------------------------------------------  Page Navigation */
   .page-nav {
     top: 49px;
     background-color: #ffffff !important;
@@ -146,6 +188,9 @@ export default {
     margin-left: 20px;
     margin-right: 2px;
     max-width: 10em;
+  }
+  .page-nav-items {
+    margin-left: 10px;
   }
   .page-nav-controls {
     font-size: 16px;
@@ -174,7 +219,7 @@ export default {
     color: #111111;
   }
 
-  /* -------------------------------------  List Panel */
+  /* ------------------------------------------------------------  List Panel */
   .page .list-panel {
     margin-top: 49px !important;
   }
@@ -191,7 +236,7 @@ export default {
   }
   /* Mini Mode (for Vuetify v-navigation-drawer) */
   .list-panel.navigation-drawer--mini-variant {
-    width: 32px;
+    width: 32px !important;
   }
   .list-panel.navigation-drawer--mini-variant .list-panel-controls button {
     margin: 0;
@@ -199,41 +244,20 @@ export default {
     height: 50px;
   }
 
-  /* -------------------------------------  Edit Panel */
-  .page.with-nav .edit-panel {
-    padding-top: 98px !important;
-  }
-  .edit-panel .container {
-    padding: 40px 30px 10px 30px;
-  }
-  .page .edit-panel .close-active-edit {
-    position: fixed;
-    right: 20px;
-    top: 65px;
-    z-index: 200;
-  }
-  /* Active Edit View */
-  .edit-panel .active-edit-view {
-    margin: 0 auto;
-    max-width: 700px;
-  }
-  /* Message View (no active edit) */
-  .edit-panel .message-view {
-    margin-top: 30px;
-  }
-  .edit-panel .message-view .message-select-to-edit {
-    margin-bottom: 10px;
-  }
-  .edit-panel .message-view .message-or {
-    margin-bottom: 10px;
-  }
-  .edit-panel .message-view .message-create-draft {
-    margin-bottom: 0;
-  }
-
 /* -----------------------------------------------------------------------------
  * Editor / Form Styles
  * -------------------------------------------------------------------------- */
+
+  /* --------------------------------------------------------------  Sections */
+  .editor-form .section-title {
+   font-size: 1.73em;
+   font-weight: 400;
+   margin-bottom: 40px;
+  }
+  .editor-form .divider {
+   margin-top: 40px;
+   margin-bottom: 40px;
+  }
 
   /* Text Areas (override styles for Vuetify v-text-field textarea) */
   .input-group.input-group--textarea .input-group__input {
@@ -271,17 +295,6 @@ export default {
   }
   table.datatable tfoot .datatable__actions {
     font-size: 14px;
-  }
-
-  /* ---------------------------------------  Sections */
-  .editor-form .section-title {
-    font-size: 1.73em;
-    font-weight: 400;
-    margin-bottom: 40px;
-  }
-  .editor-form .divider {
-    margin-top: 40px;
-    margin-bottom: 40px;
   }
 
 </style>

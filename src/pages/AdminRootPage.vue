@@ -1,6 +1,9 @@
 <template>
-  <main class="admin-root-page with-nav">
+  <v-container fluid fill-height v-bind:class="baseClasses">
 
+    <!-------------->
+    <!-- Page Nav -->
+    <!-------------->
     <v-toolbar fixed flat light dense class="page-nav">
       <v-toolbar-title class="page-nav-heading">
         <router-link v-bind:to="{ name: 'admin-dashboard' }">
@@ -8,7 +11,7 @@
         </router-link>
       </v-toolbar-title>
 
-      <v-toolbar-items>
+      <v-toolbar-items class="page-nav-items">
         <router-link v-bind:to="{ name: 'admin-users' }">
           <v-btn flat v-bind:class="generateNavItemClasses('admin-users')">
             <span>Users</span>
@@ -17,16 +20,27 @@
       </v-toolbar-items>
     </v-toolbar>
 
-    <transition name="fade-fast" mode="out-in">
-      <router-view class="sub-page"></router-view>
-    </transition>
+    <!------------------>
+    <!-- Page Content -->
+    <!------------------>
+    <v-layout justify-center class="page-content">
+      <transition name="fade-fast" mode="out-in">
+        <router-view></router-view>
+      </transition>
+    </v-layout>
 
-  </main>
+  </v-container>
 </template>
 
 <script>
 export default {
   name: 'AdminRootPage',
+
+  computed: {
+    baseClasses() {
+      return 'admin-root-page with-nav';
+    },
+  },
 
   methods: {
     generateNavItemClasses(routeName) {

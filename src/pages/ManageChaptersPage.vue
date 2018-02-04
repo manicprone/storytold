@@ -1,7 +1,10 @@
 <template>
-  <main class="manage-chapters-page">
+  <v-container fluid fill-height v-bind:class="baseClasses">
 
-    <v-navigation-drawer persistent light enable-resize-watcher
+    <!---------------->
+    <!-- List Panel -->
+    <!---------------->
+    <v-navigation-drawer fixed persistent light enable-resize-watcher
         class="list-panel"
         v-bind:mobileBreakPoint="600"
         v-model="isListPanelOpen">
@@ -15,37 +18,40 @@
           v-on:itemClick="loadItemToEdit" />
     </v-navigation-drawer>
 
-    <main class="edit-panel">
-      <v-container>
-        <transition name="fade-flash" mode="out-in">
+    <!------------------>
+    <!-- Page Content -->
+    <!------------------>
+    <v-layout justify-center class="page-content">
+      <transition name="fade-flash" mode="out-in">
 
-          <div v-if="!itemToEdit" class="message-view" key="editOff">
-            <template v-if="hasChapters">
-              <div class="message-select-to-edit">Select a Chapter to edit</div>
-              <div class="message-or">-or-</div>
-            </template>
-            <div>
-              <a class="message-create-draft"
-                 v-on:click="createDraftItem">+ Create a new Chapter</a>
-            </div>
+        <!-- Message View (no active item) -->
+        <v-flex xs12 class="message-view" key="editOff" v-if="!itemToEdit">
+          <template v-if="hasChapters">
+            <div class="message-select-to-activate">Select a Chapter to edit</div>
+            <div class="message-or">-or-</div>
+          </template>
+          <div>
+            <a class="message-create-draft"
+               v-on:click="createDraftItem">+ Create a new Chapter</a>
           </div>
+        </v-flex>
 
-          <div v-else class="active-edit-view" key="editOn">
-            <admin-content-editor
-                v-bind:item="itemToEdit"
-                v-bind:resourceType="'user-data'"
-                v-on:cancel="clearItemToEdit"
-                v-on:save="saveItem"
-                v-on:delete="deleteItem" />
+        <!-- Active Item View -->
+        <v-flex xs12 sm9 md8 class="active-item-view" key="editOn" v-else>
+          <admin-content-editor
+              v-bind:item="itemToEdit"
+              v-bind:resourceType="'user-data'"
+              v-on:cancel="clearItemToEdit"
+              v-on:save="saveItem"
+              v-on:delete="deleteItem" />
 
-            <div class="close-active-edit"><a v-on:click="clearItemToEdit">(Close)</a></div>
-          </div>
+          <div class="close-active-item"><a v-on:click="clearItemToEdit">(Close)</a></div>
+        </v-flex>
 
-        </transition>
-      </v-container>
-    </main>
+      </transition>
+    </v-layout>
 
-  </main>
+  </v-container>
 </template>
 
 <script>
@@ -67,6 +73,9 @@ export default {
   },
 
   computed: {
+    baseClasses() {
+      return ['manage-chapters-page', { 'with-list-left': this.isListPanelOpen }];
+    },
     hasChapters() {
       return (this.totalChapters > 0);
     },
