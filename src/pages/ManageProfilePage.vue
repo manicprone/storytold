@@ -1,5 +1,5 @@
 <template>
-  <main class="manage-my-profile-page">
+  <main class="manage-profile-page">
     <v-container>
 
       <local-user-profile-editor class="user-profile-editor"
@@ -14,7 +14,7 @@ import User from '../models/User';
 import LocalUserProfileEditor from '../components/Admin/LocalUserProfileEditor.vue';
 
 export default {
-  name: 'ManageMyProfilePage',
+  name: 'ManageProfilePage',
 
   components: {
     LocalUserProfileEditor,

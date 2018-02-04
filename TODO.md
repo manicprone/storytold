@@ -9,7 +9,9 @@
 
 ## Backlog
 
-* Install Roboto font and Material icons locally.
+* Install/Access Roboto font and Material icons locally.
+
+* Create a reusable component for the ListPanel.
 
 * Rename data schema to use singular table names throughout.
 

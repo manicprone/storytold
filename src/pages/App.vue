@@ -2,7 +2,7 @@
   <v-app light>
 
     <main>
-      <template v-if="activeUser.is_logged_in">
+      <template v-if="showAppHeader">
         <transition name="fade" appear>
           <app-header v-bind:logoTargetURI="logoTargetURI" />
         </transition>
@@ -29,6 +29,9 @@ export default {
   computed: {
     activeUser() {
       return this.$store.getters.activeUser;
+    },
+    showAppHeader() {
+      return (this.activeUser.is_logged_in && this.$route.name !== 'view-story');
     },
     logoTargetURI() {
       return '/';
@@ -122,7 +125,9 @@ export default {
 
   .container {
     padding-top: 30px;
+    padding-right: 0px;
     padding-bottom: 10px;
+    padding-left: 0px;
   }
 
   /* --------------------------------  Page Navigation */
