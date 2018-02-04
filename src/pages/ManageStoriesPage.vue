@@ -1,7 +1,10 @@
 <template>
-  <main class="manage-stories-page">
+  <v-container fluid fill-height v-bind:class="baseClasses">
 
-    <v-navigation-drawer persistent light enable-resize-watcher
+    <!---------------->
+    <!-- List Panel -->
+    <!---------------->
+    <v-navigation-drawer fixed persistent light enable-resize-watcher
         class="list-panel"
         v-bind:mobileBreakPoint="600"
         v-model="isListPanelOpen">
@@ -15,39 +18,41 @@
           v-on:itemClick="loadStoryToQuickView" />
     </v-navigation-drawer>
 
-    <main class="edit-panel">
-      <v-container>
-        <transition name="fade-flash" mode="out-in">
+    <!------------------>
+    <!-- Page Content -->
+    <!------------------>
+    <v-layout justify-center class="page-content">
+      <transition name="fade-flash" mode="out-in">
 
-          <div v-if="!storyToQuickView" class="message-view" key="quickViewOff">
-            <template v-if="hasStories">
-              <div class="message-select-to-edit">Select a Story to preview</div>
-              <div class="message-or">-or-</div>
-            </template>
-            <div>
-              <a class="message-create-draft"
-                 v-on:click="startNewStory">+ Start a new Story</a>
-            </div>
+        <!-- Message View (no active item) -->
+        <v-flex xs12 class="message-view" key="quickViewOff" v-if="!storyToQuickView">
+          <template v-if="hasStories">
+            <div class="message-select-to-activate">Select a Story to preview</div>
+            <div class="message-or">-or-</div>
+          </template>
+          <div>
+            <a class="message-create-draft"
+               v-on:click="startNewStory">+ Start a new Story</a>
           </div>
+        </v-flex>
 
-          <div v-else class="active-edit-view" key="quickViewOn">
-
-            <div>
-              <router-link v-bind:to="{ name: 'manage-story', params: { activeStoryID: storyToQuickView.id } }">
-                <span>Edit Story</span>
-              </router-link>
-            </div>
-            <br />
-            <div>Previewing: {{ storyToQuickView.title }}</div>
-
-            <div class="close-active-edit"><a v-on:click="clearStoryToQuickView">(Close)</a></div>
+        <!-- Active Item View -->
+        <v-flex xs12 sm9 md8 class="active-item-view" key="quickViewOn" v-else>
+          <div>
+            <router-link v-bind:to="{ name: 'manage-story', params: { activeStoryID: storyToQuickView.id } }">
+              <span>Edit Story</span>
+            </router-link>
           </div>
+          <br />
+          <div>Previewing: {{ storyToQuickView.title }}</div>
 
-        </transition>
-      </v-container>
-    </main>
+          <div class="close-active-item"><a v-on:click="clearStoryToQuickView">(Close)</a></div>
+        </v-flex>
 
-  </main>
+      </transition>
+    </v-layout>
+
+  </v-container>
 </template>
 
 <script>
@@ -67,6 +72,9 @@ export default {
   },
 
   computed: {
+    baseClasses() {
+      return ['manage-stories-page', { 'with-list-left': this.isListPanelOpen }];
+    },
     hasStories() {
       return (this.totalStories > 0);
     },

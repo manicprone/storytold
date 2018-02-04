@@ -9,7 +9,6 @@ import ManageChaptersPage from '../pages/ManageChaptersPage.vue';
 import AdminRootPage from '../pages/AdminRootPage.vue';
 import AdminDashboardPage from '../pages/AdminDashboardPage.vue';
 import AdminUsersPage from '../pages/AdminUsersPage.vue';
-import DeveloperTestPage from '../pages/DeveloperTestPage.vue';
 
 Vue.use(Router);
 
@@ -83,14 +82,6 @@ export function createRouter() {
           },
         ],
       },
-
-      // ------------------------------------------------------ Dev Testing Page
-      {
-        path: '/dev/test',
-        name: 'dev-test',
-        component: DeveloperTestPage,
-      },
-      { path: '/dev', redirect: '/dev/test' },
 
     ],
   });

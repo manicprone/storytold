@@ -1,21 +1,29 @@
 <template>
-  <main class="view-story-page">
+  <v-container fluid fill-height v-bind:class="baseClasses">
 
     <template v-if="!storyToView">
-      <div v-if="errorMessage">{{ errorMessage }}</div>
+      <v-layout align-center justify-center>
+        <div v-if="errorMessage">{{ errorMessage }}</div>
+      </v-layout>
     </template>
 
     <template v-else>
-      <v-navigation-drawer persistent light enable-resize-watcher
-          class="full-view"
+      <!--------------------->
+      <!-- Full View Panel -->
+      <!--------------------->
+      <v-navigation-drawer fixed persistent light enable-resize-watcher
+          class="full-view-panel"
           v-bind:mobileBreakPoint="600"
           v-model="isFullViewOpen">
 
         <div>Full View</div>
       </v-navigation-drawer>
 
-      <main class="main-view">
-        <v-container>
+      <!------------------------------>
+      <!-- Page Content (main view) -->
+      <!------------------------------>
+      <v-layout justify-center class="page-content">
+        <v-flex xs12 class="main-view">
           <div>View: {{ activeStoryID }}</div>
           <div>
             <router-link v-bind:to="{ name: 'manage-story', params: { activeStoryID: storyToView.id } }">
@@ -24,19 +32,22 @@
           </div>
 
           <chapter-tree-stepper v-bind:chapters="chapterItems" v-bind:vertical="true" />
-        </v-container>
-      </main>
+        </v-flex>
+      </v-layout>
 
-      <!-- <v-navigation-drawer right persistent light enable-resize-watcher
-          class="bio-view"
-          v-bind:mobileBreakPoint="600"
+      <!-------------------->
+      <!-- Bio View Panel -->
+      <!-------------------->
+      <v-navigation-drawer fixed right persistent light enable-resize-watcher
+          class="bio-view-panel"
+          v-bind:mobileBreakPoint="960"
           v-model="isBioViewOpen">
 
         <div>Bio View</div>
-      </v-navigation-drawer> -->
+      </v-navigation-drawer>
     </template>
 
-  </main>
+  </v-container>
 </template>
 
 <script>
@@ -62,6 +73,12 @@ export default {
   props: ['activeStoryID'],
 
   computed: {
+    baseClasses() {
+      return ['view-story-page', {
+        'with-list-left': this.isFullViewOpen,
+        'with-list-right': this.isBioViewOpen,
+      }];
+    },
     storyToView() {
       return this.$store.getters.storyToView;
     },
@@ -90,8 +107,35 @@ export default {
 
 <style scoped>
 
-  .full-view {
-    max-width: 200px;
+  /* Full View Panel */
+  .full-view-panel {
+    width: 240px !important;
+  }
+
+  /* Bio View Panel */
+  .bio-view-panel {
+  }
+
+  /* Page Content */
+  .page-content {
+    padding-top: 0px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .page.with-nav .page-content {
+    padding-top: 79px;
+  }
+  .page.with-list-left .page-content {
+    padding-left: 240px;
+  }
+  .page.with-list-left-mini .page-content {
+    padding-left: 32px;
+  }
+  .page.with-list-right .page-content {
+    padding-right: 300px;
+  }
+  .page.with-list-right-mini .page-content {
+    padding-right: 32px;
   }
 
 </style>

@@ -1,76 +1,85 @@
 <template>
-  <main class="home-page">
-    <v-container>
 
-      <template v-if="!activeUser.is_logged_in">
-        <div class="splash-screen">
-          <div class="title-wrapper">
-            <div class="title-text-the">the</div>
-            <div class="title-text-storytold">
-              <span class="title-text-story">story</span><span class="title-text-told">told</span>
-            </div>
-            <div class="tagline-text">{{ appTaglineText }}</div>
+  <!--------------------------------->
+  <!-- Splash Page (not logged-in) -->
+  <!--------------------------------->
+  <v-container fluid fill-height class="splash-page" v-if="!activeUser.is_logged_in">
+    <v-layout align-center justify-center>
+      <v-flex xs12 sm9 md8>
+        <div class="title-wrapper">
+          <div class="title-text-the">the</div>
+          <div class="title-text-storytold">
+            <span class="title-text-story">story</span><span class="title-text-told">told</span>
           </div>
-          <local-account-login class="login-link" />
+          <div class="tagline-text">{{ appTaglineText }}</div>
         </div>
-      </template>
 
-      <template v-else>
-        <div class="page-content-area">
-          <div class="welcome-message">
-            <div class="message-text">{{ welcomeMessageText }}</div>
-          </div>
+        <local-account-login class="login-link" />
+      </v-flex>
+    </v-layout>
+  </v-container>
 
-          <div class="dashboard">
-            Your dashboard will appear here
-          </div>
+  <!--------------------------->
+  <!-- Home Page (logged-in) -->
+  <!--------------------------->
+  <v-container fluid class="home-page" v-else>
 
-          <div class="temp-link-group">
-            <div class="group-heading">
-              <div class="heading-text">Everyone</div>
-              <div class="separator">|</div>
-            </div>
-            <div class="link-item">
-              <router-link v-bind:to="{ name: 'manage-chapters' }">
-                <span>Manage Chapters</span>
-              </router-link>
-            </div>
-            <div class="separator"></div>
-            <div class="link-item">
-              <router-link v-bind:to="{ name: 'manage-stories' }">
-                <span>Manage Stories</span>
-              </router-link>
-            </div>
-            <div class="separator"></div>
-            <div class="link-item">
-              <router-link v-bind:to="{ name: 'manage-profile' }">
-                <span>Manage My Account</span>
-              </router-link>
-            </div>
-          </div>
-
-          <div class="temp-link-group">
-            <div class="group-heading">
-              <div class="heading-text">By Role</div>
-              <div class="separator">|</div>
-            </div>
-            <div class="link-item">
-              <router-link v-bind:to="{ name: 'admin-dashboard' }">
-                <span>Admin</span>
-              </router-link>
-            </div>
-            <div class="separator"></div>
-            <div class="link-item">
-              <router-link v-bind:to="{ name: 'dev-test' }">
-                <span>Dev</span>
-              </router-link>
-            </div>
-          </div>
+    <v-layout justify-center row>
+      <v-flex xs12 sm9 md8>
+        <div class="welcome-message">
+          <span>{{ welcomeMessageText }}</span>
         </div>
-      </template>
+      </v-flex>
+    </v-layout>
 
-    </v-container>
-  </main>
+    <v-layout justify-center row>
+      <v-flex xs12 sm9 md8>
+        <div class="dashboard">Dashboard</div>
+      </v-flex>
+    </v-layout>
+
+    <v-layout justify-center row class="temp-link-group">
+      <v-flex xs12 sm9 md8>
+        <v-layout row wrap>
+          <v-flex xs2>
+            <div class="group-heading">Everyone</div>
+          </v-flex>
+          <v-flex xs2>
+            <router-link v-bind:to="{ name: 'manage-chapters' }">
+              <span>Manage Chapters</span>
+            </router-link>
+          </v-flex>
+          <v-flex xs2>
+            <router-link v-bind:to="{ name: 'manage-stories' }">
+              <span>Manage Stories</span>
+            </router-link>
+          </v-flex>
+          <v-flex xs2>
+            <router-link v-bind:to="{ name: 'manage-profile' }">
+              <span>Manage My Account</span>
+            </router-link>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+    </v-layout>
+
+    <v-layout justify-center row class="temp-link-group">
+      <v-flex xs12 sm9 md8>
+        <v-layout row wrap>
+          <v-flex xs2>
+            <div class="group-heading">By Role</div>
+          </v-flex>
+          <v-flex xs2>
+            <router-link v-bind:to="{ name: 'admin-dashboard' }">
+              <span>Admin</span>
+            </router-link>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+    </v-layout>
+
+  </v-container>
+
 </template>
 
 <script>
@@ -105,12 +114,8 @@ export default {
 <style scoped>
 
 /* -----------------------------------------------------------------------------
- * Frontdoor Splash Screen (not logged-in)
+ * Splash Page (not logged-in)
  * -------------------------------------------------------------------------- */
-
-  .splash-screen {
-    /*margin: 10% 30px;*/
-  }
 
   /* Title Styling */
   .title-text-the {
@@ -138,26 +143,24 @@ export default {
   }
 
 /* -----------------------------------------------------------------------------
- * Welcome Page (logged-in)
+ * Home Page (logged-in)
  * -------------------------------------------------------------------------- */
 
-  .page-content-area {
-    margin: 0 auto;
-    max-width: 750px;
+  .home-page {
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   /* Welcome Message */
   .welcome-message {
-    margin-bottom: 30px;
-  }
-  .welcome-message .message-text {
-    text-align: left;
     font-size: 28px;
+    text-align: left;
+    margin-top: 30px;
+    margin-bottom: 10px;
   }
 
   /* Dashboard */
   .dashboard {
-    line-height: 140px;
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     padding: 4px;
@@ -168,29 +171,10 @@ export default {
   /* Temp Links (will move to app-header menu) */
   .temp-link-group {
     text-align: left;
-    margin: 30px 0;
-  }
-  .temp-link-group .separator {
-    font-weight: 300;
-    display: inline-block;
-    text-align: center;
-    width: 30px;
-  }
-  .temp-link-group .link-item {
-    display: inline-block;
+    margin-top: 20px;
   }
   .temp-link-group .group-heading {
     font-weight: 500;
-    display: inline-block;
-    margin-left: 10px;
-  }
-  .temp-link-group .group-heading .heading-text {
-    display: inline-block;
-    width: 70px;
-  }
-  .temp-link-group .group-heading .separator {
-    margin-right: 3px;
-    width: 50px;
   }
 
 </style>

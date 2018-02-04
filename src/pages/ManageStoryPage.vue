@@ -1,6 +1,9 @@
 <template>
-  <div class="manage-story-page with-nav">
+  <v-container fluid fill-height v-bind:class="baseClasses">
 
+    <!-------------->
+    <!-- Page Nav -->
+    <!-------------->
     <v-toolbar fixed flat light dense class="page-nav">
       <div class="page-nav-heading">
         <transition name="fade-flash" mode="out-in">
@@ -24,7 +27,10 @@
       </template>
     </v-toolbar>
 
-    <v-navigation-drawer persistent right light enable-resize-watcher
+    <!---------------->
+    <!-- List Panel -->
+    <!---------------->
+    <v-navigation-drawer fixed persistent right light enable-resize-watcher
         class="list-panel"
         v-bind:mobileBreakPoint="600"
         v-bind:mini-variant.sync="isListPanelMini"
@@ -51,28 +57,31 @@
           v-bind:noItemsText="'no chapters yet'" />
     </v-navigation-drawer>
 
-    <main class="edit-panel">
-      <v-container>
-        <transition name="fade-flash" mode="out-in">
+    <!------------------>
+    <!-- Page Content -->
+    <!------------------>
+    <v-layout justify-center class="page-content">
+      <transition name="fade-flash" mode="out-in">
 
-          <div v-if="!storyToEdit" class="message-view" key="editOff">
-            <span v-if="errorMessage">{{ errorMessage }}</span>
-          </div>
+        <!-- Message View (no active item) -->
+        <v-flex xs12 class="message-view" key="editOff" v-if="!storyToEdit">
+          <div v-if="errorMessage">{{ errorMessage }}</div>
+        </v-flex>
 
-          <div v-else class="active-edit-view" key="editOn">
-            <admin-content-editor
-                v-bind:item="storyToEdit"
-                v-bind:resourceType="'user-data'"
-                v-on:cancel="clearStoryToEdit"
-                v-on:save="saveStory"
-                v-on:delete="deleteStory" />
-          </div>
+        <!-- Active Item View -->
+        <v-flex xs12 sm9 md8 class="active-item-view" key="editOn" v-else>
+          <admin-content-editor
+              v-bind:item="storyToEdit"
+              v-bind:resourceType="'user-data'"
+              v-on:cancel="clearStoryToEdit"
+              v-on:save="saveStory"
+              v-on:delete="deleteStory" />
+        </v-flex>
 
-        </transition>
-      </v-container>
-    </main>
+      </transition>
+    </v-layout>
 
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -100,6 +109,12 @@ export default {
   props: ['activeStoryID'],
 
   computed: {
+    baseClasses() {
+      return ['manage-story-page with-nav', {
+        'with-list-right': this.isListPanelOpen && !this.isListPanelMini,
+        'with-list-right-mini': this.isListPanelOpen && this.isListPanelMini,
+      }];
+    },
     storyToEdit() {
       return this.$store.getters.itemToEdit;
     },
