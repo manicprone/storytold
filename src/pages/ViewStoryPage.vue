@@ -1,13 +1,21 @@
 <template>
   <main class="view-story-page">
-    <v-container fluid>
-      <transition name="fade-flash" mode="out-in">
 
-        <v-container v-if="!storyToView" class="message-view" key="viewOff">
-          <span v-if="errorMessage">{{ errorMessage }}</span>
-        </v-container>
+    <template v-if="!storyToView">
+      <div v-if="errorMessage">{{ errorMessage }}</div>
+    </template>
 
-        <v-container v-else class="main-view" key="viewOn">
+    <template v-else>
+      <v-navigation-drawer persistent light enable-resize-watcher
+          class="full-view"
+          v-bind:mobileBreakPoint="600"
+          v-model="isFullViewOpen">
+
+        <div>Full View</div>
+      </v-navigation-drawer>
+
+      <main class="main-view">
+        <v-container>
           <div>View: {{ activeStoryID }}</div>
           <div>
             <router-link v-bind:to="{ name: 'manage-story', params: { activeStoryID: storyToView.id } }">
@@ -15,26 +23,38 @@
             </router-link>
           </div>
 
-          <chapter-tree v-bind:chapters="chapterItems" v-bind:vertical="true" />
+          <chapter-tree-stepper v-bind:chapters="chapterItems" v-bind:vertical="true" />
         </v-container>
+      </main>
 
-      </transition>
-    </v-container>
+      <!-- <v-navigation-drawer right persistent light enable-resize-watcher
+          class="bio-view"
+          v-bind:mobileBreakPoint="600"
+          v-model="isBioViewOpen">
+
+        <div>Bio View</div>
+      </v-navigation-drawer> -->
+    </template>
+
   </main>
 </template>
 
 <script>
 import ChapterTree from '../components/Chapters/ChapterTree.vue';
+import ChapterTreeStepper from '../components/Chapters/ChapterTreeStepper.vue';
 
 export default {
   name: 'ViewStoryPage',
 
   components: {
     ChapterTree,
+    ChapterTreeStepper,
   },
 
   data() {
     return {
+      isFullViewOpen: true,
+      isBioViewOpen: true,
       errorMessage: null,
     };
   },
@@ -69,5 +89,9 @@ export default {
 </script>
 
 <style scoped>
+
+  .full-view {
+    max-width: 200px;
+  }
 
 </style>
