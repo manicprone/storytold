@@ -1,9 +1,6 @@
 import AjaxService from '../services/Ajax';
 import objectUtils from '../utils/object-utils';
-import stringUtils from '../utils/string-utils';
 import AppMessage from '../models/AppMessage';
-import Model from '../models';
-import Collection from '../models/Collection';
 import toModel from './normalizers/toModel';
 
 // Instantiate Ajax service...
@@ -130,10 +127,6 @@ export default {
 
     SET_STORY_TO_VIEW(state, item) {
       if (item.model) state.storyToView = item;
-    },
-
-    CLEAR_STORY_TO_VIEW(state) {
-      state.storyToView = null;
     },
 
     CLEAR_STORY_TO_VIEW(state) {

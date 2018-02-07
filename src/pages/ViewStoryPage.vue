@@ -23,8 +23,8 @@
       <!-- Page Content (main view) -->
       <!------------------------------>
       <v-layout justify-center class="page-content">
-        <v-flex xs12 class="main-view">
-          <div>View: {{ activeStoryID }}</div>
+        <v-flex xs12>
+          <div>{{ storyToView.title }}</div>
           <div>
             <router-link v-bind:to="{ name: 'manage-story', params: { activeStoryID: storyToView.id } }">
               <span><< Back</span>
