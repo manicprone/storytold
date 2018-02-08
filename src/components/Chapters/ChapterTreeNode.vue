@@ -1,7 +1,10 @@
 <template>
   <div v-if="chapter"
-      v-bind:class="['chapter-tree-node', { vertical: this.vertical, horizontal: !this.vertical, round: this.round }]"
-      v-on:click="onItemClick">
+      v-bind:class="['chapter-tree-node', {
+        vertical: this.vertical,
+        horizontal: !this.vertical,
+        round: this.round
+      }]">
 
     <!-- Vertical -->
     <template v-if="vertical">
@@ -14,7 +17,7 @@
           </v-layout>
           <v-layout row>
             <v-flex xs12>
-              <div class="node-object">{{ index }}</div>
+              <div class="node-object" v-on:click="onItemClick">{{ index }}</div>
             </v-flex>
           </v-layout>
           <v-layout row>
@@ -25,18 +28,20 @@
         </v-flex>
         <v-flex xs10>
           <div class="node-content-panel">
-            <v-container fill-height fluid v-if="isNodeOpen">
-              <v-layout fill-height>
-                <v-flex xs10>
-                  <v-card class="node-content-card">
-                    {{ chapter.title }}
-                  </v-card>
-                </v-flex>
-                <v-flex xs2>
-                  project lists
-                </v-flex>
-              </v-layout>
-            </v-container>
+            <transition name="draw-x">
+              <v-container fill-height class="content-card-wrapper" v-show="isNodeOpen">
+                <v-layout fill-height>
+                  <v-flex xs9>
+                    <v-card class="content-card">
+                      {{ chapter.title }}
+                    </v-card>
+                  </v-flex>
+                  <v-flex xs3 class="content-fringe">
+                    project lists
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </transition>
           </div>
         </v-flex>
       </v-layout>
@@ -73,15 +78,15 @@ export default {
       type: Number,
       default: null,
     },
+    startOpen: {
+      type: Boolean,
+      default: false,
+    },
     round: {
       type: Boolean,
       default: false,
     },
     vertical: {
-      type: Boolean,
-      default: false,
-    },
-    startOpen: {
       type: Boolean,
       default: false,
     },
@@ -97,13 +102,21 @@ export default {
   },
 
   mounted() {
-    this.isNodeOpen = this.startOpen;
+    setTimeout(() => {
+      this.isNodeOpen = this.startOpen;
+    }, 500);
   },
 
   methods: {
     onItemClick() {
       this.isNodeOpen = !this.isNodeOpen;
       this.$emit('itemClick', this.chapter);
+    },
+    openNode() {
+      this.isNodeOpen = true;
+    },
+    closeNode() {
+      this.isNodeOpen = false;
     },
   },
 };
@@ -120,26 +133,49 @@ export default {
  * -------------------------------------------------------------------------- */
 
   .chapter-tree-node.vertical {
-    height: 225px;
+    height: 625px;
   }
   .chapter-tree-node.vertical .container {
     padding-bottom: 0;
   }
   .chapter-tree-node.vertical .branch {
     border-right: 2px solid #525252;
-    min-height: 100px;
+    height: 300px;
     margin-right: 11px;
   }
   .chapter-tree-node.vertical .branch.hidden {
     border-right: inherit;
-    min-height: 100px;
+    height: 300px;
     margin-right: 11px;
   }
+
   .chapter-tree-node.vertical .node-content-panel {
     height: 100%;
   }
-  .chapter-tree-node.vertical .node-content-card {
+  .chapter-tree-node.vertical .content-card-wrapper {
+    overflow-x: hidden;
+    margin: 0 auto 0 0;
+  }
+  .chapter-tree-node.vertical .content-card-wrapper::before {
+    content: "";
+    position: relative;
+    top: 2px;
+    left: -4px;
+    margin-top: -5px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent white transparent transparent;
+  }
+  .chapter-tree-node.vertical .content-card {
     background-color: #ffffff;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.2);
+    padding: 12px 0;
+    margin-left: -4px;
+    width: 510px;
+    height: 525px !important;
+  }
+  .chapter-tree-node.vertical .content-fringe {
+    text-align: left;
   }
 
 /* -----------------------------------------------------------------------------

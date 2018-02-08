@@ -16,7 +16,7 @@
           v-bind:mobileBreakPoint="600"
           v-model="isFullViewOpen">
 
-        <div>Full View</div>
+        <div>The Big Picture</div>
       </v-navigation-drawer>
 
       <!------------------------------>
@@ -31,7 +31,7 @@
             </router-link>
           </div>
 
-          <chapter-tree-stepper v-bind:chapters="chapterItems" v-bind:vertical="true" />
+          <chapter-tree-stepper v-bind:chapters="chapterItems" v-bind:startAt="1" v-bind:vertical="true" />
         </v-flex>
       </v-layout>
 
