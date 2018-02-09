@@ -1,6 +1,10 @@
 <template>
   <div v-if="hasChapters"
-      v-bind:class="['chapter-tree-stepper', { vertical: this.vertical, horizontal: !this.vertical, mini: this.mini }]">
+      v-bind:class="['chapter-tree-stepper', {
+        vertical: this.vertical,
+        horizontal: !this.vertical,
+        mini: this.mini,
+      }]">
 
     <!-------------------->
     <!-- Mini Tree Mode -->
@@ -11,7 +15,7 @@
             v-bind:chapter="chapter"
             v-bind:index="index + 1"
             v-bind:key="'node-' + chapter.id"
-            v-on:itemClick="onChapterNodeClick" />
+            v-on:nodeClick="onChapterNodeClick" />
         <v-divider v-if="index < chapters.length - 1"></v-divider>
       </template>
     </template>
@@ -33,14 +37,15 @@
       </v-btn>
 
       <!-- Chapter Tree -->
-      <div class="chapter-tree-container">
+      <div v-bind:style="containerStyleSettings" class="chapter-tree-container">
         <div class="chapter-tree-canvas" ref="treeCanvas">
           <template v-for="(chapter, index) in chapters" v-if="index <= activeIndex + 1">
             <chapter-tree-node
                 ref="treeNode"
                 v-bind:chapter="chapter"
                 v-bind:index="index + 1"
-                v-bind:startOpen="index + 1 === activeIndex"
+                v-bind:frameH="containerH"
+                v-bind:startOpen="alwaysOpenNode || (index + 1 === activeIndex)"
                 v-bind:vertical="true"
                 v-bind:round="true"
                 v-bind:key="'node-' + chapter.id"
@@ -71,6 +76,7 @@ export default {
   data() {
     return {
       activeIndex: 0,
+      containerH: 625,
     };
   },
 
@@ -90,6 +96,10 @@ export default {
     vertical: {
       type: Boolean,
       default: false,
+    },
+    openStyle: {
+      type: String,
+      default: 'open-close', // 'open-close', 'open', 'always-open'
     },
   },
 
@@ -119,6 +129,12 @@ export default {
     treeCanvas() {
       return this.$refs.treeCanvas;
     },
+    alwaysOpenNode() {
+      return this.openStyle === 'always-open';
+    },
+    containerStyleSettings() {
+      return `height:${this.containerH}px;`;
+    },
   },
 
   mounted() {
@@ -131,36 +147,44 @@ export default {
     },
     prev() {
       if (this.prevChapter) {
-        const activeTreeNode = this.$refs.treeNode[this.activeIndex - 1];
-        if (activeTreeNode) activeTreeNode.closeNode();
+        if (this.openStyle === 'open-close') {
+          const activeTreeNode = this.$refs.treeNode[this.activeIndex - 1];
+          if (activeTreeNode) activeTreeNode.closeNode();
+        }
 
         setTimeout(() => {
           this.activeIndex -= 1;
-          const targetY = (this.activeIndex - 1) * 625;
+          const targetY = (this.activeIndex - 1) * this.containerH;
           this.treeCanvas.style.transform = (`translateY(-${targetY}px)`);
 
-          setTimeout(() => {
-            const prevTreeNode = this.$refs.treeNode[this.activeIndex - 1];
-            if (prevTreeNode) prevTreeNode.openNode();
-          }, 800);
+          if (this.openStyle !== 'always-open') {
+            setTimeout(() => {
+              const prevTreeNode = this.$refs.treeNode[this.activeIndex - 1];
+              if (prevTreeNode) prevTreeNode.openNode();
+            }, 800);
+          }
 
         }, 200);
       }
     },
     next() {
       if (this.nextChapter) {
-        const activeTreeNode = this.$refs.treeNode[this.activeIndex - 1];
-        if (activeTreeNode) activeTreeNode.closeNode();
+        if (this.openStyle === 'open-close') {
+          const activeTreeNode = this.$refs.treeNode[this.activeIndex - 1];
+          if (activeTreeNode) activeTreeNode.closeNode();
+        }
 
         setTimeout(() => {
-          const targetY = this.activeIndex * 625;
+          const targetY = this.activeIndex * this.containerH;
           this.treeCanvas.style.transform = (`translateY(-${targetY}px)`);
           this.activeIndex += 1;
 
-          setTimeout(() => {
-            const nextTreeNode = this.$refs.treeNode[this.activeIndex - 1];
-            if (nextTreeNode) nextTreeNode.openNode();
-          }, 800);
+          if (this.openStyle !== 'always-open') {
+            setTimeout(() => {
+              const nextTreeNode = this.$refs.treeNode[this.activeIndex - 1];
+              if (nextTreeNode) nextTreeNode.openNode();
+            }, 800);
+          }
 
         }, 200);
       }
@@ -188,7 +212,6 @@ export default {
 
   .chapter-tree-stepper.vertical .chapter-tree-container {
     background-color: rgba(77, 129, 175, 0.4);
-    height: 625px;
     overflow-y: hidden;
   }
   .chapter-tree-stepper.vertical .chapter-tree-canvas {

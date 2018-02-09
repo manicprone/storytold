@@ -1,9 +1,10 @@
 <template>
   <div v-if="chapter"
+      v-bind:style="nodeFrameStyleSettings"
       v-bind:class="['chapter-tree-node', {
         vertical: this.vertical,
         horizontal: !this.vertical,
-        round: this.round
+        round: this.round,
       }]">
 
     <!-- Vertical -->
@@ -12,17 +13,21 @@
         <v-flex xs2>
           <v-layout row>
             <v-flex xs12>
-              <div v-bind:class="['branch', { hidden:!hasPrev }]">&nbsp;</div>
+              <div v-bind:style="nodeBranchStyleSettings"
+                   v-bind:class="['branch', { hidden:!hasPrev }]">&nbsp;</div>
             </v-flex>
           </v-layout>
           <v-layout row>
             <v-flex xs12>
-              <div class="node-object" v-on:click="onItemClick">{{ index }}</div>
+              <div class="node-object"
+                   v-bind:style="nodeObjectStyleSettings"
+                   v-on:click="onNodeClick">{{ index }}</div>
             </v-flex>
           </v-layout>
           <v-layout row>
             <v-flex xs12>
-              <div v-bind:class="['branch', { hidden:!hasNext }]">&nbsp;</div>
+              <div v-bind:style="nodeBranchStyleSettings"
+                   v-bind:class="['branch', { hidden:!hasNext }]">&nbsp;</div>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -50,7 +55,7 @@
     <!-- Horizontal -->
     <template v-else>
       <div class="node-container">
-        <div class="node-object">
+        <div class="node-object" v-bind:style="nodeObjectStyleSettings">
           <div>{{ index }}</div>
         </div>
       </div>
@@ -66,6 +71,8 @@ export default {
   data() {
     return {
       isNodeOpen: false,
+      nodeObjectH: (this.round) ? 25 : 28,
+      nodeObjectW: (this.round) ? 25 : 60,
     };
   },
 
@@ -90,6 +97,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    frameH: {
+      type: Number,
+      default: 625,
+    },
   },
 
   computed: {
@@ -98,6 +109,16 @@ export default {
     },
     hasNext() {
       return true;
+    },
+    nodeFrameStyleSettings() {
+      return (this.vertical) ? `height:${this.frameH}px;` : '';
+    },
+    nodeObjectStyleSettings() {
+      return `height:${this.nodeObjectH}px;width:${this.nodeObjectW}px;`;
+    },
+    nodeBranchStyleSettings() {
+      const branchH = (this.frameH - this.nodeObjectH) / 2;
+      return `height:${branchH}px;`;
     },
   },
 
@@ -108,9 +129,9 @@ export default {
   },
 
   methods: {
-    onItemClick() {
+    onNodeClick() {
       this.isNodeOpen = !this.isNodeOpen;
-      this.$emit('itemClick', this.chapter);
+      this.$emit('nodeClick', this.chapter);
     },
     openNode() {
       this.isNodeOpen = true;
@@ -128,24 +149,43 @@ export default {
     height: auto;
   }
 
+  /* Rectangular Node Style */
+  .node-object {
+    font-size: 12px;
+    line-height: 26px;
+    text-align: center;
+    background-color: #d9d9d9;
+    border: 1px solid #cccccc;
+    cursor: pointer;
+  }
+
+  /* Round Node Style */
+  .chapter-tree-node.round .node-object {
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 24px;
+    text-align: center;
+    background-color: #727272;
+    border: 1px solid #727272;
+    border-radius: 50%;
+    margin: 0 0 0 auto;
+    cursor: pointer;
+  }
+
 /* -----------------------------------------------------------------------------
  * Vertical
  * -------------------------------------------------------------------------- */
 
-  .chapter-tree-node.vertical {
-    height: 625px;
-  }
   .chapter-tree-node.vertical .container {
     padding-bottom: 0;
   }
   .chapter-tree-node.vertical .branch {
-    border-right: 2px solid #525252;
-    height: 300px;
+    border-right: 2px solid #727272;
     margin-right: 11px;
   }
   .chapter-tree-node.vertical .branch.hidden {
     border-right: inherit;
-    height: 300px;
     margin-right: 11px;
   }
 
@@ -171,8 +211,8 @@ export default {
     box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.2);
     padding: 12px 0;
     margin-left: -4px;
-    width: 510px;
-    height: 525px !important;
+    max-width: 510px;
+    min-height: 100px;
   }
   .chapter-tree-node.vertical .content-fringe {
     text-align: left;
@@ -181,35 +221,5 @@ export default {
 /* -----------------------------------------------------------------------------
  * Horizontal
  * -------------------------------------------------------------------------- */
-
-  /* Default Node Style */
-  .chapter-tree-node .node-container {
-  }
-
-  .node-object {
-    font-size: 12px;
-    line-height: 26px;
-    text-align: center;
-    background-color: #d9d9d9;
-    border: 1px solid #cccccc;
-    height: 28px;
-    width: 60px;
-    cursor: pointer;
-  }
-
-  /* Round Node Style */
-  .chapter-tree-node.round .node-object {
-    font-size: 10px;
-    font-weight: 500;
-    line-height: 24px;
-    text-align: center;
-    background-color: #d9d9d9;
-    border: 1px solid #d1d1d1;
-    border-radius: 50%;
-    margin: 0 0 0 auto;
-    height: 25px;
-    width: 25px;
-    cursor: pointer;
-  }
 
 </style>

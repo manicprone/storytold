@@ -31,7 +31,10 @@
             </router-link>
           </div>
 
-          <chapter-tree-stepper v-bind:chapters="chapterItems" v-bind:startAt="1" v-bind:vertical="true" />
+          <chapter-tree-stepper
+              v-bind:chapters="chapterItems"
+              v-bind:startAt="1"
+              v-bind:vertical="true" />
         </v-flex>
       </v-layout>
 
@@ -64,8 +67,8 @@ export default {
 
   data() {
     return {
-      isFullViewOpen: true,
-      isBioViewOpen: true,
+      isFullViewOpen: false,
+      isBioViewOpen: false,
       errorMessage: null,
     };
   },
