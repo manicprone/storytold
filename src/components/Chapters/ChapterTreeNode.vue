@@ -36,12 +36,12 @@
             <transition name="draw-x">
               <v-container fill-height class="content-card-wrapper" v-show="isNodeOpen">
                 <v-layout fill-height>
-                  <v-flex xs9>
+                  <v-flex xs11 sm9>
                     <v-card class="content-card">
                       {{ chapter.title }}
                     </v-card>
                   </v-flex>
-                  <v-flex xs3 class="content-fringe">
+                  <v-flex sm3 hidden-xs-only class="content-fringe">
                     project lists
                   </v-flex>
                 </v-layout>
@@ -85,6 +85,10 @@ export default {
       type: Number,
       default: null,
     },
+    totalChapters: {
+      type: Number,
+      default: 1,
+    },
     startOpen: {
       type: Boolean,
       default: false,
@@ -108,7 +112,7 @@ export default {
       return this.index > 1;
     },
     hasNext() {
-      return true;
+      return (this.totalChapters > 0 && this.index < this.totalChapters);
     },
     nodeFrameStyleSettings() {
       return (this.vertical) ? `height:${this.frameH}px;` : '';
@@ -130,7 +134,7 @@ export default {
 
   methods: {
     onNodeClick() {
-      this.isNodeOpen = !this.isNodeOpen;
+      // this.isNodeOpen = !this.isNodeOpen;
       this.$emit('nodeClick', this.chapter);
     },
     openNode() {
@@ -211,8 +215,10 @@ export default {
     box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.2);
     padding: 12px 0;
     margin-left: -4px;
-    width: 510px;
     min-height: 100px;
+    /*max-width: 600px;*/
+    /* TODO: Handle hard width in code !!! (This allows the "draw" effect) */
+    width: 510px;
   }
   .chapter-tree-node.vertical .content-fringe {
     text-align: left;

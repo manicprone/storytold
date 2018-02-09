@@ -13,8 +13,11 @@
       <!--------------------->
       <v-navigation-drawer fixed persistent light enable-resize-watcher
           class="full-view-panel"
-          v-bind:mobileBreakPoint="600"
           v-model="isFullViewOpen">
+      <!-- <v-navigation-drawer fixed persistent light enable-resize-watcher
+          class="full-view-panel"
+          v-bind:mobileBreakPoint="600"
+          v-model="isFullViewOpen"> -->
 
         <div>The Big Picture</div>
       </v-navigation-drawer>
@@ -31,10 +34,10 @@
             </router-link>
           </div>
 
-          <chapter-tree-stepper
+          <story-stepper
               v-bind:story="storyToView"
-              v-bind:chapters="chapterItems"
               v-bind:startAt="0"
+              v-bind:chapters="chapterItems"
               v-bind:vertical="true" />
         </v-flex>
       </v-layout>
@@ -44,8 +47,11 @@
       <!-------------------->
       <v-navigation-drawer fixed right persistent light enable-resize-watcher
           class="bio-view-panel"
-          v-bind:mobileBreakPoint="960"
           v-model="isBioViewOpen">
+      <!-- <v-navigation-drawer fixed right persistent light enable-resize-watcher
+          class="bio-view-panel"
+          v-bind:mobileBreakPoint="960"
+          v-model="isBioViewOpen"> -->
 
         <div>Bio View</div>
       </v-navigation-drawer>
@@ -55,15 +61,13 @@
 </template>
 
 <script>
-import ChapterTree from '../components/Chapters/ChapterTree.vue';
-import ChapterTreeStepper from '../components/Chapters/ChapterTreeStepper.vue';
+import StoryStepper from '../components/Chapters/StoryStepper.vue';
 
 export default {
   name: 'ViewStoryPage',
 
   components: {
-    ChapterTree,
-    ChapterTreeStepper,
+    StoryStepper,
   },
 
   data() {

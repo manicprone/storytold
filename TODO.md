@@ -3,7 +3,18 @@
 
 ## Upcoming Features
 
-* Add functionality to add/remove/order Chapters within a Story.
+* Finalize StoryStepper / Chapter Tree components (also, decide if combine or separate them).
+
+  - Handle color / styles.
+
+  - Add logic to dynamically generate the hard widths of the nodes.
+    (Or, perhaps we only need to depend upon the "draw" effect for larger sizes !?!?!?)
+
+* Implement "The Big Picture" panel (full view tree).
+
+* Add functionality to add/remove/order Chapters within a Story (e.g. sortable).
+
+* Implement the first stab at the Bio panel.
 
 <br />
 
