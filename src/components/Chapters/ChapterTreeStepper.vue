@@ -24,21 +24,30 @@
     <!-- Default Tree Mode -->
     <!----------------------->
     <template v-else>
-      <!-- Story Lead -->
-      <div class="story-lead-wrapper">
-        <transition name="fade-fast" mode="out-in">
-          <div class="story-lead">Start the story...</div>
-        </transition>
+      <!-- Prev Chapter Controls -->
+      <div class="step-controls-container">
+        <v-btn flat v-on:click.native.stop="prev" class="btn-prev-chapter" v-show="activeIndex > 0">
+          <v-icon>arrow_upward</v-icon>
+        </v-btn>
       </div>
 
-      <!-- Prev Chapter Controls -->
-      <v-btn flat v-on:click.native.stop="prev" class="btn-prev-chapter" v-if="prevChapter">
-        <v-icon>arrow_upward</v-icon>
-      </v-btn>
-
-      <!-- Chapter Tree -->
+      <!-- Container -->
       <div v-bind:style="containerStyleSettings" class="chapter-tree-container">
-        <div class="chapter-tree-canvas" ref="treeCanvas">
+        <div class="chapter-tree-canvas"
+            ref="treeCanvas"
+            v-bind:style="canvasStyleSettings">
+
+          <!-- Story Lead -->
+          <div v-bind:style="storyLeadStyleSettings" class="story-lead-wrapper">
+            <transition name="fade" mode="out-in">
+              <div class="story-lead" v-show="isLeadOpen">
+                <div class="story-title">{{ story.title }}</div>
+                <div class="story-description" v-if="story.description">{{ story.description }}</div>
+              </div>
+            </transition>
+          </div>
+
+          <!-- Chapter Tree -->
           <template v-for="(chapter, index) in chapters" v-if="index <= activeIndex + 1">
             <chapter-tree-node
                 ref="treeNode"
@@ -55,9 +64,11 @@
       </div>
 
       <!-- Next Chapter Controls -->
-      <v-btn flat v-on:click.native.stop="next" class="btn-next-chapter" v-if="nextChapter">
-        <v-icon>arrow_downward</v-icon>
-      </v-btn>
+      <div class="step-controls-container">
+        <v-btn flat v-on:click.native.stop="next" class="btn-next-chapter" v-if="nextChapter">
+          <v-icon>arrow_downward</v-icon>
+        </v-btn>
+      </div>
     </template>
 
   </div>
@@ -76,11 +87,18 @@ export default {
   data() {
     return {
       activeIndex: 0,
+      activeCanvasY: 0,
       containerH: 625,
+      leadH: 275,
+      isLeadOpen: false,
     };
   },
 
   props: {
+    story: {
+      type: Object,
+      default: null,
+    },
     chapters: {
       type: Array,
       default: null,
@@ -97,9 +115,25 @@ export default {
       type: Boolean,
       default: false,
     },
+    showLead: {
+      type: Boolean,
+      default: true,
+    },
     openStyle: {
       type: String,
       default: 'open-close', // 'open-close', 'open', 'always-open'
+    },
+    stepSpeed: {
+      type: Number,
+      default: 800, // milliseconds
+    },
+    openSpeed: {
+      type: Number,
+      default: 500, // milliseconds
+    },
+    closeSpeed: {
+      type: Number,
+      default: 500, // milliseconds
     },
   },
 
@@ -135,10 +169,21 @@ export default {
     containerStyleSettings() {
       return `height:${this.containerH}px;`;
     },
+    canvasStyleSettings() {
+      return (this.vertical)
+        ? `transform:translateY(${this.activeCanvasY}px);-webkit-transform:translateY(${this.activeCanvasY}px);`
+        : '';
+    },
+    storyLeadStyleSettings() {
+      const nodeObjectH = 25;
+      this.leadH = (this.containerH - (nodeObjectH * 3)) / 2;
+      return `height:${this.leadH}px;`;
+    },
   },
 
   mounted() {
     this.activeIndex = this.startAt;
+    this.isLeadOpen = (this.activeIndex === 0 && this.showLead);
   },
 
   methods: {
@@ -146,21 +191,32 @@ export default {
       // console.log('[ChapterTreeStepper] chapter node clicked =>', chapter);
     },
     prev() {
-      if (this.prevChapter) {
+      if (this.activeIndex > 0) {
+        // Close active node...
         if (this.openStyle === 'open-close') {
           const activeTreeNode = this.$refs.treeNode[this.activeIndex - 1];
           if (activeTreeNode) activeTreeNode.closeNode();
         }
 
         setTimeout(() => {
+          // Step to prev...
           this.activeIndex -= 1;
-          const targetY = (this.activeIndex - 1) * this.containerH;
-          this.treeCanvas.style.transform = (`translateY(-${targetY}px)`);
+          this.activeCanvasY = (this.activeIndex > 0)
+              ? -1 * (((this.activeIndex - 1) * this.containerH) + this.leadH)
+              : 0;
 
-          if (this.openStyle !== 'always-open') {
+          // Open node...
+          if (this.openStyle !== 'always-open' && this.activeIndex > 0) {
             setTimeout(() => {
               const prevTreeNode = this.$refs.treeNode[this.activeIndex - 1];
               if (prevTreeNode) prevTreeNode.openNode();
+            }, 800);
+          }
+
+          // Open lead...
+          if (this.showLead && this.activeIndex === 0) {
+            setTimeout(() => {
+              this.isLeadOpen = true;
             }, 800);
           }
 
@@ -169,16 +225,23 @@ export default {
     },
     next() {
       if (this.nextChapter) {
-        if (this.openStyle === 'open-close') {
+        // Close lead...
+        this.isLeadOpen = false;
+
+        // Close active node...
+        if (this.openStyle === 'open-close' && this.activeIndex > 0) {
           const activeTreeNode = this.$refs.treeNode[this.activeIndex - 1];
           if (activeTreeNode) activeTreeNode.closeNode();
         }
 
         setTimeout(() => {
-          const targetY = this.activeIndex * this.containerH;
-          this.treeCanvas.style.transform = (`translateY(-${targetY}px)`);
+          // Step to next...
+          this.activeCanvasY = (this.activeIndex === 0)
+              ? -1 * this.leadH
+              : -1 * ((this.activeIndex * this.containerH) + this.leadH);
           this.activeIndex += 1;
 
+          // Open node...
           if (this.openStyle !== 'always-open') {
             setTimeout(() => {
               const nextTreeNode = this.$refs.treeNode[this.activeIndex - 1];
@@ -199,38 +262,62 @@ export default {
  * Vertical
  * -------------------------------------------------------------------------- */
 
+  /* Story Lead */
   .chapter-tree-stepper.vertical .story-lead-wrapper {
-   height: 100px;
+    padding-top: 50px;
   }
   .chapter-tree-stepper.vertical .story-lead {
-   background-color: #d9d9d9;
-   max-height: 80px;
-   width: 75%;
-   margin: auto;
-   overflow-y: scroll;
+    background-color: #d9d9d9;
+    border-radius: 4px;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 550px;
+    height: 100%;
+    overflow-y: scroll;
+  }
+  .chapter-tree-stepper.vertical .story-lead .story-title {
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .chapter-tree-stepper.vertical .story-lead .story-subtitle {
+    font-size: 16px;
+  }
+  .chapter-tree-stepper.vertical .story-lead .story-description {
+    font-size: 16px;
+    margin-top: 12px;
   }
 
+  /* Stepper */
   .chapter-tree-stepper.vertical .chapter-tree-container {
     background-color: rgba(77, 129, 175, 0.4);
     overflow-y: hidden;
   }
   .chapter-tree-stepper.vertical .chapter-tree-canvas {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
+    /*-webkit-transform: translateY(0);
+    transform: translateY(0);*/
     -webkit-transition: -webkit-transform 0.8s;
     transition: transform 0.8s;
   }
 
+  /* Stepper Controls */
+  .chapter-tree-stepper.vertical .step-controls-container {
+    background-color: #d9d9d9;
+    height: 36px;
+  }
   .chapter-tree-stepper.vertical .btn-prev-chapter {
-    position: fixed;
+    margin: 0;
+    padding: 0;
+    /*position: fixed;
     right: 10px;
-    z-index: 200;
+    z-index: 200;*/
   }
   .chapter-tree-stepper.vertical .btn-next-chapter {
-    position: fixed;
+    margin: 0;
+    padding: 0;
+    /*position: fixed;
     right: 10px;
     bottom: 40px;
-    z-index: 200;
+    z-index: 200;*/
   }
 
 /* -----------------------------------------------------------------------------

@@ -32,8 +32,9 @@
           </div>
 
           <chapter-tree-stepper
+              v-bind:story="storyToView"
               v-bind:chapters="chapterItems"
-              v-bind:startAt="1"
+              v-bind:startAt="0"
               v-bind:vertical="true" />
         </v-flex>
       </v-layout>

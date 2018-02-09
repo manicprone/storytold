@@ -166,8 +166,8 @@ export default {
     font-weight: 600;
     line-height: 24px;
     text-align: center;
-    background-color: #727272;
-    border: 1px solid #727272;
+    background-color: #626262;
+    border: 1px solid #626262;
     border-radius: 50%;
     margin: 0 0 0 auto;
     cursor: pointer;
@@ -211,11 +211,12 @@ export default {
     box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.2);
     padding: 12px 0;
     margin-left: -4px;
-    max-width: 510px;
+    width: 510px;
     min-height: 100px;
   }
   .chapter-tree-node.vertical .content-fringe {
     text-align: left;
+    margin-left: 20px;
   }
 
 /* -----------------------------------------------------------------------------
