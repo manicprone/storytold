@@ -1,5 +1,8 @@
 <template>
-  <v-container fluid fill-height v-bind:class="baseClasses">
+  <v-container fluid fill-height
+      v-bind:class="['manage-chapters-page', {
+        'with-list-left': isListPanelOpen,
+      }]">
 
     <!---------------->
     <!-- List Panel -->
@@ -37,7 +40,7 @@
         </v-flex>
 
         <!-- Active Item View -->
-        <v-flex xs12 sm9 md8 class="active-item-view" key="editOn" v-else>
+        <v-flex xs12 sm9 md8 key="editOn" v-else>
           <admin-content-editor
               v-bind:item="itemToEdit"
               v-bind:resourceType="'user-data'"
@@ -73,9 +76,6 @@ export default {
   },
 
   computed: {
-    baseClasses() {
-      return ['manage-chapters-page', { 'with-list-left': this.isListPanelOpen }];
-    },
     hasChapters() {
       return (this.totalChapters > 0);
     },

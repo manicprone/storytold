@@ -1,5 +1,9 @@
 <template>
-  <v-container fluid fill-height v-bind:class="baseClasses">
+  <v-container fluid fill-height
+      v-bind:class="['view-story-page', {
+        'with-list-left': isFullViewOpen,
+        'with-list-right': isBioViewOpen,
+      }]">
 
     <template v-if="!storyToView">
       <v-layout align-center justify-center>
@@ -11,16 +15,13 @@
       <!--------------------->
       <!-- Full View Panel -->
       <!--------------------->
-      <v-navigation-drawer fixed persistent light enable-resize-watcher
-          class="full-view-panel"
-          v-model="isFullViewOpen">
       <!-- <v-navigation-drawer fixed persistent light enable-resize-watcher
           class="full-view-panel"
           v-bind:mobileBreakPoint="600"
-          v-model="isFullViewOpen"> -->
+          v-model="isFullViewOpen">
 
         <div>The Big Picture</div>
-      </v-navigation-drawer>
+      </v-navigation-drawer> -->
 
       <!------------------------------>
       <!-- Page Content (main view) -->
@@ -34,10 +35,9 @@
             </router-link>
           </div>
 
-          <story-stepper
+          <component v-bind:is="activeViewComponent"
               v-bind:story="storyToView"
               v-bind:startAt="0"
-              v-bind:chapters="chapterItems"
               v-bind:vertical="true" />
         </v-flex>
       </v-layout>
@@ -45,33 +45,34 @@
       <!-------------------->
       <!-- Bio View Panel -->
       <!-------------------->
-      <v-navigation-drawer fixed right persistent light enable-resize-watcher
-          class="bio-view-panel"
-          v-model="isBioViewOpen">
       <!-- <v-navigation-drawer fixed right persistent light enable-resize-watcher
           class="bio-view-panel"
           v-bind:mobileBreakPoint="960"
-          v-model="isBioViewOpen"> -->
+          v-model="isBioViewOpen">
 
         <div>Bio View</div>
-      </v-navigation-drawer>
+      </v-navigation-drawer> -->
     </template>
 
   </v-container>
 </template>
 
 <script>
-import StoryStepper from '../components/Chapters/StoryStepper.vue';
+import StoryScroller from '../components/Stories/StoryScroller.vue';
+import StoryStepper from '../components/Stories/StoryStepper.vue';
 
 export default {
   name: 'ViewStoryPage',
 
   components: {
+    StoryScroller,
     StoryStepper,
   },
 
   data() {
     return {
+      // activeViewComponent: 'StoryStepper',
+      activeViewComponent: 'StoryScroller',
       isFullViewOpen: false,
       isBioViewOpen: false,
       errorMessage: null,
@@ -81,17 +82,8 @@ export default {
   props: ['activeStoryID'],
 
   computed: {
-    baseClasses() {
-      return ['view-story-page', {
-        'with-list-left': this.isFullViewOpen,
-        'with-list-right': this.isBioViewOpen,
-      }];
-    },
     storyToView() {
       return this.$store.getters.storyToView;
-    },
-    chapterItems() {
-      return (this.storyToView && this.storyToView.chapters) ? this.storyToView.chapters : null;
     },
   },
 

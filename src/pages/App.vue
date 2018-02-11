@@ -135,7 +135,7 @@ export default {
     padding-top: 0;
     padding-right: 0;
     padding-left: 0;
-    padding-bottom: 10px;
+    padding-bottom: 0;
   }
 
   /* ----------------------------------------------------------  Page Content */
@@ -255,18 +255,29 @@ export default {
   }
 
 /* -----------------------------------------------------------------------------
- * Editor / Form Styles
+ * Admin Editor / Form Styles
  * -------------------------------------------------------------------------- */
+
+  .admin-editor {
+    padding-bottom: 12px;
+  }
 
   /* --------------------------------------------------------------  Sections */
   .editor-form .section-title {
-   font-size: 1.73em;
-   font-weight: 400;
-   margin-bottom: 40px;
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 35px;
   }
   .editor-form .divider {
-   margin-top: 40px;
-   margin-bottom: 40px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  /* ----------------------------------------------------------------  Labels */
+  .editor-form label {
+    color: rgba(0, 0, 0, .54);
+    font-size: 16px;
+    font-weight: 400;
   }
 
   /* Text Areas (override styles for Vuetify v-text-field textarea) */
@@ -283,6 +294,11 @@ export default {
   }
   .checkbox label {
     font-size: 1em;
+  }
+
+  /* Date Pickers (override styles for Vuetify v-date-picker) */
+  .picker--date .picker__body {
+    /*height: 280px;*/
   }
 
   /* Data Tables (override styles for Vuetify v-data-table) */

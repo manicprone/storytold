@@ -1,5 +1,9 @@
 <template>
-  <v-container fluid fill-height v-bind:class="baseClasses">
+  <v-container fluid fill-height
+      v-bind:class="['manage-story-page with-nav', {
+        'with-list-right': this.isListPanelOpen && !this.isListPanelMini,
+        'with-list-right-mini': this.isListPanelOpen && this.isListPanelMini,
+      }]">
 
     <!-------------->
     <!-- Page Nav -->
@@ -69,7 +73,7 @@
         </v-flex>
 
         <!-- Active Item View -->
-        <v-flex xs12 sm9 md8 class="active-item-view" key="editOn" v-else>
+        <v-flex xs12 sm9 md8 key="editOn" v-else>
           <admin-content-editor
               v-bind:item="storyToEdit"
               v-bind:resourceType="'user-data'"
@@ -87,7 +91,7 @@
 <script>
 import AdminContentEditor from '../components/Admin/AdminContentEditor.vue';
 import AdminContentList from '../components/Admin/AdminContentList.vue';
-import ChapterTree from '../components/Chapters/ChapterTree.vue';
+import ChapterTree from '../components/Stories/ChapterTree.vue';
 
 export default {
   name: 'ManageStoryPage',
@@ -109,12 +113,6 @@ export default {
   props: ['activeStoryID'],
 
   computed: {
-    baseClasses() {
-      return ['manage-story-page with-nav', {
-        'with-list-right': this.isListPanelOpen && !this.isListPanelMini,
-        'with-list-right-mini': this.isListPanelOpen && this.isListPanelMini,
-      }];
-    },
     storyToEdit() {
       return this.$store.getters.itemToEdit;
     },

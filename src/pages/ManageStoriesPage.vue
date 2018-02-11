@@ -1,5 +1,8 @@
 <template>
-  <v-container fluid fill-height v-bind:class="baseClasses">
+  <v-container fluid fill-height
+      v-bind:class="['manage-stories-page', {
+        'with-list-left': isListPanelOpen,
+      }]">
 
     <!---------------->
     <!-- List Panel -->
@@ -37,7 +40,7 @@
         </v-flex>
 
         <!-- Active Item View -->
-        <v-flex xs12 sm9 md8 class="active-item-view" key="quickViewOn" v-else>
+        <v-flex xs12 sm9 md8 key="quickViewOn" v-else>
           <div>
             <router-link v-bind:to="{ name: 'manage-story', params: { activeStoryID: storyToQuickView.id } }">
               <span>Edit Story</span>
@@ -72,9 +75,6 @@ export default {
   },
 
   computed: {
-    baseClasses() {
-      return ['manage-stories-page', { 'with-list-left': this.isListPanelOpen }];
-    },
     hasStories() {
       return (this.totalStories > 0);
     },

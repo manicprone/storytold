@@ -1,25 +1,40 @@
 <template>
-  <div v-if="itemEditing" class="admin-content-editor">
+  <v-container fluid class="admin-editor" v-if="itemEditing">
 
-    <form class="editor-form">
-      <component ref="activeForm"
-          v-bind:is="activeFormName"
-          v-bind:itemEditing="itemEditing"
-          v-bind:isNew="isNew" />
-    </form>
+    <!-- Active Editor Form -->
+    <v-layout row>
+      <v-flex xs12>
+        <form class="editor-form">
+          <component ref="activeForm"
+              v-bind:is="activeFormName"
+              v-bind:itemEditing="itemEditing"
+              v-bind:isNew="isNew" />
+        </form>
+      </v-flex>
+    </v-layout>
 
-    <v-toolbar flat light class="editor-main-controls editor-controls">
-      <editor-feedback v-bind:resource="resourceType" v-bind:autoCloseAfterMillis="5000" />
-      <v-spacer />
-      <v-btn light v-on:click="cancel">Cancel</v-btn>
-      <v-btn light v-on:click="save">Save</v-btn>
-    </v-toolbar>
+    <!-- Cancel, Save Controls -->
+    <v-layout row>
+      <v-flex xs12>
+        <v-toolbar flat light class="editor-main-controls editor-controls">
+          <editor-feedback v-bind:resource="resourceType" v-bind:autoCloseAfterMillis="5000" />
+          <v-spacer />
+          <v-btn light v-on:click="cancel">Cancel</v-btn>
+          <v-btn light v-on:click="save">Save</v-btn>
+        </v-toolbar>
+      </v-flex>
+    </v-layout>
 
-    <div v-if="!isNew" class="editor-delete-controls editor-controls">
-      <v-btn dark error class="button-delete" v-on:click="deleteForever">Delete</v-btn>
-    </div>
+    <!-- Delete Controls -->
+    <v-layout row>
+      <v-flex xs12>
+        <div v-if="!isNew" class="editor-delete-controls editor-controls">
+          <v-btn dark error class="button-delete" v-on:click="deleteForever">Delete</v-btn>
+        </div>
+      </v-flex>
+    </v-layout>
 
-  </div>
+  </v-container>
 </template>
 
 <script>

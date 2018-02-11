@@ -1,5 +1,10 @@
 <template>
-  <div v-if="hasChapters" v-bind:class="baseClasses">
+  <div v-if="hasChapters"
+      v-bind:class="['chapter-tree', {
+        vertical: this.vertical,
+        horizontal: !this.vertical,
+        mini: this.mini,
+      }]">
     <template v-if="mini">
       <template v-for="(chapter, index) in chapters">
         <chapter-tree-node class="tree-node"
@@ -53,9 +58,6 @@ export default {
   },
 
   computed: {
-    baseClasses() {
-      return ['chapter-tree', { vertical: this.vertical, horizontal: !this.vertical, mini: this.mini }];
-    },
     hasChapters() {
       return (this.chapters && this.chapters.length > 0);
     },
