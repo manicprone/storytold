@@ -4,7 +4,7 @@
 
 ## Upcoming Features
 
-* Implement "Scrollable with Menu" view style for ViewStoryPage (StoryScroller).
+* Apply appropriate layout structuring to all `EditorForm` components (and rename to new naming).
 
 * Implement "The Big Picture" panel (full view tree).
 
@@ -30,6 +30,8 @@
 <br />
 
 ## Backlog
+
+* Create seed data sets for `demo`. Include the "A Software Developer Journey" story/chapter data !!!
 
 * Move the EditorFeedback component (inside AdminEditor) outside of the controls section.
 
