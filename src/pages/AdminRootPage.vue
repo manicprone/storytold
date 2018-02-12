@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid fill-height v-bind:class="baseClasses">
+  <v-container fluid fill-height class="admin-root-page with-nav">
 
     <!-------------->
     <!-- Page Nav -->
@@ -37,9 +37,6 @@ export default {
   name: 'AdminRootPage',
 
   computed: {
-    baseClasses() {
-      return 'admin-root-page with-nav';
-    },
   },
 
   methods: {

@@ -27,7 +27,7 @@ export default {
     },
     itemStyle: {
       type: String,
-      default: 'anchor', // options: ['anchor', 'div', 'card']
+      default: 'anchor', // 'anchor' | 'div' | 'card'
     },
   },
 

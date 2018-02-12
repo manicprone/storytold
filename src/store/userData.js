@@ -11,7 +11,7 @@ const baseURL = 'http://localhost:3005';
 const Ajax = new AjaxService({ baseURL });
 
 // TODO: Move to app settings (to be loaded in app store) !!!
-const defaultPageSize = 10;
+const defaultPageSize = 20;
 
 // -----------------------------------------------------------------------------
 // The data being managed by the active (authorized) user

@@ -1,5 +1,9 @@
 <template>
-  <v-container fluid fill-height v-bind:class="baseClasses">
+  <v-container fluid fill-height
+      v-bind:class="['view-story-page', {
+        'with-list-left': isFullViewOpen,
+        'with-list-right': isBioViewOpen,
+      }]">
 
     <template v-if="!storyToView">
       <v-layout align-center justify-center>
@@ -11,61 +15,66 @@
       <!--------------------->
       <!-- Full View Panel -->
       <!--------------------->
-      <v-navigation-drawer fixed persistent light enable-resize-watcher
+      <!-- <v-navigation-drawer fixed persistent light enable-resize-watcher
           class="full-view-panel"
           v-bind:mobileBreakPoint="600"
           v-model="isFullViewOpen">
 
-        <div>Full View</div>
-      </v-navigation-drawer>
+        <div>The Big Picture</div>
+      </v-navigation-drawer> -->
 
       <!------------------------------>
       <!-- Page Content (main view) -->
       <!------------------------------>
       <v-layout justify-center class="page-content">
-        <v-flex xs12 class="main-view">
-          <div>View: {{ activeStoryID }}</div>
+        <v-flex xs12>
+          <div>{{ storyToView.title }}</div>
           <div>
             <router-link v-bind:to="{ name: 'manage-story', params: { activeStoryID: storyToView.id } }">
               <span><< Back</span>
             </router-link>
           </div>
 
-          <chapter-tree-stepper v-bind:chapters="chapterItems" v-bind:vertical="true" />
+          <component v-bind:is="activeViewComponent"
+              v-bind:story="storyToView"
+              v-bind:startAt="0"
+              v-bind:vertical="true" />
         </v-flex>
       </v-layout>
 
       <!-------------------->
       <!-- Bio View Panel -->
       <!-------------------->
-      <v-navigation-drawer fixed right persistent light enable-resize-watcher
+      <!-- <v-navigation-drawer fixed right persistent light enable-resize-watcher
           class="bio-view-panel"
           v-bind:mobileBreakPoint="960"
           v-model="isBioViewOpen">
 
         <div>Bio View</div>
-      </v-navigation-drawer>
+      </v-navigation-drawer> -->
     </template>
 
   </v-container>
 </template>
 
 <script>
-import ChapterTree from '../components/Chapters/ChapterTree.vue';
-import ChapterTreeStepper from '../components/Chapters/ChapterTreeStepper.vue';
+import StoryScroller from '../components/Stories/StoryScroller.vue';
+import StoryStepper from '../components/Stories/StoryStepper.vue';
 
 export default {
   name: 'ViewStoryPage',
 
   components: {
-    ChapterTree,
-    ChapterTreeStepper,
+    StoryScroller,
+    StoryStepper,
   },
 
   data() {
     return {
-      isFullViewOpen: true,
-      isBioViewOpen: true,
+      // activeViewComponent: 'StoryStepper',
+      activeViewComponent: 'StoryScroller',
+      isFullViewOpen: false,
+      isBioViewOpen: false,
       errorMessage: null,
     };
   },
@@ -73,17 +82,8 @@ export default {
   props: ['activeStoryID'],
 
   computed: {
-    baseClasses() {
-      return ['view-story-page', {
-        'with-list-left': this.isFullViewOpen,
-        'with-list-right': this.isBioViewOpen,
-      }];
-    },
     storyToView() {
       return this.$store.getters.storyToView;
-    },
-    chapterItems() {
-      return (this.storyToView && this.storyToView.chapters) ? this.storyToView.chapters : null;
     },
   },
 

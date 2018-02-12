@@ -3,11 +3,11 @@
 
     <template v-if="hasItems">
       <admin-content-list-item v-for="item in items"
-            v-bind:item="item"
-            v-bind:key="'list-item-' + item.id"
-            v-bind:displayField="displayField"
-            v-bind:itemStyle="itemStyle"
-            v-on:itemClick="onItemClick" />
+          v-bind:item="item"
+          v-bind:key="'list-item-' + item.id"
+          v-bind:displayField="displayField"
+          v-bind:itemStyle="itemStyle"
+          v-on:itemClick="onItemClick" />
     </template>
 
     <template v-else>

@@ -1,5 +1,10 @@
 <template>
-  <div v-if="hasChapters" v-bind:class="baseClasses">
+  <div v-if="hasChapters"
+      v-bind:class="['chapter-tree', {
+        vertical: this.vertical,
+        horizontal: !this.vertical,
+        mini: this.mini,
+      }]">
     <template v-if="mini">
       <template v-for="(chapter, index) in chapters">
         <chapter-tree-node class="tree-node"
@@ -12,14 +17,11 @@
     </template>
 
     <template v-else>
-      <v-stepper vertical flat v-model="activeIndex">
-        <template v-for="(chapter, index) in chapters">
-          <v-stepper-step v-bind:step="index + 1" />
-          <v-stepper-content v-bind:step="index + 1">
-            {{ chapter.title }}
-          </v-stepper-content>
-        </template>
-      </v-stepper>
+      <chapter-tree-node class="tree-node"
+          v-bind:chapter="activeChapter"
+          v-bind:index="chapterIndex + 1"
+          v-bind:vertical="vertical"
+          v-bind:round="true" />
     </template>
   </div>
 </template>
@@ -28,7 +30,7 @@
 import ChapterTreeNode from './ChapterTreeNode.vue';
 
 export default {
-  name: 'ChapterTreeStepper',
+  name: 'ChapterTree',
 
   components: {
     ChapterTreeNode,
@@ -36,7 +38,7 @@ export default {
 
   data() {
     return {
-      activeIndex: 1,
+      chapterIndex: 0,
     };
   },
 
@@ -56,20 +58,17 @@ export default {
   },
 
   computed: {
-    baseClasses() {
-      return ['chapter-tree-stepper', { vertical: this.vertical, horizontal: !this.vertical, mini: this.mini }];
-    },
     hasChapters() {
       return (this.chapters && this.chapters.length > 0);
     },
     activeChapter() {
-      return (this.hasChapters) ? this.chapters[this.activeIndex - 1] : null;
+      return (this.hasChapters) ? this.chapters[this.chapterIndex] : null;
     },
   },
 
   methods: {
     onChapterNodeClick(chapter) {
-      console.log('[ChapterTreeStepper] chapter node clicked =>', chapter);
+      console.log('[ChapterTree] chapter node clicked =>', chapter);
     },
   },
 };
@@ -81,14 +80,27 @@ export default {
  * Vertical
  * -------------------------------------------------------------------------- */
 
-  .chapter-tree-stepper.vertical {
+  .chapter-tree.vertical .tree-node {
+    display: block;
   }
 
 /* -----------------------------------------------------------------------------
  * Horizontal
  * -------------------------------------------------------------------------- */
 
-  .chapter-tree-stepper.horizontal {
+  .chapter-tree.horizontal {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .chapter-tree.horizontal .tree-node {
+    display: inline-block;
+  }
+  .chapter-tree.horizontal .divider {
+    display: inline-block;
+    margin-bottom: 3px;
+    width: 30px;
   }
 
 </style>
