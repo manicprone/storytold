@@ -17,12 +17,12 @@
     <!-- Tags, Descriptions -->
     <v-container fluid grid-list-lg class="content-container">
       <v-layout row>
-        <v-flex xs5>
+        <v-flex xs5 v-if="showTags">
           <div>
-            Tags, et al
+            Tags...
           </div>
         </v-flex>
-        <v-flex xs7>
+        <v-flex v-bind:class="[showTags ? 'xs7' : 'xs12']">
           <div class="chapter-body">
             {{ chapter.description }}
           </div>
@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       isCardExpanded: false,
+      showTags: false,
     };
   },
 
@@ -114,5 +115,6 @@ export default {
     padding-right: 24px;
     padding-bottom: 20px;
   }
+  
 
 </style>

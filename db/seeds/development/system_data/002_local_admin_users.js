@@ -86,7 +86,6 @@ exports.seed = function seed(knex, Promise) {
     // Seed user...
     return knex(tableNameUsers).insert({
       ...userData,
-      last_login_at: timestamp,
       created_at: timestamp,
       updated_at: timestamp,
     }).returning('id').then((userID) => {

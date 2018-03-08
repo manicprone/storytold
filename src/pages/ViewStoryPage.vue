@@ -13,6 +13,18 @@
 
     <template v-else>
       <!--------------------->
+      <!-- Story Title Bar -->
+      <!--------------------->
+      <v-toolbar fixed flat light dense class="story-title-bar">
+        <div>
+          <router-link v-bind:to="{ name: 'manage-story', params: { activeStoryID: storyToView.id } }">
+            <span><< Back</span>
+          </router-link>
+        </div>
+        <div>{{ storyToView.title }}</div>
+      </v-toolbar>
+
+      <!--------------------->
       <!-- Full View Panel -->
       <!--------------------->
       <!-- <v-navigation-drawer fixed persistent light enable-resize-watcher
@@ -28,13 +40,6 @@
       <!------------------------------>
       <v-layout justify-center class="page-content">
         <v-flex xs12>
-          <div>{{ storyToView.title }}</div>
-          <div>
-            <router-link v-bind:to="{ name: 'manage-story', params: { activeStoryID: storyToView.id } }">
-              <span><< Back</span>
-            </router-link>
-          </div>
-
           <component v-bind:is="activeViewComponent"
               v-bind:story="storyToView"
               v-bind:startAt="0"
@@ -107,6 +112,11 @@ export default {
 
 <style scoped>
 
+  /* Story Title Bar */
+  .story-title-bar {
+    background-color: rgba(0, 0, 0, .4) !important;
+  }
+
   /* Full View Panel */
   .full-view-panel {
     width: 240px !important;
@@ -118,9 +128,9 @@ export default {
 
   /* Page Content */
   .page-content {
-    padding-top: 0px;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-top: 48px;
+    padding-left: 0;
+    padding-right: 0;
   }
   .page.with-nav .page-content {
     padding-top: 79px;

@@ -46,6 +46,7 @@ module.exports = {
           { name: 'id', type: 'Number', requiredOr: true },
           { name: 'slug', type: 'String', requiredOr: true },
         ],
+        forceLoadDirect: ['chapter_map:{chapter_id,story_order}'],
       },
     },
     {

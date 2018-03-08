@@ -7,6 +7,7 @@ import userSettings from './resources/user-settings';
 import chapter from './resources/chapter';
 import story from './resources/story';
 import storyChapter from './resources/story-chapter';
+import storyViewSettings from './resources/story-view-settings';
 
 export default [
   user,
@@ -15,4 +16,5 @@ export default [
   chapter,
   story,
   storyChapter,
+  storyViewSettings,
 ];

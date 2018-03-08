@@ -31,8 +31,6 @@
 
 ## Backlog
 
-* Create seed data sets for `demo`. Include the "A Software Developer Journey" story/chapter data !!!
-
 * Move the EditorFeedback component (inside AdminEditor) outside of the controls section.
 
 * Fix timezone translation / formatting with date pickers.
@@ -43,8 +41,10 @@
 
 * Implement the Bio panel component.
 
-* Add story_settings db schema / joint config, for managing the display options
-  of a Story (e.g. layout style, options, etc).
+* Add auth/account support for:
+  - Github
+  - Google
+  - LinkedIn
 
 * Rename data schema to use singular table names throughout.
 

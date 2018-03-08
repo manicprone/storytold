@@ -159,6 +159,13 @@ export default [
     },
   },
 
+  // The view settings for a story
+  {
+    name: 'StoryViewSettings',
+    tableName: 'story_view_settings',
+    timestamps: { created: 'created_at', updated: 'updated_at' },
+  },
+
   // A story
   {
     name: 'Story',
@@ -173,6 +180,14 @@ export default [
         type: 'toMany',
         path: 'id => StoryChapter.story_id => StoryChapter.chapter_id => Chapter.id',
         orderBy: 'story_order,created_at',
+      },
+      chapter_map: {
+        type: 'toMany',
+        path: 'id => StoryChapter.story_id',
+      },
+      view_settings: {
+        type: 'toOne',
+        path: 'id => StoryViewSettings.story_id',
       },
     },
   },

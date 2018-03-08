@@ -13,6 +13,12 @@ exports.up = function up(knex, Promise) {
       table.boolean('is_public').notNullable().defaultTo(false);
       table.timestamps();
     }),
+    knex.schema.createTableIfNotExists('story_view_settings', (table) => {
+      table.increments();
+      table.integer('story_id').notNullable().unsigned().references('stories.id');
+      table.jsonb('settings').nullable();
+      table.timestamps();
+    }),
     knex.schema.createTableIfNotExists('chapters', (table) => {
       table.increments();
       table.integer('user_id').notNullable().unsigned().references('users.id');
@@ -110,6 +116,7 @@ exports.down = function down(knex, Promise) {
     knex.schema.dropTableIfExists('chapter_organizations_ref'),
     knex.schema.dropTableIfExists('chapter_places_ref'),
     knex.schema.dropTableIfExists('story_chapters_ref'),
+    knex.schema.dropTableIfExists('story_view_settings'),
   ]).then(() => {
     return Promise.all([
       knex.schema.dropTableIfExists('people'),
