@@ -6,7 +6,7 @@
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:manicprone/storytold.git"
+    "url": "git@github.com:manicprone/storytold-poc.git"
   },
   "scripts": {
     "dev": "babel-node ./server.js",
